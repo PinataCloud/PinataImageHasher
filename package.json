@@ -1,8 +1,8 @@
 {
-  "name": "test",
+  "name": "Corroborator-Auditor",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "Corroborator Auditor Interface",
+  "productName": "Corroborator Auditor",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
   "author": "Dan Shields <danwshields@gmail.com>",

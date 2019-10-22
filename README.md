@@ -1,7 +1,8 @@
-# Quasar App (test)
+# Corroborator Auditor Interface
 
-A Quasar Framework app
+Built with [Quasar](https://quasar.dev)
 
+# Development Notes:
 ## Install the dependencies
 ```bash
 npm install

@@ -1,4 +1,6 @@
-import VueIpfs from 'vue-ipfs';
+import Vue from 'vue';
+// import App from './App.vue';
+import VueIpfs from '../plugins/vue-ipfs';
 
 // Load our IPFS plugin.
 Vue.use(VueIpfs);

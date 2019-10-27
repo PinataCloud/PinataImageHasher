@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import IpfsInfo from "./components/IpfsInfo.vue";
+import IpfsInfo from "./pages/IpfsInfo.vue";
 
 export default {
   name: "Corroborator Auditor",
-  components: {
+  pages: {
     IpfsInfo
   }
 };

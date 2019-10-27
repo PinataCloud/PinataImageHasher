@@ -5,7 +5,12 @@
 </template>
 
 <script>
+import IpfsInfo from "./components/IpfsInfo.vue";
+
 export default {
-  name: 'App'
-}
+  name: "Corroborator Auditor",
+  components: {
+    IpfsInfo
+  }
+};
 </script>

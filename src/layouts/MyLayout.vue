@@ -13,7 +13,7 @@
         />
 
         <q-toolbar-title v-if="$q.screen.gt.sm" shrink class="row items-center no-wrap">
-          <img src="~assets/corraborator.png"  height="20">
+          <img src="~assets/corroborator.png"  height="20">
             <span class="q-ml-sm"><strong>Corro</strong>borator</span>
         </q-toolbar-title>
 
@@ -72,7 +72,7 @@
       <q-scroll-area class="fit">
         <q-toolbar class="GPL__toolbar">
           <q-toolbar-title class="row items-center text-grey-8">
-            <img src="~assets/corraborator.png" height="20">
+            <img src="~assets/corroborator.png" height="20">
             <span class="q-ml-sm"><strong>Corro</strong>borator</span>
           </q-toolbar-title>
         </q-toolbar>

@@ -10,19 +10,27 @@
 </template>
 
 <script>
+import AtraAPI from "../components/AtraAPI";
 export default {
+
   name: "FileCheck",
   data: function() {
     return {
       status: "Connecting to IPFS...",
       id: "",
-      agentVersion: ""
-    };
+      agentVersion: "",
+      cidList:[],
+  };
   },
   mounted: function() {
     this.getIpfsNodeInfo();
+    this.fillCIDsVariable();
   },
   methods: {
+    async fillCIDsVariable() {
+        this.cidList = await AtraAPI.GetCIDs();
+        // console.log(this.cidList)
+      },
     async getIpfsNodeInfo() {
       try {
         // Await for ipfs node instance.
@@ -40,6 +48,7 @@ export default {
       }
     }
   }
+
 };
 </script>
 

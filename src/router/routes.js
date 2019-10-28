@@ -5,7 +5,8 @@ const routes = [
     component: () => import('layouts/MyLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IpfsInfo.vue') },
-      { path: 'index', component: () => import('pages/Index.vue') }
+      { path: 'LogBook', component: () => import('pages/LogBook.vue') },
+      { path: 'FileCheck', component: () => import('pages/FileCheck.vue') }
     ]
   }
 ]

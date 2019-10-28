@@ -1,15 +1,17 @@
 <template>
   <q-page class="flex flex-center">
-    <img class="q-pt-sm" alt="Corroborator Logo" src="../assets/corroborator.png" style="height: 7rem" />
-    <h3>{{ status }}</h3>
-    <h4>ID: {{ id }}</h4>
-    <h4>Agent version: {{ agentVersion }}</h4>
-  </q-page>
+      <q-uploader
+        url="http://localhost:4444/upload"
+        label="Restricted to images"
+        multiple
+        accept=".jpg, image/*"
+        style="max-width: 600px"
+      />  </q-page>
 </template>
 
 <script>
 export default {
-  name: "IpfsInfo",
+  name: "FileCheck",
   data: function() {
     return {
       status: "Connecting to IPFS...",
@@ -43,4 +45,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>

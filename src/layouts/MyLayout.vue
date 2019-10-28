@@ -19,30 +19,12 @@
 
         <q-space />
 
-        <q-input class="GPL__toolbar-input" dense standout="bg-primary" v-model="search" placeholder="Search">
+        <q-input class="GPL__toolbar-input" dense standout="bg-primary" v-model="search" placeholder="Fingerprint CID Search">
           <template v-slot:prepend>
             <q-icon v-if="search === ''" name="search" />
             <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''" />
           </template>
         </q-input>
-
-        <q-btn v-if="$q.screen.gt.xs" flat dense no-wrap color="primary" icon="add" no-caps label="Create" class="q-ml-sm q-px-md">
-          <q-menu anchor="top right" self="top right">
-            <q-list class="text-grey-8" style="min-width: 100px">
-              <q-item aria-hidden="true">
-                <q-item-section class="text-uppercase text-grey-7" style="font-size: 0.7rem">Create New</q-item-section>
-              </q-item>
-              <q-item v-for="menu in createMenu" :key="menu.text" clickable v-close-popup aria-hidden="true">
-                <q-item-section avatar>
-                  <q-icon :name="menu.icon" />
-                </q-item-section>
-                <q-item-section>{{ menu.text }}</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
-
-        <q-btn v-if="$q.screen.gt.xs" flat dense no-wrap color="primary" icon="cloud_upload" no-caps label="Upload" class="q-ml-sm q-px-md" />
 
         <q-space />
 
@@ -78,7 +60,7 @@
         </q-toolbar>
 
         <q-list padding>
-          <q-item v-for="link in links1" :key="link.text" clickable class="GPL__drawer-item">
+          <q-item v-for="link in links1" :key="link.text" clickable class="GPL__drawer-item" :to="link.to">
             <q-item-section avatar>
               <q-icon :name="link.icon" />
             </q-item-section>
@@ -89,8 +71,8 @@
 
           <q-separator class="q-my-md" />
 
-          <q-item v-for="link in links2" :key="link.text" clickable class="GPL__drawer-item">
-            <q-item-section avatar>
+          <q-item v-for="link in links2" :key="link.text" clickable class="GPL__drawer-item" :to="link.to">
+            <q-item-section avatar >
               <q-icon :name="link.icon" />
             </q-item-section>
             <q-item-section>
@@ -100,27 +82,6 @@
 
           <q-separator class="q-my-md" />
 
-          <q-item v-for="link in links3" :key="link.text" clickable class="GPL__drawer-item">
-            <q-item-section avatar>
-              <q-icon :name="link.icon" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-separator class="q-my-md" />
-
-          <q-item clickable class="GPL__drawer-item GPL__drawer-item--storage">
-            <q-item-section avatar>
-              <q-icon name="cloud" />
-            </q-item-section>
-            <q-item-section top>
-              <q-item-label>Storage</q-item-label>
-              <q-linear-progress :value="storage" class="q-my-sm" />
-              <q-item-label caption>2.6 GB of 15 GB</q-item-label>
-            </q-item-section>
-          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -130,22 +91,22 @@
 
       <q-page-sticky v-if="$q.screen.gt.sm" expand position="left">
         <div class="fit q-pt-xl q-px-sm column">
-          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn">
-            <q-icon size="22px" name="photo" />
-            <div class="GPL__side-btn__label">Photos</div>
+          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
+          to="/FileCheck">
+            <q-icon size="22px" name="image_search" />
+            <div class="GPL__side-btn__label">File Check</div>
           </q-btn>
 
-          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn">
-            <q-icon size="22px" name="collections_bookmark" />
-            <div class="GPL__side-btn__label">Albums</div>
+          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
+          to="LogBook">
+            <q-icon size="22px" name="library_books" />
+            <div class="GPL__side-btn__label">Log Book</div>
           </q-btn>
 
-          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn">
+          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
+          to="/">
             <q-icon size="22px" name="assistant" />
-            <div class="GPL__side-btn__label">Assistant</div>
-            <q-badge floating color="red" text-color="white" style="top: 8px; right: 16px">
-              1
-            </q-badge>
+            <div class="GPL__side-btn__label">Log Creator</div>
           </q-btn>
 
         </div>
@@ -156,36 +117,21 @@
 
 <script>
 export default {
-  name: 'GooglePhotosLayout',
+  name: 'CorroboratorLayout',
 
   data () {
     return {
       leftDrawerOpen: false,
       search: '',
-      storage: 0.26,
       links1: [
-        { icon: 'photo', text: 'Photos' },
-        { icon: 'photo_album', text: 'Albums' },
-        { icon: 'assistant', text: 'Assistant' },
-        { icon: 'people', text: 'Sharing' },
-        { icon: 'book', text: 'Photo books' }
+        { icon: 'image_search', text: 'File Check', to: 'FileCheck' },
+        { icon: 'library_books', text: 'Log Book', to: 'LogBook' },
+        { icon: 'assistant', text: 'Log Creator', to: '/' }
       ],
       links2: [
-        { icon: 'archive', text: 'Archive' },
-        { icon: 'delete', text: 'Trash' }
-      ],
-      links3: [
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'help', text: 'Help & Feedback' },
-        { icon: 'get_app', text: 'App Downloads' }
-      ],
-      createMenu: [
-        { icon: 'photo_album', text: 'Album' },
-        { icon: 'people', text: 'Shared Album' },
-        { icon: 'movie', text: 'Movie' },
-        { icon: 'library_books', text: 'Animation' },
-        { icon: 'dashboard', text: 'Collage' },
-        { icon: 'book', text: 'Photo book' }
+        { icon: 'settings', text: 'Settings', to: '/' },
+        { icon: 'help', text: 'Help & Feedback', to: '/' },
+        { icon: 'get_app', text: 'App Downloads', to: '/' }
       ]
     }
   }

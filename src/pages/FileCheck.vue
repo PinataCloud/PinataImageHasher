@@ -101,12 +101,9 @@ export default {
         // const fReader = new FileReader();
         // Await for ipfs node instance.
         const ipfs = await this.$ipfs;
-        const cids = async (files) => {
-          for (let file of files) {
-            await ipfs.add(this.uploadedFiles[file], { onlyHash: true })
-          }
-        }
-        this.uploadedCids = [].concat(cids);
+        const cids = this.uploadedFiles.map(file => ipfs.add(file.url, { onlyHash: true }));
+        this.uploadedCids = cids; // NOTE - object, not just the hash
+        // this.uploadedCids = cids.map(item => item.hash);
         console.log(this.uploadedCids);
       } catch (err) {
         // Set error status text.

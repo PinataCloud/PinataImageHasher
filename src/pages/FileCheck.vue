@@ -4,13 +4,12 @@
   <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
     <q-card
           class="text-white"
-          style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
+          style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)"
         >
           <q-card-section>
               <div class="text-h6 text-center q-pb-md">Verify Images</div>
               <div class="col-12 dropbox"
-              color="secondary"
-              style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)">
+              color="secondary">
                 <div class="row full-width absolute-center items-center content-end">
                     <q-icon class ="q-pa-sm col-12" name="add_a_photo" size="xl"/>
                     <div v-if="isInitial" class="col-12">
@@ -32,11 +31,11 @@
   <div v-if="isSuccess">
     <div v-for="item in uploadedFiles">
       <q-card class="" >
-        <q-card-actions align="around">
-          <q-btn flat round color="primary" icon="layers_clear" @click="reset()"/>
-          <q-btn flat round color="primary" icon="share" />
-        </q-card-actions>
       <img :src="item.url" class="img-card" :alt="item.originalName" max-height="75vh">
+      <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
+        <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
+        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="fillCIDsVariable()" />
+      </q-card-actions>
       </q-card>
 
     </div>
@@ -179,14 +178,14 @@ export default {
     outline-offset: -10px;
     padding: 10px 10px;
     min-height: 30vh; /* minimum height */
-    min-width: 30vh; /* minimum height */
+    min-width: 40vh; /* minimum height */
     position: relative;
     cursor: pointer;
     text-align: center;
   }
 
 .dropbox:hover {
-  background: lightblue;
+  background: #5487e8;
   /* when mouse over to the drop zone, change color */
 }
 </style>

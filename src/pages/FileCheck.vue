@@ -34,7 +34,7 @@
       <img :src="item.url" class="img-card" :alt="item.originalName" max-height="75vh">
       <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
         <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
-        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="fillCIDsVariable()" />
+        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="genCIDs(uploadedFiles)" />
       </q-card-actions>
       </q-card>
 
@@ -64,18 +64,16 @@ export default {
   name: "FileCheck",
   data: function() {
     return {
-      status: "Connecting to IPFS...",
-      id: "",
-      agentVersion: "",
-      cidList: [],
+      knowCids: [],
       uploadedFiles: [],
+      uploadedCids: [],
       uploadError: null,
       currentStatus: null,
       uploadFieldName: 'photos'
     };
   },
   mounted: function() {
-    // this.getIpfsNodeInfo();
+    // this.genCID();
     // this.fillCIDsVariable();
     this.reset();
   },
@@ -95,27 +93,16 @@ export default {
   },
   methods: {
     async fillCIDsVariable() {
-      this.cidList = await AtraAPI.GetCIDs();
-      console.log(this.cidList)
+      this.knowCids = await AtraAPI.GetCIDs();
+      console.log(this.knowCids)
     },
-    async getIpfsNodeInfo() {
-      try {
-        // Await for ipfs node instance.
-        const ipfs = await this.$ipfs;
-        // Call ipfs `id` method.
-        // Returns the identity of the Peer.
-        const {
-          agentVersion,
-          id
-        } = await ipfs.id();
-        this.agentVersion = agentVersion;
-        this.id = id;
-        // Set successful status text.
-        this.status = "Connected to IPFS =)";
-      } catch (err) {
-        // Set error status text.
-        this.status = `Error: ${err}`;
+    async genCIDs(files) {
+      const ipfs = await this.$ipfs;
+      let _cids = [];
+      for (let file of files) {
+        _cids.append(await ipfs.files.write('/' + file.name, file, { create: true }).hash);
       }
+      this.uploadedCids _cids;
     },
     reset() {
       // reset form to initial state

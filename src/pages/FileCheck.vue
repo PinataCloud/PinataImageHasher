@@ -34,7 +34,7 @@
       <img :src="item.url" class="img-card" :alt="item.originalName" max-height="75vh">
       <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
         <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
-        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="genCIDs(uploadedFiles)" />
+        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="genCIDs" />
       </q-card-actions>
       </q-card>
 
@@ -96,13 +96,22 @@ export default {
       this.knowCids = await AtraAPI.GetCIDs();
       console.log(this.knowCids)
     },
-    async genCIDs(files) {
-      const ipfs = await this.$ipfs;
-      let _cids = [];
-      for (let file of files) {
-        _cids.append(await ipfs.files.write('/' + file.name, file, { create: true }).hash);
+    async genCIDs() {
+      try {
+        // const fReader = new FileReader();
+        // Await for ipfs node instance.
+        const ipfs = await this.$ipfs;
+        const cids = async (files) => {
+          for (let file of files) {
+            await ipfs.add(this.uploadedFiles[file], { onlyHash: true })
+          }
+        }
+        this.uploadedCids = [].concat(cids);
+        console.log(this.uploadedCids);
+      } catch (err) {
+        // Set error status text.
+        console.log(`Error: ${err}`);
       }
-      this.uploadedCids _cids;
     },
     reset() {
       // reset form to initial state
@@ -117,6 +126,7 @@ export default {
       upload(formData)
         .then(x => {
           this.uploadedFiles = [].concat(x);
+          console.log(this.uploadedFiles);
           this.currentStatus = "STATUS_SUCCESS";
         })
         .catch(err => {

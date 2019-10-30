@@ -8,7 +8,7 @@
 import IpfsInfo from "./pages/IpfsInfo.vue";
 
 export default {
-  name: "Corroborator Auditor",
+  name: "Corroborator-Auditor",
   pages: {
     IpfsInfo
   }

@@ -1,16 +1,65 @@
 <template>
-  <q-page class="flex flex-center">
-      <q-uploader
-        url="http://localhost:4444/upload"
-        label="Restricted to images"
-        multiple
-        accept=".jpg, image/*"
-        style="max-width: 600px"
-      />  </q-page>
+<q-page class="flex flex-center">
+  <!--UPLOAD FORM-->
+  <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+    <q-card
+          class="text-white"
+          style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
+        >
+          <q-card-section>
+              <div class="text-h6 text-center q-pb-md">Verify Images</div>
+              <div class="col-12 dropbox"
+              color="secondary"
+              style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)">
+                <div class="row full-width absolute-center items-center content-end">
+                    <q-icon class ="q-pa-sm col-12" name="add_a_photo" size="xl"/>
+                    <div v-if="isInitial" class="col-12">
+                      Drag your file(s) here to begin <br> or click to browse
+                    </div>
+                    <div v-if="isSaving" class="col-12">
+                      Uploading {{ fileCount }} files...
+                    </div>
+                </div>
+              <input type="file" :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files);
+                fileCount = $event.target.files.length" accept="image/*" class="input-file absolute-center">
+              </div>
+          </q-card-section>
+        </q-card>
+
+  </form>
+
+  <!--SUCCESS-->
+  <div v-if="isSuccess">
+    <div v-for="item in uploadedFiles">
+      <q-card class="" >
+        <q-card-actions align="around">
+          <q-btn flat round color="primary" icon="layers_clear" @click="reset()"/>
+          <q-btn flat round color="primary" icon="share" />
+        </q-card-actions>
+      <img :src="item.url" class="img-card" :alt="item.originalName" max-height="75vh">
+      </q-card>
+
+    </div>
+  </div>
+
+  <!--FAILED-->
+  <div v-if="isFailed">
+    <h2>Uploaded failed.</h2>
+    <p>
+      <a href="javascript:void(0)" @click="reset()">Try again</a>
+    </p>
+    <pre>{{ uploadError }}</pre>
+  </div>
+
+</q-page>
 </template>
 
 <script>
-import AtraAPI from "../components/AtraAPI";
+import AtraAPI from "../plugins/AtraAPI";
+import {
+  upload
+} from '../plugins/upload';
+
 export default {
 
   name: "FileCheck",
@@ -19,25 +68,47 @@ export default {
       status: "Connecting to IPFS...",
       id: "",
       agentVersion: "",
-      cidList:[],
-  };
+      cidList: [],
+      uploadedFiles: [],
+      uploadError: null,
+      currentStatus: null,
+      uploadFieldName: 'photos'
+    };
   },
   mounted: function() {
-    this.getIpfsNodeInfo();
-    this.fillCIDsVariable();
+    // this.getIpfsNodeInfo();
+    // this.fillCIDsVariable();
+    this.reset();
+  },
+  computed: {
+    isInitial() {
+      return this.currentStatus === "STATUS_INITIAL";
+    },
+    isSaving() {
+      return this.currentStatus === "STATUS_SAVING";
+    },
+    isSuccess() {
+      return this.currentStatus === "STATUS_SUCCESS";
+    },
+    isFailed() {
+      return this.currentStatus === "STATUS_FAILED";
+    }
   },
   methods: {
     async fillCIDsVariable() {
-        this.cidList = await AtraAPI.GetCIDs();
-        // console.log(this.cidList)
-      },
+      this.cidList = await AtraAPI.GetCIDs();
+      console.log(this.cidList)
+    },
     async getIpfsNodeInfo() {
       try {
         // Await for ipfs node instance.
         const ipfs = await this.$ipfs;
         // Call ipfs `id` method.
         // Returns the identity of the Peer.
-        const { agentVersion, id } = await ipfs.id();
+        const {
+          agentVersion,
+          id
+        } = await ipfs.id();
         this.agentVersion = agentVersion;
         this.id = id;
         // Set successful status text.
@@ -46,13 +117,76 @@ export default {
         // Set error status text.
         this.status = `Error: ${err}`;
       }
+    },
+    reset() {
+      // reset form to initial state
+      this.currentStatus = "STATUS_INITIAL";
+      this.uploadedFiles = [];
+      this.uploadError = null;
+    },
+    save(formData) {
+      // upload data to the server
+      this.currentStatus = "STATUS_SAVING";
+
+      upload(formData)
+        .then(x => {
+          this.uploadedFiles = [].concat(x);
+          this.currentStatus = "STATUS_SUCCESS";
+        })
+        .catch(err => {
+          this.uploadError = err.response;
+          this.currentStatus = "STATUS_FAILED";
+        });
+    },
+    filesChange(fieldName, fileList) {
+      // handle file changes
+      const formData = new FormData();
+
+      if (!fileList.length) return;
+
+      // append the files to FormData
+      Array
+        .from(Array(fileList.length).keys())
+        .map(x => {
+          formData.append(fieldName, fileList[x], fileList[x].name);
+        });
+
+      // save it
+      this.save(formData);
     }
   }
-
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+.img-card{
+  max-height: 75vh;
+}
+
+.input-file {
+  opacity: 0;
+  /* invisible but it's there! */
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.dropbox {
+    outline: 2px dashed grey; /* the dash box */
+    outline-offset: -10px;
+    padding: 10px 10px;
+    min-height: 30vh; /* minimum height */
+    min-width: 30vh; /* minimum height */
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+  }
+
+.dropbox:hover {
+  background: lightblue;
+  /* when mouse over to the drop zone, change color */
+}
 </style>

@@ -109,6 +109,12 @@
             <div class="GPL__side-btn__label">Log Creator</div>
           </q-btn>
 
+          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
+                 to="CIDsList">
+            <q-icon size="22px" name="library_books" />
+            <div class="GPL__side-btn__label">CIDs List</div>
+          </q-btn>
+
         </div>
       </q-page-sticky>
     </q-page-container>

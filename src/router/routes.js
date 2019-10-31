@@ -6,7 +6,9 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/IpfsInfo.vue') },
       { path: 'LogBook', component: () => import('pages/LogBook.vue') },
-      { path: 'FileCheck', component: () => import('pages/FileCheck.vue') }
+      { path: 'FileCheck', component: () => import('pages/FileCheck.vue') },
+      { path: 'CIDsList', component: () => import('pages/CIDsList.vue') }
+
     ]
   }
 ]

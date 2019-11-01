@@ -1,5 +1,9 @@
 <template>
 <q-page class="flex flex-center">
+  <q-item>
+    metadata for following image: {{metaData}}
+  </q-item>
+  <img src="../assets/QmYS6y2phhtB1yDDUjhfcAEVp3WmT7tv24fkAR7FwcZQDC.jpg" id="imgTest">
 
   <q-list>
     <q-item v-for="(cid, i) in knownCids":key="i">
@@ -8,6 +12,7 @@
       <q-item-label>
       </q-item-label>
     </q-item>
+
   </q-list>
 
 </q-page>
@@ -15,9 +20,7 @@
 
 <script>
 import AtraAPI from "../plugins/AtraAPI";
-import {
-  upload
-} from '../plugins/upload';
+import ImageMetadata from "../plugins/ImageMetadata";
 
 export default {
 
@@ -27,18 +30,30 @@ export default {
       knownCids: [],
       knownDates:[],
       knownLocations:[],
+        metaData:"",
+
     };
   },
   mounted: function() {
-    this.fillCIDsVariable();
+    this.retrieveImageMetadata();
+    this.getAtraRecordData();
   },
   computed: {
 
   },
   methods: {
-    async fillCIDsVariable() {
+
+      async retrieveImageMetadata(){
+        let img = document.getElementById("imgTest");
+        // Pass in image data to get metadata out
+        const jsonData =  await ImageMetadata.GetMetadata(img);
+        // get specific information: jsonData["purpose"], etc.
+        this.metaData = jsonData;
+    },
+
+    async getAtraRecordData() {
       [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates();
-      console.log(this.knownDates)
+      // console.log(this.knownDates)
     },
 
   }

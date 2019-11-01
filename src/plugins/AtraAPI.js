@@ -1,10 +1,12 @@
 export default class AtraAPI{
 
+  // gets the CIDs in order of most recent to oldest
   static async GetCIDs(){
     const json = await  this.GetAtraRecords();
     const CIDs =[];
     const liveRecords = json["live"];
     let i;
+    // start at the end of the list
     for (i = liveRecords.length-1; i >= 0; i--) {
       const record = liveRecords[i]["record"];
       CIDs.push( record[0]);
@@ -23,6 +25,7 @@ export default class AtraAPI{
    return json;
   }
 
+  // gets the records in order of most recent to oldest
   static async GetCIDsLocationAndDates(){
     const json = await  this.GetAtraRecords();
     const CIDs = [];
@@ -31,14 +34,14 @@ export default class AtraAPI{
 
     const liveRecords = json["live"];
     let i;
+    // start at the end of the list
     for (i = liveRecords.length-1; i >= 0; i--) {
-      // console.log(i);
       const record = liveRecords[i]["record"];
+      // skip test records
       if (record[0].includes("test"))
         continue;
       CIDs.push( record[0]);
       Dates.push(record[1]);
-      // console.log(record[2]);
       Locations.push(record[2]);
     }
 

@@ -26,7 +26,7 @@
         :virtual-scroll-slice-size="25"
       >
         <template v-slot:body-cell="props" >
-          <q-td :props="props" @click.native="selectRow(props.value)">
+          <q-td :props="props" @click.native="selectRow(props.row.cid)">
             <div>{{ props.value }}</div>
           </q-td>
         </template>
@@ -36,7 +36,7 @@
 <!-- IMAGE CARD VIEW (YES_IMG) -->
     <div v-if="yes_img">
         <q-card class="" >
-        <img :src="imgURL" class="img-card" :alt="currentCID">
+        <img id="imgSelected" :src="imgURL" class="img-card" :alt="currentCID">
         <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
           <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
           <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="retrieveImageMetadata()" />
@@ -81,7 +81,6 @@ export default {
   data: function() {
     return {
       tableData,
-      props: [],
       currentStatus: null,
       currentCID: "",
       imgURL: "",
@@ -136,6 +135,7 @@ export default {
   methods: {
 
     async retrieveImageMetadata(){
+      let img;
       img = document.getElementById("imgSelected");
       // Pass in image data to get metadata out
       const jsonData =  await ImageMetadata.GetMetadata(img);
@@ -149,8 +149,10 @@ export default {
     },
 
     selectRow(rowProp) {
+      console.log(rowProp);
       this.currentStatus = "YES_IMG";
       this.currentCID = rowProp;
+      // NOTE: if you use a gateway you MUST enable XHR in browser else this fails silently! 
       this.imgURL = 'https://gateway.pinata.cloud/ipfs/' + this.currentCID
     },
 

@@ -1,9 +1,9 @@
 <template>
-  <q-page class="flex flex-center">
-    <img class="q-pt-sm" alt="Corroborator Logo" src="../assets/corroborator.png" style="height: 7rem" />
-    <h3>{{ status }}</h3>
-    <h4>ID: {{ id }}</h4>
-    <h4>Agent version: {{ agentVersion }}</h4>
+  <q-page class="flex fit row wrap justify-center text-center">
+    <img class="q-pt-lg" alt="Corroborator Logo" src="../assets/corroborator.png" style="height: 7rem" />
+    <h4 class="col-12 text-center"><b>{{ status }}</b></h4>
+    <h5 class="col-12">Your Node ID: {{ id }}</h5>
+    <h5 class="col-12">IPFS Agent version: {{ agentVersion }}</h5>
   </q-page>
 </template>
 
@@ -31,7 +31,7 @@ export default {
         this.agentVersion = agentVersion;
         this.id = id;
         // Set successful status text.
-        this.status = "Connected to IPFS =)";
+        this.status = "Connected to IPFS";
       } catch (err) {
         // Set error status text.
         this.status = `Error: ${err}`;

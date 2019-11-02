@@ -14,7 +14,7 @@
 
         <q-toolbar-title v-if="$q.screen.gt.sm" shrink class="row items-center no-wrap">
           <img src="~assets/corroborator.png"  height="20">
-            <span class="q-ml-sm"><strong>Corro</strong>borator</span>
+            <span class="q-ml-sm"><strong>Corro</strong>borator Auditor</span>
         </q-toolbar-title>
 
         <q-space />
@@ -26,10 +26,12 @@
             </q-badge>
             <q-tooltip>Notifications</q-tooltip>
           </q-btn>
-          <q-btn round flat>
-            <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+          <q-btn flat>
+            <q-avatar>
+              <q-icon name="account_circle"/>
             </q-avatar>
+            &nbsp;&nbsp;
+            Auditor Joe
             <q-tooltip>Account</q-tooltip>
           </q-btn>
         </div>
@@ -46,7 +48,7 @@
         <q-toolbar class="GPL__toolbar">
           <q-toolbar-title class="row items-center text-grey-8">
             <img src="~assets/corroborator.png" height="20">
-            <span class="q-ml-sm"><strong>Corro</strong>borator</span>
+            <span class="q-ml-sm"><strong>Corro</strong>borator Auditor</span>
           </q-toolbar-title>
         </q-toolbar>
 

@@ -7,21 +7,43 @@
       </template>
     </q-input>
 
-    <q-table
-      name="cidTable"
-      row-key="cid"
-      no-data-label="No Data Found. Have you selected a Log to read from?"
-      loading-label="Gathering Log Data..."
-      :data="tableData"
-      :columns="columns"
-      :filter="filter"
-      :pagination.sync="pagination"
-      table-style="max-height: 67vh;"
-      style="width: 80vw;"
-      class="my-sticky-header-column-table ahhhhh"
-      virtual-scroll
-      :virtual-scroll-slice-size="25"
-    />
+<!-- TABLE VIEW (NO_IMG) -->
+    <div v-if="no_img">
+      <q-table
+        name="cidTable"
+        row-key="cid"
+        no-data-label="No Data Found. Have you selected a Log to read from?"
+        loading-label="Gathering Log Data..."
+        :data="tableData"
+        :columns="columns"
+        :filter="filter"
+        :pagination.sync="pagination"
+        @row-click="selectRow(rowProp)"
+        table-style="max-height: 67vh;"
+        style="width: 80vw;"
+        class="my-sticky-header-column-table ahhhhh"
+        virtual-scroll
+        :virtual-scroll-slice-size="25"
+      >
+        <template v-slot:body-cell="props" >
+          <q-td :props="props" @click.native="selectRow(props.value)">
+            <div>{{ props.value }}</div>
+          </q-td>
+        </template>
+      </q-table>
+    </div>
+
+<!-- IMAGE CARD VIEW (YES_IMG) -->
+    <div v-if="yes_img">
+        <q-card class="" >
+        <img :src="imgURL" class="img-card" :alt="currentCID">
+        <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
+          <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
+          <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="retrieveImageMetadata()" />
+        </q-card-actions>
+        </q-card>
+
+    </div>
 
   </q-page>
 </template>
@@ -59,10 +81,14 @@ export default {
   data: function() {
     return {
       tableData,
+      props: [],
+      currentStatus: null,
+      currentCID: "",
+      imgURL: "",
       knownCids: [],
-      knownDates:[],
-      knownLocations:[],
-      metaData:"",
+      knownDates: [],
+      knownLocations: [],
+      metaData: "",
         filter: '',
         pagination: {
           sortBy: 'logT',
@@ -93,20 +119,28 @@ export default {
     }
   },
   mounted: function() {
-    this.retrieveImageMetadata();
-    this.getAtraRecordData();
+    this.reset();
+    // this.getAtraRecordData();
   },
   computed: {
-
+    no_img() {
+      return this.currentStatus === "NO_IMG";
+    },
+    yes_img() {
+      return this.currentStatus === "YES_IMG";
+    },
+    isFailed() {
+      return this.currentStatus === "STATUS_FAILED";
+    }
   },
   methods: {
 
-      async retrieveImageMetadata(){
-        let img = document.getElementById("imgTest");
-        // Pass in image data to get metadata out
-        const jsonData =  await ImageMetadata.GetMetadata(img);
-        // get specific information: jsonData["purpose"], etc.
-        this.metaData = jsonData;
+    async retrieveImageMetadata(){
+      img = document.getElementById("imgSelected");
+      // Pass in image data to get metadata out
+      const jsonData =  await ImageMetadata.GetMetadata(img);
+      // get specific information: jsonData["purpose"], etc.
+      this.metaData = jsonData;
     },
 
     async getAtraRecordData() {
@@ -114,12 +148,26 @@ export default {
       // console.log(this.knownDates)
     },
 
+    selectRow(rowProp) {
+      this.currentStatus = "YES_IMG";
+      this.currentCID = rowProp;
+      this.imgURL = 'https://gateway.pinata.cloud/ipfs/' + this.currentCID
+    },
+
+    reset() {
+      // reset form to initial state
+      this.currentStatus = "NO_IMG";
+      this.currentCID = "";
+    },
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="sass">
+.img-card
+  max-height: 75vh;
+
 .my-sticky-header-column-table
 
   background-color: #336699

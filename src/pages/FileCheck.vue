@@ -34,7 +34,7 @@
       <img :src="item.url" class="img-card" :alt="item.originalName" max-height="75vh">
       <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
         <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
-        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="genCIDs" />
+        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="genCIDs()" />
       </q-card-actions>
       </q-card>
 
@@ -73,8 +73,8 @@ export default {
     };
   },
   mounted: function() {
+    //this.fillCIDsVariable();
     // this.genCID();
-    // this.fillCIDsVariable();
     this.reset();
   },
   computed: {

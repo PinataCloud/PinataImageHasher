@@ -31,7 +31,7 @@
               <q-icon name="account_circle"/>
             </q-avatar>
             &nbsp;&nbsp;
-            Auditor Joe
+            John Smith
             <q-tooltip>Account</q-tooltip>
           </q-btn>
         </div>

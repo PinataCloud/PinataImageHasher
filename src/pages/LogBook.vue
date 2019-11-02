@@ -1,10 +1,5 @@
 <template>
   <q-page class="flex flex-center">
-  <!-- <q-item>
-    metadata for following image: {{metaData}}
-  </q-item>
-  <img src="../assets/QmYS6y2phhtB1yDDUjhfcAEVp3WmT7tv24fkAR7FwcZQDC.jpg" id="imgTest"> -->
-  <!--      if you want to see it: https://gateway.pinata.cloud/ipfs/ + {{cid}}-->
     <q-input class="GPL__toolbar-input" dense standout="bg-primary" v-model="filter" placeholder="Search (CID, Dates, Locations, ...)">
       <template v-slot:append>
         <q-icon v-if="filter === ''" name="search" />
@@ -13,21 +8,20 @@
     </q-input>
 
     <q-table
-      name="CIDTable"
-      row-key="cidTable"
-      class="my-sticky-header-column-table"
-      color="black"
+      name="cidTable"
+      row-key="cid"
+      no-data-label="No Data Found. Have you selected a Log to read from?"
+      loading-label="Gathering Log Data..."
       :data="tableData"
       :columns="columns"
       :filter="filter"
       :pagination.sync="pagination"
+      table-style="max-height: 67vh;"
       style="width: 80vw;"
+      class="my-sticky-header-column-table ahhhhh"
+      virtual-scroll
+      :virtual-scroll-slice-size="25"
     />
-    <!-- <q-item v-for="(cid, i) in knownCids":key="i">
-      {{cid}} at {{knownDates[i]}} at {{knownLocations[i]}}
-      <q-item-label>
-      </q-item-label>
-    </q-item> -->
 
   </q-page>
 </template>
@@ -39,10 +33,21 @@ import ImageMetadata from "../plugins/ImageMetadata";
 // TABLE DATA GENERATION
 let tableData = [
   {
-    name: 'Frozen Yogurt',
-    loc: 159
+    cid: "QmYS6y2phhtB1yDDUjhfcAEVp3WmT7tv24fkAR7FwcZQDC",
+    logT: "NONE",
+    fileT: "NONE",
+    location: "(-104.990251, 39.7392358)",
+    purpose: "fun",
+    device_model: "iPhone9,1",
+    device_id: "7428023F-46AC-4DD1-99C9-3EAD40A2E458",
+    department: "Los Angeles Police Deparment",
+    user_name: "Ian P"
   }
 ]
+
+for (let i = 0; i < 50; i++) {
+  tableData.push(tableData[0])
+}
 
 // we are not going to change this array,
 // so why not freeze it to avoid Vue adding overhead
@@ -50,7 +55,6 @@ let tableData = [
 Object.freeze(tableData)
 
 export default {
-
   name: "CIDsList",
   data: function() {
     return {
@@ -61,7 +65,7 @@ export default {
       metaData:"",
         filter: '',
         pagination: {
-          sortBy: 'name',
+          sortBy: 'logT',
           descending: false,
           page: 1,
           rowsPerPage: 10
@@ -72,22 +76,24 @@ export default {
           name: 'cidTable',
           required: true,
           label: 'Fingerprint (CID)',
-          align: 'left',
-          field: row => row.name,
+          field: row => row.cid,
           format: val => `${val}`,
-          sortable: false,
-          headerClasses: 'bg-blue text-white',
-          classes: 'bg-grey-2 ellipsis',
-          style: 'max-width: 150px'
+          classes: 'ellipsis',
+          style: 'max-width: 150px;'
         },
         { name: 'logT', label: 'Log Timestamp', field: 'logT', align: 'center', sortable: true },
         { name: 'fileT', label: 'File Timestamp', field: 'fileT', align: 'center', sortable: true },
-        { name: 'loc', label: 'Loation (lat,long)', field: 'loc', align: 'center', sortable: true },
+        { name: 'location', label: 'Location (lat,long)', field: 'location', align: 'center', sortable: true },
+        { name: 'purpose', label: 'Purpose', field: 'purpose', align: 'center', sortable: true },
+        { name: 'device_model', label: 'Device Model', field: 'device_model', align: 'center', sortable: true },
+        { name: 'device_id', label: 'Device ID', field: 'device_id', align: 'center', sortable: true },
+        { name: 'department', label: 'Department', field: 'department', align: 'center', sortable: true },
+        { name: 'user_name', label: 'Logged by User', field: 'user_name', align: 'center', sortable: true }
       ]
     }
   },
   mounted: function() {
-    // this.retrieveImageMetadata();
+    this.retrieveImageMetadata();
     this.getAtraRecordData();
   },
   computed: {
@@ -113,19 +119,25 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="sass" scoped>
+<style lang="sass">
 .my-sticky-header-column-table
 
+  background-color: #336699
+
+  td
+    /* bg color is important for td; just specify one */
+    background-color: #eee
   td:first-child
     /* bg color is important for td; just specify one */
-    background-color: #c1f4cd !important
+    background-color: #4578e3 !important
 
   tr th
+    background: #336699 !important
+    opacity: 1 !important
+
     position: sticky
     /* higher than z-index for td below */
     z-index: 2
-    /* bg color is important; just specify one */
-    background: #fff
 
   tr:first-child th
     top: 0

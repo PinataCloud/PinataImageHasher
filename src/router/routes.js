@@ -4,11 +4,9 @@ const routes = [
     path: '/',
     component: () => import('layouts/MyLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IpfsInfo.vue') },
-      { path: 'LogBook', component: () => import('pages/LogBook.vue') },
+      { path: '', component: () => import('pages/LogBook.vue') },
       { path: 'FileCheck', component: () => import('pages/FileCheck.vue') },
-      { path: 'CIDsList', component: () => import('pages/CIDsList.vue') }
-
+      { path: 'IpfsInfo', component: () => import('pages/IpfsInfo.vue') }
     ]
   }
 ]

@@ -19,15 +19,6 @@
 
         <q-space />
 
-        <q-input class="GPL__toolbar-input" dense standout="bg-primary" v-model="search" placeholder="Fingerprint CID Search">
-          <template v-slot:prepend>
-            <q-icon v-if="search === ''" name="search" />
-            <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''" />
-          </template>
-        </q-input>
-
-        <q-space />
-
         <div class="q-gutter-sm row items-center no-wrap">
           <q-btn round dense flat color="grey-8" icon="notifications">
             <q-badge color="red" text-color="white" floating>
@@ -92,27 +83,21 @@
       <q-page-sticky v-if="$q.screen.gt.sm" expand position="left">
         <div class="fit q-pt-xl q-px-sm column">
           <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
+          to="/">
+            <q-icon size="22px" name="library_books" />
+            <div class="GPL__side-btn__label">Log Book</div>
+          </q-btn>
+
+          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
           to="/FileCheck">
             <q-icon size="22px" name="image_search" />
             <div class="GPL__side-btn__label">File Check</div>
           </q-btn>
 
           <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
-          to="LogBook">
-            <q-icon size="22px" name="library_books" />
-            <div class="GPL__side-btn__label">Log Book</div>
-          </q-btn>
-
-          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
-          to="/">
+          to="IpfsInfo">
             <q-icon size="22px" name="assistant" />
             <div class="GPL__side-btn__label">Log Creator</div>
-          </q-btn>
-
-          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
-                 to="CIDsList">
-            <q-icon size="22px" name="library_books" />
-            <div class="GPL__side-btn__label">CIDs List</div>
           </q-btn>
 
         </div>
@@ -128,11 +113,10 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      search: '',
       links1: [
+        { icon: 'library_books', text: 'Log Book', to: '/' },
         { icon: 'image_search', text: 'File Check', to: 'FileCheck' },
-        { icon: 'library_books', text: 'Log Book', to: 'LogBook' },
-        { icon: 'assistant', text: 'Log Creator', to: '/' }
+        { icon: 'assistant', text: 'Log Creator', to: 'IpfsInfo' }
       ],
       links2: [
         { icon: 'settings', text: 'Settings', to: '/' },
@@ -151,7 +135,7 @@ export default {
     height: 64px
 
   &__toolbar-input
-    width: 35%
+    width: 55%
 
   &__drawer-item
     line-height: 24px

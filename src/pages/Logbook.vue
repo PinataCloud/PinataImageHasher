@@ -77,28 +77,13 @@ import AtraAPI from "../plugins/AtraAPI";
 import ImageMetadata from "../plugins/ImageMetadata";
 
 // TABLE DATA GENERATION
-let tableData = [
-  {
-    cid: "QmYS6y2phhtB1yDDUjhfcAEVp3WmT7tv24fkAR7FwcZQDC",
-    logT: "NONE",
-    fileT: "NONE",
-    location: "(-104.990251, 39.7392358)",
-    purpose: "fun",
-    device_model: "iPhone9,1",
-    device_id: "7428023F-46AC-4DD1-99C9-3EAD40A2E458",
-    department: "Los Angeles Police Deparment",
-    user_name: "Ian P"
-  }
-]
+let tableData = []
 
-for (let i = 0; i < 50; i++) {
-  tableData.push(tableData[0])
-}
 
 // we are not going to change this array,
 // so why not freeze it to avoid Vue adding overhead
 // with state change detection
-Object.freeze(tableData)
+// Object.freeze(tableData)
 
 export default {
   name: "Logbook",
@@ -129,20 +114,21 @@ export default {
           format: val => this.shortenCID(val),
           classes: 'ellipsis'
         },
-        { name: 'logT', label: 'Log Timestamp', field: 'logT', align: 'center', sortable: true },
+        // { name: 'logT', label: 'Log Timestamp', field: 'logT', align: 'center', sortable: true },
         { name: 'fileT', label: 'File Timestamp', field: 'fileT', align: 'center', sortable: true },
         { name: 'location', label: 'Location (lat,long)', field: 'location', align: 'center', sortable: true },
-        { name: 'purpose', label: 'Purpose', field: 'purpose', align: 'center', sortable: true },
-        { name: 'device_model', label: 'Device Model', field: 'device_model', align: 'center', sortable: true },
-        { name: 'device_id', label: 'Device ID', field: 'device_id', align: 'center', sortable: true },
-        { name: 'department', label: 'Department', field: 'department', align: 'center', sortable: true },
-        { name: 'user_name', label: 'Logged by User', field: 'user_name', align: 'center', sortable: true }
+        // { name: 'purpose', label: 'Purpose', field: 'purpose', align: 'center', sortable: true },
+        // { name: 'device_model', label: 'Device Model', field: 'device_model', align: 'center', sortable: true },
+        // { name: 'device_id', label: 'Device ID', field: 'device_id', align: 'center', sortable: true },
+        // { name: 'department', label: 'Department', field: 'department', align: 'center', sortable: true },
+        // { name: 'user_name', label: 'Logged by User', field: 'user_name', align: 'center', sortable: true }
       ]
     }
   },
   mounted: function() {
     this.reset();
-    // this.getAtraRecordData();
+    this.getAtraRecordData();
+
   },
   computed: {
     isNoImg() {
@@ -179,6 +165,20 @@ export default {
 
     async getAtraRecordData() {
       [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates();
+
+        for (let i = 0; i < this.knownCids.length; i++) {
+            // console.log("got the data: " + this.knownCids[i]);
+            let newTableEntry =
+                {
+                    cid: this.knownCids[i],
+                    fileT: this.knownDates[i],
+                    location: this.knownLocations[i],
+                };
+            this.tableData.push(newTableEntry);
+            console.log(newTableEntry.cid);
+        }
+
+
     },
 
     async selectCID(rowCID) {

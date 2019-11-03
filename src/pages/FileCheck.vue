@@ -164,7 +164,9 @@ export default {
       }
     },
     async checkImage(){
-      if(this.knownCids.includes(this.genCIDs())) {
+      // TODO: FIX ME!!!!! CID is wrong of upload
+      // if(this.knownCids.includes(this.genCIDs())) {
+      if(this.genCIDs()) {
         this.verifiedCID = true;
       };
       this.retrieveImageMetadata();

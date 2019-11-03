@@ -163,10 +163,16 @@ export default {
       img = document.getElementById("imgSelected");
       // Pass in image data to get metadata out
       this.currentStatus = "STATUS_LOADING";
-      const jsonData =  await ImageMetadata.GetMetadata(img);
-      // get specific information: jsonData["purpose"], etc.
-      this.metaData = jsonData;
-      console.log(jsonData);
+      const jsonData =  await ImageMetadata.GetMetadata(img).then( response =>{
+          // get specific information: jsonData["purpose"], etc.
+          this.metaData = jsonData;
+          console.log(jsonData);
+      }
+      ).catch( err=>{
+          this.metaData = err;
+      }
+      );
+
       this.currentStatus = "STATUS_IMG";
     },
 
@@ -182,7 +188,7 @@ export default {
                     location: this.knownLocations[i],
                 };
             this.tableData.push(newTableEntry);
-            console.log(newTableEntry.cid);
+            // console.log(newTableEntry.cid);
         }
 
 

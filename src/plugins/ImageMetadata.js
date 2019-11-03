@@ -11,6 +11,12 @@ export default class ImageMetadata{
           // console.log("getting metadata");
           const commentCharIntArray =  EXIF.getTag(this, "UserComment");
 
+          if (commentCharIntArray === undefined){
+            console.log("image contains no metadata");
+            reject( new Error( "image contains no metadata"));
+            return;
+          }
+
           let commentString = "";
           let asciiDefine = "";
           let i;
@@ -24,6 +30,7 @@ export default class ImageMetadata{
           if (asciiDefine !== "ASCII"){
             console.log("only ascii supported");
             reject( new Error( "image comment metadata not in ASCII format"));
+            return;
           }
 
           // skip first 8, they define encoding
@@ -32,9 +39,16 @@ export default class ImageMetadata{
             commentString += commentChar;
           }
 
-          const jsonData = JSON.parse(commentString);
-          // console.log(jsonData);
-          resolve(jsonData);
+          try {
+            const jsonData = JSON.parse(commentString);
+            // console.log(jsonData);
+            resolve(jsonData);
+          } catch(e) {
+            console.log("image contains no json metadata");
+            reject(new Error( "image contains no json metadata"));
+          }
+
+
         });
       }, 500)
 

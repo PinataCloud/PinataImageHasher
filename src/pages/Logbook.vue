@@ -1,14 +1,14 @@
 <template>
-  <q-page class="flex flex-center">
-    <q-input class="GPL__toolbar-input" dense standout="bg-primary" v-model="filter" placeholder="Search (CID, Dates, Locations, ...)">
-      <template v-slot:append>
-        <q-icon v-if="filter === ''" name="search" />
-        <q-icon v-else name="clear" class="cursor-pointer" @click="filter = ''" />
-      </template>
-    </q-input>
+  <q-page >
 
-<!-- TABLE VIEW (NO_IMG) -->
-    <div v-if="no_img">
+<!-- TABLE VIEW (STATUS_NO_IMG) -->
+    <div v-if="isNoImg" class="flex flex-center">
+      <q-input class="q-py-lg" style="width: 55%" dense standout="bg-primary" v-model="filter" placeholder="Search (CID, Dates, Locations, ...)">
+        <template v-slot:append>
+          <q-icon v-if="filter === ''" name="search" />
+          <q-icon v-else name="clear" class="cursor-pointer" @click="filter = ''" />
+        </template>
+      </q-input>
       <q-table
         name="cidTable"
         row-key="cid"
@@ -18,31 +18,48 @@
         :columns="columns"
         :filter="filter"
         :pagination.sync="pagination"
-        @row-click="selectRow(rowProp)"
         table-style="max-height: 67vh;"
         style="width: 80vw;"
-        class="my-sticky-header-column-table ahhhhh"
+        class="my-sticky-header-column-table"
         virtual-scroll
         :virtual-scroll-slice-size="25"
       >
-        <template v-slot:body-cell="props" >
-          <q-td :props="props" @click.native="selectRow(props.row.cid)">
+        <template v-slot:body-cell="props">
+          <q-td :props="props" @click.native="selectCID(props.row.cid)">
             <div>{{ props.value }}</div>
           </q-td>
         </template>
       </q-table>
     </div>
 
-<!-- IMAGE CARD VIEW (YES_IMG) -->
-    <div v-if="yes_img">
-        <q-card class="" >
-        <img id="imgSelected" :src="imgURL" class="img-card" :alt="currentCID">
+<!-- IMAGE CARD VIEW (STATUS_IMG) -->
+    <div v-if="isImg" class="flex absolute-center">
+        <q-card class="img-card" >
+        <img id="imgSelected" :src="imgURL" style="max-height: 50vh" :alt="currentCID">
+        <div v-if="metaData" class="q-pa-md">
+          <q-item v-for="(cid, i) in knownCids":key="i">
+            {{cid}} at {{knownDates[i]}} at {{knownLocations[i]}}
+            <q-item-label>
+            </q-item-label>
+          </q-item>
+        </div>
+        <div v-if="isLoading" class="text-center">
+          <h5>loading...</h5>
+        </div>
         <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
           <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
           <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="retrieveImageMetadata()" />
         </q-card-actions>
         </q-card>
 
+    </div>
+
+    <!--FAILED-->
+    <div v-if="isFailed">
+      <h2>Error... Fail.</h2>
+      <p>
+        <a href="javascript:void(0)" @click="reset()">Try again</a>
+      </p>
     </div>
 
   </q-page>
@@ -102,9 +119,8 @@ export default {
           required: true,
           label: 'Fingerprint (CID)',
           field: row => row.cid,
-          format: val => `${val}`,
-          classes: 'ellipsis',
-          style: 'max-width: 150px;'
+          format: val => this.shortenCID(val),
+          classes: 'ellipsis'
         },
         { name: 'logT', label: 'Log Timestamp', field: 'logT', align: 'center', sortable: true },
         { name: 'fileT', label: 'File Timestamp', field: 'fileT', align: 'center', sortable: true },
@@ -122,11 +138,14 @@ export default {
     // this.getAtraRecordData();
   },
   computed: {
-    no_img() {
-      return this.currentStatus === "NO_IMG";
+    isNoImg() {
+      return this.currentStatus === "STATUS_NO_IMG";
     },
-    yes_img() {
-      return this.currentStatus === "YES_IMG";
+    isImg() {
+      return this.currentStatus === "STATUS_IMG";
+    },
+    isLoading() {
+      return this.currentStatus === "STATUS_LOADING";
     },
     isFailed() {
       return this.currentStatus === "STATUS_FAILED";
@@ -134,31 +153,36 @@ export default {
   },
   methods: {
 
+    shortenCID(val){
+      let short = val.substring(0,2) + "..." + val.substring(val.length - 6, val.length);
+      return short
+    },
+
     async retrieveImageMetadata(){
+      this.currentStatus = "STATUS_LOADING";
       let img;
       img = document.getElementById("imgSelected");
       // Pass in image data to get metadata out
       const jsonData =  await ImageMetadata.GetMetadata(img);
       // get specific information: jsonData["purpose"], etc.
       this.metaData = jsonData;
+      console.log(jsonData);
     },
 
     async getAtraRecordData() {
       [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates();
-      // console.log(this.knownDates)
     },
 
-    selectRow(rowProp) {
-      console.log(rowProp);
-      this.currentStatus = "YES_IMG";
-      this.currentCID = rowProp;
-      // NOTE: if you use a gateway you MUST enable XHR in browser else this fails silently! 
-      this.imgURL = 'https://gateway.pinata.cloud/ipfs/' + this.currentCID
+    async selectCID(rowCID) {
+      this.currentCID = rowCID;
+      // NOTE: if you use a gateway you MUST enable XHR in browser else this fails silently!
+      this.imgURL = 'https://gateway.pinata.cloud/ipfs/' + this.currentCID;
+      this.currentStatus = "STATUS_IMG";
     },
 
     reset() {
       // reset form to initial state
-      this.currentStatus = "NO_IMG";
+      this.currentStatus = "STATUS_NO_IMG";
       this.currentCID = "";
     },
   }
@@ -167,8 +191,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="sass">
-.img-card
-  max-height: 75vh;
+img-card
+    max-height: 75vh;
 
 .my-sticky-header-column-table
 

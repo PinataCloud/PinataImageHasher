@@ -43,7 +43,7 @@
 
   <!--FAILED-->
   <div v-if="isFailed">
-    <h2>Uploaded failed.</h2>
+    <h2>Error... Fail.</h2>
     <p>
       <a href="javascript:void(0)" @click="reset()">Try again</a>
     </p>

@@ -1,7 +1,7 @@
 <template>
 <q-page class="flex flex-center">
   <!--UPLOAD FORM-->
-  <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+  <form enctype="multipart/form-data" novalidate v-if="isInitial">
     <q-card
           class="text-white"
           style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)"
@@ -28,17 +28,30 @@
   </form>
 
   <!--SUCCESS-->
-  <div v-if="uploadedFiles">
-    <div v-for="item in uploadedFiles">
-      <q-card class="" >
-      <img id="imgSelected" :src="item.url" class="img-card" :alt="item.originalName" max-height="75vh">
+  <div v-if="uploadedFiles" v-for="item in uploadedFiles" class="flex justify-center q-pt-xl">
+      <q-card class="img-card" align="center" style="width: 90%">
+      <img id="imgSelected" :src="item.url" :alt="item.originalName" style="max-width: 80vh">
       <!-- LOADING -->
       <div v-if="isLoading" class="text-center">
         <h5>loading...</h5>
       </div>
       <!-- METADATA LOADED -->
-      <div v-if="metaData" class="q-pa-md">
+      <div v-if="metaData" class="q-pa-md" :style="verifiedColor">
+        <div v-if="verifiedCID">
+          <h6>Fingerprint VERIFIED!</h6>
+        </div>
+        <div v-else>
+          <h6>Fingerprint <b>NOT</b> in Log</h6>
+        </div>
         <q-list dense bordered padding class="rounded-borders">
+          <q-item>
+            <q-item-section>
+              <b>Fingerprint (CID)</b>
+            </q-item-section>
+            <q-item-section >
+              {{uploadedCids[0].hash}}
+            </q-item-section>
+          </q-item>
           <q-item v-for="(value, key) in metaData">
             <q-item-section>
               <b>{{ key }}</b>
@@ -49,6 +62,11 @@
           </q-item>
         </q-list>
       </div>
+      <!-- FAILED METADATA LOADED -->
+      <div v-if="isFailedRetrieve">
+        <h2>Error... Failed to Verify File.</h2>
+        <pre>{{ uploadError }}</pre>
+      </div>
       <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
         <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
         <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="checkImage()" />
@@ -56,11 +74,10 @@
       </q-card>
 
     </div>
-  </div>
 
   <!--FAILED-->
-  <div v-if="isFailed">
-    <h2>Error... Fail.</h2>
+  <div v-if="isFailedLoad">
+    <h2>Error... Failed to Upload File.</h2>
     <p>
       <a href="javascript:void(0)" @click="reset()">Try again</a>
     </p>
@@ -84,20 +101,23 @@ export default {
     return {
       currentStatus: null,
       metaData: "",
-      knowCids: [],
+      verifiedCID: false,
+      knownCids: [],
       uploadedFiles: [],
       uploadedCids: [],
       uploadError: null,
-      currentStatus: null,
       uploadFieldName: 'photos'
     };
   },
   mounted: function() {
-    //this.fillCIDsVariable();
-    // this.genCID();
+    this.fillCIDsVariable();
     this.reset();
   },
   computed: {
+    verifiedColor(){
+      if (this.verifiedCID) return "background: green"
+      else return "background: yellow"
+    },
     isInitial() {
       return this.currentStatus === "STATUS_INITIAL";
     },
@@ -116,43 +136,55 @@ export default {
     isSuccess() {
       return this.currentStatus === "STATUS_SUCCESS";
     },
-    isFailed() {
-      return this.currentStatus === "STATUS_FAILED";
+    isFailedLoad() {
+      return this.currentStatus === "STATUS_FAILED_LOAD";
+    },
+    isFailedRetrieve() {
+      return this.currentStatus === "STATUS_FAILED_RETRIEVE";
     }
   },
   methods: {
     async fillCIDsVariable() {
-      this.knowCids = await AtraAPI.GetCIDs();
-      console.log(this.knowCids)
+      this.knownCids = await AtraAPI.GetCIDs();
+      console.log(this.knownCids)
     },
     async genCIDs() {
       try {
         // const fReader = new FileReader();
         // Await for ipfs node instance.
         const ipfs = await this.$ipfs;
-        const cids = this.uploadedFiles.map(file => ipfs.add(file.url, { onlyHash: true }));
-        this.uploadedCids = cids; // NOTE - object, not just the hash
+        let cids = await this.uploadedFiles.map(file => ipfs.add(file.url, { onlyHash: true }));
+        this.uploadedCids =  await cids[0]; // NOTE - object, not just the hash
         // this.uploadedCids = cids.map(item => item.hash);
-        console.log(this.uploadedCids);
+        return this.uploadedCids[0].hash;
       } catch (err) {
+        this.currentStatus = "STATUS_FAILED_LOAD";
         // Set error status text.
         console.log(`Error: ${err}`);
       }
     },
     async checkImage(){
-      this.genCIDs();
+      if(this.knownCids.includes(this.genCIDs())) {
+        this.verifiedCID = true;
+      };
       this.retrieveImageMetadata();
     },
     async retrieveImageMetadata(){
-      let img;
-      img = document.getElementById("imgSelected");
-      // Pass in image data to get metadata out
-      this.currentStatus = "STATUS_LOADING";
-      const jsonData =  await ImageMetadata.GetMetadata(img);
-      // get specific information: jsonData["purpose"], etc.
-      this.metaData = jsonData;
-      console.log(jsonData);
-      this.currentStatus = "STATUS_IMG";
+      try{
+        let img;
+        img = document.getElementById("imgSelected");
+        // Pass in image data to get metadata out
+        this.currentStatus = "STATUS_LOADING";
+        const jsonData =  await ImageMetadata.GetMetadata(img);
+        // get specific information: jsonData["purpose"], etc.
+        this.metaData = jsonData;
+        console.log(jsonData);
+        if (jsonData)
+        this.currentStatus = "STATUS_IMG";
+      } catch {
+        this.currentStatus = "STATUS_FAILED_RETRIEVE";
+        console.log(`Error: ${err}`);
+      }
     },
     async getAtraRecordData() {
       [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates();
@@ -160,9 +192,10 @@ export default {
     reset() {
       // reset form to initial state
       this.currentStatus = "STATUS_INITIAL";
-      this.currentCID = "";
       this.uploadedFiles = [];
+      this.uploadedCids = [];
       this.uploadError = null;
+      this.metaData = "";
     },
     save(formData) {
       // upload data to the server
@@ -201,7 +234,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 .img-card{
   max-height: 75vh;
 }

@@ -27,7 +27,7 @@ export default class AtraAPI{
 
   // gets the records in order of most recent to oldest
   static async GetCIDsLocationAndDates(){
-    const json = await  this.GetAtraRecords();
+    const json = await this.GetAtraRecords();
     const CIDs = [];
     const Dates = [];
     const Locations = [];

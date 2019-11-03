@@ -33,9 +33,9 @@
     </div>
 
 <!-- IMAGE CARD VIEW (STATUS_IMG) -->
-    <div v-if="currentCID" class="flex absolute-center">
-        <q-card class="img-card" >
-        <img id="imgSelected" :src="imgURL" style="max-height: 50vh" :alt="currentCID">
+    <div v-if="currentCID" class="flex justify-center q-pt-xl">
+        <q-card class="img-card" align="center" style="width: 90%">
+        <img id="imgSelected" :src="imgURL" style="max-width: 80vh" :alt="currentCID">
         <!-- LOADING -->
         <div v-if="isLoading" class="text-center">
           <h5>loading...</h5>
@@ -43,6 +43,14 @@
         <!-- METADATA LOADED -->
         <div v-if="metaData" class="q-pa-md">
           <q-list dense bordered padding class="rounded-borders">
+            <q-item>
+              <q-item-section>
+                <b>Fingerprint (CID)</b>
+              </q-item-section>
+              <q-item-section >
+                {{currentCID}}
+              </q-item-section>
+            </q-item>
             <q-item v-for="(value, key) in metaData">
               <q-item-section>
                 <b>{{ key }}</b>
@@ -90,7 +98,7 @@ export default {
   data: function() {
     return {
       tableData,
-      currentStatus: null,
+      currentStatus: "STATUS_NO_IMG",
       currentCID: "",
       imgURL: "",
       knownCids: [],
@@ -126,9 +134,8 @@ export default {
     }
   },
   mounted: function() {
-    this.reset();
+    // this.reset();
     this.getAtraRecordData();
-
   },
   computed: {
     isNoImg() {
@@ -192,6 +199,7 @@ export default {
       // reset form to initial state
       this.currentStatus = "STATUS_NO_IMG";
       this.currentCID = "";
+      this.metaData = "";
     },
   }
 }

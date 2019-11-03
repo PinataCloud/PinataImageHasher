@@ -33,18 +33,25 @@
     </div>
 
 <!-- IMAGE CARD VIEW (STATUS_IMG) -->
-    <div v-if="isImg" class="flex absolute-center">
+    <div v-if="currentCID" class="flex absolute-center">
         <q-card class="img-card" >
         <img id="imgSelected" :src="imgURL" style="max-height: 50vh" :alt="currentCID">
-        <div v-if="metaData" class="q-pa-md">
-          <q-item v-for="(cid, i) in knownCids":key="i">
-            {{cid}} at {{knownDates[i]}} at {{knownLocations[i]}}
-            <q-item-label>
-            </q-item-label>
-          </q-item>
-        </div>
+        <!-- LOADING -->
         <div v-if="isLoading" class="text-center">
           <h5>loading...</h5>
+        </div>
+        <!-- METADATA LOADED -->
+        <div v-if="metaData" class="q-pa-md">
+          <q-list dense bordered padding class="rounded-borders">
+            <q-item v-for="(value, key) in metaData">
+              <q-item-section>
+                <b>{{ key }}</b>
+              </q-item-section>
+              <q-item-section>
+                {{value}}
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
         <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
           <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
@@ -159,14 +166,15 @@ export default {
     },
 
     async retrieveImageMetadata(){
-      this.currentStatus = "STATUS_LOADING";
       let img;
       img = document.getElementById("imgSelected");
       // Pass in image data to get metadata out
+      this.currentStatus = "STATUS_LOADING";
       const jsonData =  await ImageMetadata.GetMetadata(img);
       // get specific information: jsonData["purpose"], etc.
       this.metaData = jsonData;
       console.log(jsonData);
+      this.currentStatus = "STATUS_IMG";
     },
 
     async getAtraRecordData() {
@@ -183,6 +191,7 @@ export default {
     reset() {
       // reset form to initial state
       this.currentStatus = "STATUS_NO_IMG";
+      this.currentCID = "";
       this.currentCID = "";
     },
   }

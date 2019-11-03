@@ -28,13 +28,30 @@
   </form>
 
   <!--SUCCESS-->
-  <div v-if="isSuccess">
+  <div v-if="uploadedFiles">
     <div v-for="item in uploadedFiles">
       <q-card class="" >
-      <img :src="item.url" class="img-card" :alt="item.originalName" max-height="75vh">
+      <img id="imgSelected" :src="item.url" class="img-card" :alt="item.originalName" max-height="75vh">
+      <!-- LOADING -->
+      <div v-if="isLoading" class="text-center">
+        <h5>loading...</h5>
+      </div>
+      <!-- METADATA LOADED -->
+      <div v-if="metaData" class="q-pa-md">
+        <q-list dense bordered padding class="rounded-borders">
+          <q-item v-for="(value, key) in metaData">
+            <q-item-section>
+              <b>{{ key }}</b>
+            </q-item-section>
+            <q-item-section>
+              {{value}}
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
       <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
         <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
-        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="genCIDs()" />
+        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="checkImage()" />
       </q-card-actions>
       </q-card>
 
@@ -55,6 +72,7 @@
 
 <script>
 import AtraAPI from "../plugins/AtraAPI";
+import ImageMetadata from "../plugins/ImageMetadata";
 import {
   upload
 } from '../plugins/upload';
@@ -64,6 +82,8 @@ export default {
   name: "FileCheck",
   data: function() {
     return {
+      currentStatus: null,
+      metaData: "",
       knowCids: [],
       uploadedFiles: [],
       uploadedCids: [],
@@ -83,6 +103,15 @@ export default {
     },
     isSaving() {
       return this.currentStatus === "STATUS_SAVING";
+    },
+    isNoImg() {
+      return this.currentStatus === "STATUS_NO_IMG";
+    },
+    isImg() {
+      return this.currentStatus === "STATUS_IMG";
+    },
+    isLoading() {
+      return this.currentStatus === "STATUS_LOADING";
     },
     isSuccess() {
       return this.currentStatus === "STATUS_SUCCESS";
@@ -110,9 +139,28 @@ export default {
         console.log(`Error: ${err}`);
       }
     },
+    async checkImage(){
+      this.genCIDs();
+      this.retrieveImageMetadata();
+    },
+    async retrieveImageMetadata(){
+      let img;
+      img = document.getElementById("imgSelected");
+      // Pass in image data to get metadata out
+      this.currentStatus = "STATUS_LOADING";
+      const jsonData =  await ImageMetadata.GetMetadata(img);
+      // get specific information: jsonData["purpose"], etc.
+      this.metaData = jsonData;
+      console.log(jsonData);
+      this.currentStatus = "STATUS_IMG";
+    },
+    async getAtraRecordData() {
+      [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates();
+    },
     reset() {
       // reset form to initial state
       this.currentStatus = "STATUS_INITIAL";
+      this.currentCID = "";
       this.uploadedFiles = [];
       this.uploadError = null;
     },

@@ -101,7 +101,7 @@ for (let i = 0; i < 50; i++) {
 Object.freeze(tableData)
 
 export default {
-  name: "CIDsList",
+  name: "Logbook",
   data: function() {
     return {
       tableData,
@@ -191,7 +191,6 @@ export default {
     reset() {
       // reset form to initial state
       this.currentStatus = "STATUS_NO_IMG";
-      this.currentCID = "";
       this.currentCID = "";
     },
   }

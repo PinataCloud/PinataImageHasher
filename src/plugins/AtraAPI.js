@@ -1,3 +1,5 @@
+import Crypto from "./Crypto";
+
 export default class AtraAPI{
 
   // gets the CIDs in order of most recent to oldest
@@ -9,14 +11,14 @@ export default class AtraAPI{
     // start at the end of the list
     for (i = liveRecords.length-1; i >= 0; i--) {
       const record = liveRecords[i]["record"];
-      CIDs.push( record[0]);
+      CIDs.push( Crypto.Decrypt(record[0]));
     }
 
     return CIDs;
   }
 
   static async GetAtraRecords(){
-    const resp = await fetch("https://api.atra.io/prod/v1/dtables/records?tableId=4cc77154-536c-42ab-8f1d-53a1231d6667", {
+    const resp = await fetch("https://api.atra.io/prod/v1/dtables/records?tableId=b5c44420-799c-4ab9-8c0d-1045106fbd2d", {
       headers:{
         "x-api-key":"vdssu05AWO6yAG4ojL4Sv6I9RkAGCak19hBhTVpm"
       }
@@ -40,9 +42,9 @@ export default class AtraAPI{
       // skip test records
       if (record[0].includes("test"))
         continue;
-      CIDs.push( record[0]);
-      Dates.push(record[1]);
-      Locations.push(record[2]);
+      CIDs.push( Crypto.Decrypt(record[0]));
+      Dates.push(Crypto.Decrypt(record[1]));
+      Locations.push(Crypto.Decrypt(record[2]));
     }
 
     return [CIDs, Dates, Locations];

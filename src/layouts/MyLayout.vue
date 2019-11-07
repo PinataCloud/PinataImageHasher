@@ -87,7 +87,7 @@
           <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
           to="/">
             <q-icon size="22px" name="library_books" />
-            <div class="GPL__side-btn__label">Log Book</div>
+            <div class="GPL__side-btn__label">Logbook</div>
           </q-btn>
 
           <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
@@ -99,7 +99,7 @@
           <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
           to="IpfsInfo">
             <q-icon size="22px" name="assistant" />
-            <div class="GPL__side-btn__label">Log Creator</div>
+            <div class="GPL__side-btn__label">Logbook Creator</div>
           </q-btn>
 
         </div>
@@ -116,9 +116,9 @@ export default {
     return {
       leftDrawerOpen: false,
       links1: [
-        { icon: 'library_books', text: 'Log Book', to: '/' },
+        { icon: 'library_books', text: 'Logbook', to: '/' },
         { icon: 'image_search', text: 'File Check', to: 'FileCheck' },
-        { icon: 'assistant', text: 'Log Creator', to: 'IpfsInfo' }
+        { icon: 'assistant', text: 'Logbook Creator', to: 'IpfsInfo' }
       ],
       links2: [
         { icon: 'settings', text: 'Settings', to: '/' },

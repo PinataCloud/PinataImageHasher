@@ -5,7 +5,10 @@ export default class ImageMetadata{
   static GetMetadata(img){
     return new Promise(((resolve, reject) => {
       setTimeout(()=>{
-        if (!img) reject (new Error("img must be defined"));
+        if (!img) {
+          console.log("img must be defined");
+          reject (new Error("img must be defined"));
+        }
 
         EXIF.getData(img, function(){
           // console.log("getting metadata");
@@ -41,7 +44,7 @@ export default class ImageMetadata{
 
           try {
             const jsonData = JSON.parse(commentString);
-            // console.log(jsonData);
+            console.log(jsonData);
             resolve(jsonData);
           } catch(e) {
             console.log("image contains no json metadata");

@@ -165,11 +165,12 @@ export default {
       this.currentStatus = "STATUS_LOADING";
       const jsonData =  await ImageMetadata.GetMetadata(img).then( response =>{
           // get specific information: jsonData["purpose"], etc.
-          this.metaData = jsonData;
-          console.log(jsonData);
+          this.metaData = response;
+          console.log(response);
       }
       ).catch( err=>{
           this.metaData = err;
+
       }
       );
 

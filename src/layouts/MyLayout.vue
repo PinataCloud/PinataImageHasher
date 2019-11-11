@@ -96,11 +96,11 @@
             <div class="GPL__side-btn__label">File Check</div>
           </q-btn>
 
-          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
+          <!-- <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
           to="IpfsInfo">
             <q-icon size="22px" name="assistant" />
             <div class="GPL__side-btn__label">Logbook Creator</div>
-          </q-btn>
+          </q-btn> -->
 
         </div>
       </q-page-sticky>
@@ -118,13 +118,13 @@ export default {
       links1: [
         { icon: 'library_books', text: 'Logbook', to: '/' },
         { icon: 'image_search', text: 'File Check', to: 'FileCheck' },
-        { icon: 'assistant', text: 'Logbook Creator', to: 'IpfsInfo' }
+        // { icon: 'assistant', text: 'Logbook Creator', to: 'IpfsInfo' }
       ],
-      links2: [
-        { icon: 'settings', text: 'Settings', to: '/' },
-        { icon: 'help', text: 'Help & Feedback', to: '/' },
-        { icon: 'get_app', text: 'App Downloads', to: '/' }
-      ]
+      // links2: [
+      //   { icon: 'settings', text: 'Settings', to: '/' },
+      //   { icon: 'get_app', text: 'App Downloads', to: '/' }
+      //   { icon: 'help', text: 'Help & Feedback', to: '/' },
+      // ]
     }
   }
 }

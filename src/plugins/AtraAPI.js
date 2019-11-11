@@ -1,4 +1,5 @@
 import Crypto from "./Crypto";
+import key from "../config/env.js";
 
 export default class AtraAPI{
 
@@ -11,8 +12,8 @@ export default class AtraAPI{
     // start at the end of the list
     for (i = liveRecords.length-1; i >= 0; i--) {
       const record = liveRecords[i]["record"];
-      CIDs.push( Crypto.Decrypt(record[0]));
     }
+    CIDs.push( Crypto.Decrypt(record[0],key));
 
     return CIDs;
   }
@@ -42,9 +43,9 @@ export default class AtraAPI{
       // skip test records
       if (record[0].includes("test"))
         continue;
-      CIDs.push( Crypto.Decrypt(record[0]));
-      Dates.push(Crypto.Decrypt(record[1]));
-      Locations.push(Crypto.Decrypt(record[2]));
+      CIDs.push( Crypto.Decrypt(record[0],key));
+      Dates.push(Crypto.Decrypt(record[1],key));
+      Locations.push(Crypto.Decrypt(record[2],key));
     }
 
     return [CIDs, Dates, Locations];

@@ -26,14 +26,23 @@
             </q-badge>
             <q-tooltip>Notifications</q-tooltip>
           </q-btn> -->
-          <q-btn flat>
-            <q-avatar>
-              <q-icon name="account_circle"/>
-            </q-avatar>
-            &nbsp;&nbsp;
-            John Smith
-            <q-tooltip>Account</q-tooltip>
-          </q-btn>
+            <q-btn label="Encryption pin" color="primary" @click="persistent = true" />
+
+            <q-dialog v-model="persistent" persistent transition-show="scale" transition-hide="scale">
+              <q-card class="bg-secondary text-black" style="width: 40vw">
+                <q-card-section>
+                  <div class="text-center text-h5">Set the Reporter PIN to decrypt the logbook data</div>
+                </q-card-section>
+
+                <q-card-section>
+                  <p class="text-center">{{encryption_key}}</p>
+                </q-card-section>
+
+                <q-card-actions align="right" class="bg-white text-positive">
+                  <q-btn flat label="Set" v-close-popup />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
         </div>
       </q-toolbar>
     </q-header>
@@ -64,14 +73,14 @@
 
           <q-separator class="q-my-md" />
 
-          <q-item v-for="link in links2" :key="link.text" clickable class="GPL__drawer-item" :to="link.to">
+          <!-- <q-item v-for="link in links2" :key="link.text" clickable class="GPL__drawer-item" :to="link.to">
             <q-item-section avatar >
               <q-icon :name="link.icon" />
             </q-item-section>
             <q-item-section>
               <q-item-label>{{ link.text }}</q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
 
           <q-separator class="q-my-md" />
 
@@ -109,11 +118,16 @@
 </template>
 
 <script>
+import key from "../config/env.js";
+console.log(key);
+
 export default {
   name: 'CorroboratorLayout',
 
   data () {
     return {
+      encryption_key: "",
+      persistent: false,
       leftDrawerOpen: false,
       links1: [
         { icon: 'library_books', text: 'Logbook', to: '/' },
@@ -125,6 +139,15 @@ export default {
       //   { icon: 'get_app', text: 'App Downloads', to: '/' }
       //   { icon: 'help', text: 'Help & Feedback', to: '/' },
       // ]
+    }
+  }  ,
+  mounted: function() {
+    this.getKey();
+  },
+  methods: {
+    async getKey() {
+      this.encryption_key = key;
+      console.log(this.encryption_key)
     }
   }
 }

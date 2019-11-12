@@ -35,7 +35,7 @@
                 </q-card-section>
 
                 <q-card-section>
-                  <p class="text-center">{{encryption_key}}</p>
+                  <p class="text-center">{{this.$encryption_key}}</p>
                 </q-card-section>
 
                 <q-card-actions align="right" class="bg-white text-positive">
@@ -118,15 +118,11 @@
 </template>
 
 <script>
-import key from "../config/env.js";
-console.log(key);
-
 export default {
   name: 'CorroboratorLayout',
 
   data () {
     return {
-      encryption_key: "",
       persistent: false,
       leftDrawerOpen: false,
       links1: [
@@ -139,15 +135,6 @@ export default {
       //   { icon: 'get_app', text: 'App Downloads', to: '/' }
       //   { icon: 'help', text: 'Help & Feedback', to: '/' },
       // ]
-    }
-  }  ,
-  mounted: function() {
-    this.getKey();
-  },
-  methods: {
-    async getKey() {
-      this.encryption_key = key;
-      console.log(this.encryption_key)
     }
   }
 }

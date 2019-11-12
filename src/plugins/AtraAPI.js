@@ -1,11 +1,10 @@
 import Crypto from "./Crypto";
-import key from "../config/env.js";
 
 export default class AtraAPI{
 
   // gets the CIDs in order of most recent to oldest
-  static async GetCIDs(){
-    const json = await  this.GetAtraRecords();
+  static async GetCIDs(key){
+    const json = await this.GetAtraRecords();
     const CIDs =[];
     const liveRecords = json["live"];
     let i;
@@ -29,7 +28,7 @@ export default class AtraAPI{
   }
 
   // gets the records in order of most recent to oldest
-  static async GetCIDsLocationAndDates(){
+  static async GetCIDsLocationAndDates(key){
     const json = await this.GetAtraRecords();
     const CIDs = [];
     const Dates = [];

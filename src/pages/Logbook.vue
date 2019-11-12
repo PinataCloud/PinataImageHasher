@@ -119,7 +119,8 @@ export default {
           required: true,
           label: 'Fingerprint (CID)',
           field: row => row.cid,
-          format: val => this.shortenCID(val),
+          format: val => val,
+          // format: val => this.shortenCID(val),
           classes: 'ellipsis'
         },
         // { name: 'logT', label: 'Log Timestamp', field: 'logT', align: 'center', sortable: true },
@@ -135,7 +136,7 @@ export default {
   },
   mounted: function() {
     // this.reset();
-    this.getAtraRecordData();
+    this.getAtraRecordData(this.$encryption_key);
   },
   computed: {
     isNoImg() {
@@ -177,11 +178,11 @@ export default {
       this.currentStatus = "STATUS_IMG";
     },
 
-    async getAtraRecordData() {
-      [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates();
+    async getAtraRecordData(key) {
+      [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates(key);
 
         for (let i = 0; i < this.knownCids.length; i++) {
-            // console.log("got the data: " + this.knownCids[i]);
+            console.log("got CID data: " + this.knownCids[i]);
             let newTableEntry =
                 {
                     cid: this.knownCids[i],
@@ -189,7 +190,7 @@ export default {
                     location: this.knownLocations[i],
                 };
             this.tableData.push(newTableEntry);
-            // console.log(newTableEntry.cid);
+            console.log("got Table data: " + newTableEntry.cid);
         }
 
 

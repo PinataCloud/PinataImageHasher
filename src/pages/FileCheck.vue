@@ -146,7 +146,7 @@ export default {
   methods: {
     async fillCIDsVariable() {
       this.knownCids = await AtraAPI.GetCIDs();
-      console.log(this.knownCids)
+      // console.log(this.knownCids)
     },
     async genCIDs() {
       try {
@@ -180,7 +180,7 @@ export default {
         const jsonData =  await ImageMetadata.GetMetadata(img);
         // get specific information: jsonData["purpose"], etc.
         this.metaData = jsonData;
-        console.log(jsonData);
+        // console.log(jsonData);
         if (jsonData)
         this.currentStatus = "STATUS_IMG";
       } catch {

@@ -1,6 +1,6 @@
 <template>
 <div class="q-gutter-sm row items-center no-wrap">
-  <q-btn no-caps label="Reporter PIN Select" color="primary" @click="persistent = true" />
+  <q-btn no-caps icon="phonelink_lock" label="Set Reporter PIN" color="accent" @click="persistent = true" />
 
   <q-dialog v-model="persistent" persistent transition-show="scale" transition-hide="scale">
     <q-card class="text-black" style="width: 44vw">
@@ -9,9 +9,12 @@
       </q-card-section>
 
       <q-card-section class="q-mt-md">
-        <q-input label="Reporter PIN" v-model="key" clear-icon="format_clear" clearable class="text-center" rounded standout="bg-primary text-white">
+        <q-input label="Reporter PIN" v-model="key" :type="isPwd ? 'password' : 'text'" class="text-center" rounded standout="bg-primary text-white">
           <template v-slot:prepend>
-            <q-icon name="lock" />
+            <q-icon name="phonelink_lock" />
+          </template>
+          <template v-slot:append>
+            <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd" />
           </template>
         </q-input>
       </q-card-section>
@@ -31,6 +34,7 @@ export default {
   data() {
     return {
       persistent: false,
+      isPwd: true,
       key: this.$encryption_key
     }
   },

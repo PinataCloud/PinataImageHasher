@@ -2,34 +2,35 @@
 <q-page class="flex flex-center">
   <!--UPLOAD FORM-->
   <form enctype="multipart/form-data" novalidate v-if="isInitial">
-    <q-card
-          class="text-white"
-          style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)"
-        >
-          <q-card-section>
-              <div class="text-h6 text-center q-pb-md">Verify Images</div>
-              <div class="col-12 dropbox"
-              color="secondary">
-                <div class="row full-width absolute-center items-center content-end">
-                    <q-icon class ="q-pa-sm col-12" name="add_a_photo" size="xl"/>
-                    <div v-if="isInitial" class="col-12">
-                      Drag your file(s) here to begin <br> or click to browse
-                    </div>
-                    <div v-if="isSaving" class="col-12">
-                      Uploading {{ fileCount }} files...
-                    </div>
-                </div>
-              <input type="file" :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files);
+    <q-card class="text-white" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
+      <q-card-section>
+        <div class="text-h5 text-center q-pb-md text-italic">Verify Images</div>
+
+        <keyDialog class="justify-center q-mb-md"></keyDialog>
+
+        <div class="col-12 dropbox" color="secondary">
+          <div class="row full-width absolute-center items-center content-end">
+            <q-icon class="q-pa-sm col-12" name="add_a_photo" size="xl" />
+            <div v-if="isInitial" class="col-12">
+              <b>Set the Reporter PIN</b><br>
+              then drag your file(s) here to begin <br> or click to browse
+            </div>
+            <div v-if="isSaving" class="col-12">
+              Uploading {{ fileCount }} files...
+            </div>
+          </div>
+          <input type="file" :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files);
                 fileCount = $event.target.files.length" accept="image/*" class="input-file absolute-center">
-              </div>
-          </q-card-section>
-        </q-card>
+        </div>
+
+      </q-card-section>
+    </q-card>
 
   </form>
 
   <!--SUCCESS-->
   <div v-if="uploadedFiles" v-for="item in uploadedFiles" class="flex justify-center q-pt-xl">
-      <q-card class="img-card" align="center" style="width: 90%">
+    <q-card class="img-card" align="center" style="width: 90%">
       <img id="imgSelected" :src="item.url" :alt="item.originalName" style="max-width: 80vh">
       <!-- LOADING -->
       <div v-if="isLoading" class="text-center">
@@ -48,7 +49,7 @@
             <q-item-section>
               <b>Fingerprint (CID)</b>
             </q-item-section>
-            <q-item-section >
+            <q-item-section>
               {{uploadedCids[0].hash}}
             </q-item-section>
           </q-item>
@@ -68,12 +69,12 @@
         <pre>{{ uploadError }}</pre>
       </div>
       <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
-        <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()"/>
+        <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()" />
         <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="checkImage()" />
       </q-card-actions>
-      </q-card>
+    </q-card>
 
-    </div>
+  </div>
 
   <!--FAILED-->
   <div v-if="isFailedLoad">
@@ -88,6 +89,7 @@
 </template>
 
 <script>
+import keyDialog from "../components/keyDialog";
 import AtraAPI from "../plugins/AtraAPI";
 import ImageMetadata from "../plugins/ImageMetadata";
 import {
@@ -114,7 +116,7 @@ export default {
     this.reset();
   },
   computed: {
-    verifiedColor(){
+    verifiedColor() {
       if (this.verifiedCID) return "background: green"
       else return "background: yellow"
     },
@@ -145,7 +147,7 @@ export default {
   },
   methods: {
     async fillCIDsVariable() {
-        // console.log("filecheck key:" + this.$encryption_key);
+      // console.log("filecheck key:" + this.$encryption_key);
       this.knownCids = await AtraAPI.GetCIDs(this.$encryption_key);
       // console.log(this.knownCids)
     },
@@ -154,8 +156,10 @@ export default {
         // const fReader = new FileReader();
         // Await for ipfs node instance.
         const ipfs = await this.$ipfs;
-        let cids = await this.uploadedFiles.map(file => ipfs.add(file.url, { onlyHash: true }));
-        this.uploadedCids =  await cids[0]; // NOTE - object, not just the hash
+        let cids = await this.uploadedFiles.map(file => ipfs.add(file.url, {
+          onlyHash: true
+        }));
+        this.uploadedCids = await cids[0]; // NOTE - object, not just the hash
         // this.uploadedCids = cids.map(item => item.hash);
         return this.uploadedCids[0].hash;
       } catch (err) {
@@ -164,33 +168,31 @@ export default {
         console.log(`Error: ${err}`);
       }
     },
-    async checkImage(){
+    async checkImage() {
       // TODO: FIX ME!!!!! CID is wrong of upload
       // if(this.knownCids.includes(this.genCIDs())) {
-      if(this.genCIDs()) {
+      if (this.genCIDs()) {
         this.verifiedCID = true;
       };
       this.retrieveImageMetadata();
     },
-    async retrieveImageMetadata(){
-        let img;
-        img = document.getElementById("imgSelected");
-        // Pass in image data to get metadata out
-        this.currentStatus = "STATUS_LOADING";
-        await ImageMetadata.GetMetadata(img).then( response =>{
-                // get specific information: jsonData["purpose"], etc.
-                this.metaData = response;
-                console.log(response);
-                this.currentStatus = "STATUS_IMG";
+    async retrieveImageMetadata() {
+      let img;
+      img = document.getElementById("imgSelected");
+      // Pass in image data to get metadata out
+      this.currentStatus = "STATUS_LOADING";
+      await ImageMetadata.GetMetadata(img).then(response => {
+        // get specific information: jsonData["purpose"], etc.
+        this.metaData = response;
+        console.log(response);
+        this.currentStatus = "STATUS_IMG";
 
-              }
-          ).catch( err=>{
-                  this.metaData = err;
-              this.currentStatus = "STATUS_FAILED_RETRIEVE";
-              console.log(`Error: ${err}`);
+      }).catch(err => {
+        this.metaData = err;
+        this.currentStatus = "STATUS_FAILED_RETRIEVE";
+        console.log(`Error: ${err}`);
 
-              }
-          );
+      });
 
     },
     async getAtraRecordData() {
@@ -235,13 +237,16 @@ export default {
       // save it
       this.save(formData);
     }
+  },
+  components: {
+    keyDialog: keyDialog
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.img-card{
+.img-card {
   max-height: 75vh;
 }
 
@@ -255,15 +260,18 @@ export default {
 }
 
 .dropbox {
-    outline: 2px dashed grey; /* the dash box */
-    outline-offset: -10px;
-    padding: 10px 10px;
-    min-height: 30vh; /* minimum height */
-    min-width: 40vh; /* minimum height */
-    position: relative;
-    cursor: pointer;
-    text-align: center;
-  }
+  outline: 2px dashed grey;
+  /* the dash box */
+  outline-offset: -10px;
+  padding: 10px 10px;
+  min-height: 30vh;
+  /* minimum height */
+  min-width: 40vh;
+  /* minimum height */
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+}
 
 .dropbox:hover {
   background: #5487e8;

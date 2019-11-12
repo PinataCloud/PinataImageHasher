@@ -13,10 +13,10 @@
 
     <keyDialog></keyDialog>
 
-    <q-table name="cidTable" row-key="cid" no-data-label="No Data Found. Have you selected a Log to read from?" loading-label="Gathering Log Data..." :data="tableData" :columns="columns" :filter="filter" :pagination.sync="pagination"
+    <q-table name="cidTable" row-key="cid" no-data-label="No Log Data Available. Have you input the correct Reporter PIN?" loading-label="Gathering Log Data..." :data="tableData" :columns="columns" :filter="filter" :pagination.sync="pagination"
       table-style="max-height: 67vh;" style="width: 80vw;" class="my-sticky-header-column-table" virtual-scroll :virtual-scroll-slice-size="25">
       <template v-slot:body-cell="props">
-        <q-td :props="props" @click.native="selectCID(props.row.cid)">
+        <q-td :props="props" @click.native="selectCID(props.row.cid)" class="cursor-pointer">
           <div>{{ props.value }}</div>
         </q-td>
       </template>

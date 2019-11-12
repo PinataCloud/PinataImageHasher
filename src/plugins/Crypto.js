@@ -1,12 +1,8 @@
 const cryptLib = require('@skavinvarnan/cryptlib');
-import key from "../config/env.js";
 
-export default class Crypto{
+export default class Crypto {
 
-  static Decrypt(encryptedString, key){
-    const cipherText = cryptLib.encryptPlainTextWithRandomIV(plainText, key);
-    console.log('cipherText %s', cipherText);
-
+  static Decrypt(encryptedString, key) {
     const decryptedString = cryptLib.decryptCipherTextWithRandomIV(encryptedString, key);
     console.log('decryptedString %s', decryptedString);
 

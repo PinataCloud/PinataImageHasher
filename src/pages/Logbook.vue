@@ -164,7 +164,7 @@ export default {
       img = document.getElementById("imgSelected");
       // Pass in image data to get metadata out
       this.currentStatus = "STATUS_LOADING";
-      const jsonData =  await ImageMetadata.GetMetadata(img).then( response =>{
+      await ImageMetadata.GetMetadata(img).then( response =>{
           // get specific information: jsonData["purpose"], etc.
           this.metaData = response;
           console.log(response);

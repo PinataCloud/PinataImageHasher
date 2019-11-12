@@ -11,14 +11,15 @@ export default class AtraAPI{
     // start at the end of the list
     for (i = liveRecords.length-1; i >= 0; i--) {
       const record = liveRecords[i]["record"];
+      CIDs.push( Crypto.Decrypt(record[0],key));
     }
-    CIDs.push( Crypto.Decrypt(record[0],key));
 
     return CIDs;
   }
 
   static async GetAtraRecords(){
-    const resp = await fetch("https://api.atra.io/prod/v1/dtables/records?tableId=b5c44420-799c-4ab9-8c0d-1045106fbd2d", {
+    const tableID = "1a86daa8-9bfa-4653-a9c4-365c280a16ec";
+    const resp = await fetch("https://api.atra.io/prod/v1/dtables/records?tableId="+tableID, {
       headers:{
         "x-api-key":"vdssu05AWO6yAG4ojL4Sv6I9RkAGCak19hBhTVpm"
       }
@@ -42,6 +43,7 @@ export default class AtraAPI{
       // skip test records
       if (record[0].includes("test"))
         continue;
+      // console.log(Crypto.Decrypt(record[0],key));
       CIDs.push( Crypto.Decrypt(record[0],key));
       Dates.push(Crypto.Decrypt(record[1],key));
       Locations.push(Crypto.Decrypt(record[2],key));

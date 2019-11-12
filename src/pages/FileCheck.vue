@@ -145,7 +145,8 @@ export default {
   },
   methods: {
     async fillCIDsVariable() {
-      this.knownCids = await AtraAPI.GetCIDs();
+        // console.log("filecheck key:" + this.$encryption_key);
+      this.knownCids = await AtraAPI.GetCIDs(this.$encryption_key);
       // console.log(this.knownCids)
     },
     async genCIDs() {
@@ -172,21 +173,25 @@ export default {
       this.retrieveImageMetadata();
     },
     async retrieveImageMetadata(){
-      try{
         let img;
         img = document.getElementById("imgSelected");
         // Pass in image data to get metadata out
         this.currentStatus = "STATUS_LOADING";
-        const jsonData =  await ImageMetadata.GetMetadata(img);
-        // get specific information: jsonData["purpose"], etc.
-        this.metaData = jsonData;
-        // console.log(jsonData);
-        if (jsonData)
-        this.currentStatus = "STATUS_IMG";
-      } catch {
-        this.currentStatus = "STATUS_FAILED_RETRIEVE";
-        console.log(`Error: ${err}`);
-      }
+        await ImageMetadata.GetMetadata(img).then( response =>{
+                // get specific information: jsonData["purpose"], etc.
+                this.metaData = response;
+                console.log(response);
+                this.currentStatus = "STATUS_IMG";
+
+              }
+          ).catch( err=>{
+                  this.metaData = err;
+              this.currentStatus = "STATUS_FAILED_RETRIEVE";
+              console.log(`Error: ${err}`);
+
+              }
+          );
+
     },
     async getAtraRecordData() {
       [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates();

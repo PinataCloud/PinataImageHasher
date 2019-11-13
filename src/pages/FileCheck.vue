@@ -6,7 +6,7 @@
       <q-card-section>
         <div class="text-h5 text-center q-pb-md text-italic">Verify Images</div>
 
-        <keyDialog class="justify-center q-mb-md"></keyDialog>
+        <pinDialog class="justify-center q-mb-md"></pinDialog>
 
         <div class="col-12 dropbox" color="secondary">
           <div class="row full-width absolute-center items-center content-end">
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import keyDialog from "../components/keyDialog";
+import pinDialog from "../components/pinDialog";
 import AtraAPI from "../plugins/AtraAPI";
 import ImageMetadata from "../plugins/ImageMetadata";
 import {
@@ -147,8 +147,8 @@ export default {
   },
   methods: {
     async fillCIDsVariable() {
-      // console.log("filecheck key:" + this.$encryption_key);
-      this.knownCids = await AtraAPI.GetCIDs(this.$encryption_key);
+      // console.log("filecheck key:" + this.$encryption_pin);
+      this.knownCids = await AtraAPI.GetCIDs(this.$encryption_pin);
       // console.log(this.knownCids)
     },
     async genCIDs() {
@@ -239,7 +239,7 @@ export default {
     }
   },
   components: {
-    keyDialog: keyDialog
+    pinDialog: pinDialog
   }
 }
 </script>

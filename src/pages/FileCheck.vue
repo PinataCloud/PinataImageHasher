@@ -50,7 +50,7 @@
               <b>Uploaded Fingerprint (CID)</b>
             </q-item-section>
             <q-item-section>
-              {{uploadedCids[0].hash}}
+              {{uploadedCids.hash}}
             </q-item-section>
           </q-item>
           <q-item v-for="(value, key) in metaData">
@@ -147,26 +147,24 @@ export default {
     async fillCIDsVariable() {
       // console.log("filecheck key:" + this.encryption_pin);
       this.knownCids = await AtraAPI.GetCIDs(this.encryption_pin);
-      // console.log(this.knownCids)
+      console.log(this.knownCids)
     },
-    async genCIDs() {
-      try {
-        // const fReader = new FileReader();
-        // Await for ipfs node instance.
-        const ipfs = await this.$ipfs;
-        let cids = await this.uploadedFiles.map(file => ipfs.add(file.url, {
-          onlyHash: true
-        }));
-        this.uploadedCids = await cids[0]; // NOTE - object, not just the hash
-        return this.uploadedCids[0].hash;
-      } catch (err) {
-        this.currentStatus = "STATUS_FAILED_DECRYPT";
-        // Set error status text.
-        console.log(`Error: ${err}`);
-      }
-    },
+    // async genCIDs() {
+    //   try {
+    //     const ipfs = await this.$ipfs;
+    //     let cids = await this.uploadedFiles.map(file => ipfs.add(file.url, {
+    //       onlyHash: true
+    //     }));
+    //     this.uploadedCids = cids[0]; // NOTE - object, not just the hash
+    //     return this.uploadedCids[0].hash;
+    //   } catch (err) {
+    //     this.currentStatus = "STATUS_FAILED_DECRYPT";
+    //     // Set error status text.
+    //     console.log(`Error: ${err}`);
+    //   }
+    // },
     async checkImage() {
-      if (this.knownCids.includes(this.genCIDs())) {
+      if (this.knownCids.includes(this.uploadedCids.hash)) {
         this.verifiedCID = true;
       };
       this.retrieveImageMetadata();
@@ -223,8 +221,21 @@ export default {
           this.currentStatus = "STATUS_FAILED";
         });
     },
-    filesChange(fieldName, fileList) {
+    async filesChange(fieldName, fileList) {
       // handle file changes
+      const ipfs = await this.$ipfs;
+      let cid = await ipfs.add(fileList[0].name, {
+        onlyHash: true
+      })
+      console.log(cid);
+      this.uploadedCids = cid[0]; // NOTE - object, not just the hash
+
+      // let cids = await fileList.map(file => ipfs.add(file, {
+      //   onlyHash: true
+      // }));
+      // this.uploadedCids = await cids[0]; // NOTE - object, not just the hash
+      // // console.log(cids);
+
       const formData = new FormData();
 
       if (!fileList.length) return;

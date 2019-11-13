@@ -147,7 +147,7 @@ export default {
     async fillCIDsVariable() {
       // console.log("filecheck key:" + this.encryption_pin);
       this.knownCids = await AtraAPI.GetCIDs(this.encryption_pin);
-      console.log(this.knownCids)
+      // console.log(this.knownCids)
     },
     async genCIDs() {
       try {
@@ -179,7 +179,7 @@ export default {
       await ImageMetadata.GetMetadata(img).then(response => {
         // get specific information: jsonData["purpose"], etc.
         this.metaData = response;
-        console.log(response);
+        // console.log(response);
         this.currentStatus = "STATUS_IMG";
 
       }).catch(err => {
@@ -217,7 +217,7 @@ export default {
       upload(formData)
         .then(x => {
           this.uploadedFiles = [].concat(x);
-          console.log(this.uploadedFiles);
+          // console.log(this.uploadedFiles);
           this.currentStatus = "STATUS_SUCCESS";
         })
         .catch(err => {

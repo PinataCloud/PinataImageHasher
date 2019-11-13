@@ -95,6 +95,7 @@ export default {
       imgURL: "",
       knownCids: [],
       knownDates: [],
+      knownBlockTimes:[],
       knownLocations: [],
       metaData: "",
       filter: '',
@@ -122,12 +123,20 @@ export default {
           sortable: true
         },
         {
+            name: 'blockT',
+            label: 'Block Timestamp',
+            field: 'blockT',
+            align: 'center',
+            sortable: true
+        },
+        {
           name: 'location',
           label: 'Location (lat,long)',
           field: 'location',
           align: 'center',
           sortable: true
         },
+
         // { name: 'purpose', label: 'Purpose', field: 'purpose', align: 'center', sortable: true },
         // { name: 'device_model', label: 'Device Model', field: 'device_model', align: 'center', sortable: true },
         // { name: 'device_id', label: 'Device ID', field: 'device_id', align: 'center', sortable: true },
@@ -179,13 +188,14 @@ export default {
     },
 
     async getAtraRecordData(key) {
-      [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates(key);
+      [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes] = await AtraAPI.GetCIDsLocationAndDates(key);
 
       for (let i = 0; i < this.knownCids.length; i++) {
         let newTableEntry = {
           cid: this.knownCids[i],
           fileT: this.knownDates[i],
           location: this.knownLocations[i],
+           blockT: this.knownBlockTimes[i],
         };
         this.tableData.push(newTableEntry);
       }

@@ -195,9 +195,7 @@ export default {
       });
 
     },
-    async getAtraRecordData() {
-      [this.knownCids, this.knownDates, this.knownLocations] = await AtraAPI.GetCIDsLocationAndDates();
-    },
+
     reset() {
       // reset form to initial state
       this.currentStatus = "STATUS_INITIAL";

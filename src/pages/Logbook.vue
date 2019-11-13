@@ -194,10 +194,7 @@ export default {
         };
         this.tableData.push(newTableEntry);
       }
-
       this.currentStatus = "STATUS_NO_IMG";
-
-
     },
 
     async selectCID(rowCID) {

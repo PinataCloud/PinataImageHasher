@@ -1,6 +1,12 @@
 <template>
 <q-page>
 
+  <!-- LOADING -->
+  <div v-if="isLoading" class="absolute-center text-center text-bold text-italic">
+    <h5>Loading Logs...</h5>
+    <q-spinner-pie color="primary" size="40%" />
+  </div>
+
   <!-- TABLE VIEW (STATUS_NO_IMG) -->
   <div v-if="isNoImg" class="flex flex-center">
     <q-input class="q-py-lg q-mr-xl" style="width: 55vw" dense standout="bg-primary" v-model="filter" placeholder="Search (CID, Dates, Locations, ...)">
@@ -10,11 +16,10 @@
       </template>
     </q-input>
 
+    <pinDialog @new_pin="newPin"></pinDialog>
 
-    <keyDialog></keyDialog>
-
-    <q-table name="cidTable" row-key="cid" no-data-label="No Log Data Available. Have you input the correct Reporter PIN?" loading-label="Gathering Log Data..." :data="tableData" :columns="columns" :filter="filter" :pagination.sync="pagination"
-      table-style="max-height: 67vh;" style="width: 80vw;" class="my-sticky-header-column-table" virtual-scroll :virtual-scroll-slice-size="25">
+    <q-table name="cidTable" row-key="cid" no-data-label="No Log Data Available. Have you input the correct Reporter PIN?" loading-label="Gathering Log Data..." :loading="loading" :data="tableData" :columns="columns" :filter="filter"
+      :pagination.sync="pagination" table-style="max-height: 67vh;" style="width: 80vw;" class="my-sticky-header-column-table" virtual-scroll :virtual-scroll-slice-size="25">
       <template v-slot:body-cell="props">
         <q-td :props="props" @click.native="selectCID(props.row.cid)" class="cursor-pointer">
           <div>{{ props.value }}</div>
@@ -27,10 +32,6 @@
   <div v-if="currentCID" class="flex justify-center q-pt-xl">
     <q-card class="img-card" align="center" style="width: 90%">
       <img id="imgSelected" :src="imgURL" style="max-width: 80vh" :alt="currentCID">
-      <!-- LOADING -->
-      <div v-if="isLoading" class="text-center">
-        <h5>loading...</h5>
-      </div>
       <!-- METADATA LOADED -->
       <div v-if="metaData" class="q-pa-md">
         <q-list dense bordered padding class="rounded-borders">
@@ -61,24 +62,27 @@
   </div>
 
   <!--FAILED-->
-  <div v-if="isFailed">
-    <h2>Error... Fail.</h2>
-    <p>
-      <a href="javascript:void(0)" @click="reset()">Try again</a>
-    </p>
+  <div v-if="isFailed" class="flex absolute-center object-center text-center">
+    <q-card class="bg-warning" style="width: 80%">
+
+      <h2>Error... Unable to Decrypt Data.</h2>
+      <h5><em>Enter a new PIN</em></h5>
+      <pinDialog class="justify-center q-mb-xl" @new_pin="newPin"></pinDialog>
+      <q-btn class="q-mb-lg" size="lg" rounded color="primary" stacked no-caps label="Reset the Page" @click="reset()" />
+    </q-card>
   </div>
 
 </q-page>
 </template>
 
 <script>
-import keyDialog from "../components/keyDialog";
+import pinDialog from "../components/pinDialog";
 import AtraAPI from "../plugins/AtraAPI";
 import ImageMetadata from "../plugins/ImageMetadata";
 
+
 // TABLE DATA GENERATION
 let tableData = []
-
 
 // we are not going to change this array,
 // so why not freeze it to avoid Vue adding overhead
@@ -89,8 +93,11 @@ export default {
   name: "Logbook",
   data: function() {
     return {
+      filter: '',
+      loading: true,
+      encryption_pin: this.$encryption_pin,
       tableData,
-      currentStatus: "STATUS_NO_IMG",
+      currentStatus: "STATUS_LOADING",
       currentCID: "",
       imgURL: "",
       knownCids: [],
@@ -98,7 +105,6 @@ export default {
       knownBlockTimes:[],
       knownLocations: [],
       metaData: "",
-      filter: '',
       pagination: {
         sortBy: 'logT',
         descending: false,
@@ -146,8 +152,7 @@ export default {
     }
   },
   mounted: function() {
-    // this.reset();
-    this.getAtraRecordData(this.$encryption_key);
+    this.newPin(this.$encryption_pin);
   },
   computed: {
     isNoImg() {
@@ -174,7 +179,6 @@ export default {
       let img;
       img = document.getElementById("imgSelected");
       // Pass in image data to get metadata out
-      this.currentStatus = "STATUS_LOADING";
       await ImageMetadata.GetMetadata(img).then(response => {
         // get specific information: jsonData["purpose"], etc.
         this.metaData = response;
@@ -187,8 +191,9 @@ export default {
       this.currentStatus = "STATUS_IMG";
     },
 
-    async getAtraRecordData(key) {
-      [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes] = await AtraAPI.GetCIDsLocationAndDates(key);
+    async getAtraRecordData(pin) {
+        this.currentStatus = "STATUS_LOADING";
+        [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes] = await AtraAPI.GetCIDsLocationAndDates(pin);
 
       for (let i = 0; i < this.knownCids.length; i++) {
         let newTableEntry = {
@@ -199,8 +204,7 @@ export default {
         };
         this.tableData.push(newTableEntry);
       }
-
-
+      this.currentStatus = "STATUS_NO_IMG";
     },
 
     async selectCID(rowCID) {
@@ -211,14 +215,22 @@ export default {
     },
 
     reset() {
-      // reset form to initial state
-      this.currentStatus = "STATUS_NO_IMG";
+      this.newPin(this.$encryption_pin)
+    },
+
+    newPin(pin) {
+      this.encryption_pin = pin;
       this.currentCID = "";
       this.metaData = "";
+      this.tableData = [];
+      this.currentStatus = "STATUS_LOADING";
+      this.getAtraRecordData(this.encryption_pin).catch(err => {
+        this.currentStatus = "STATUS_FAILED";
+      });;
     },
   },
   components: {
-    keyDialog: keyDialog
+    pinDialog: pinDialog
   }
 }
 </script>

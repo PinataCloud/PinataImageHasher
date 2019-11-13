@@ -9,7 +9,7 @@
       </q-card-section>
 
       <q-card-section class="q-mt-md">
-        <q-input label="Reporter PIN" v-model="key" :type="isPwd ? 'password' : 'text'" class="text-center" rounded standout="bg-primary text-white">
+        <q-input label="Reporter PIN" v-model="pin" :type="isPwd ? 'password' : 'text'" class="text-center" rounded standout="bg-primary text-white">
           <template v-slot:prepend>
             <q-icon name="phonelink_lock" />
           </template>
@@ -21,7 +21,7 @@
 
       <q-card-actions align="around">
         <q-btn class="text-negative q-ml-sm" flat label="Cancel" @click="this.cancel" v-close-popup />
-        <q-btn class="text-positive q-mr-sm" flat label="Set" @click="SetKey_RefreshData" v-close-popup />
+        <q-btn class="text-positive q-mr-sm" flat label="Set" @click="SetPin_RefreshData" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -30,21 +30,21 @@
 
 <script>
 export default {
-  name: 'keyDialog',
+  name: 'pinDialog',
   data() {
     return {
       persistent: false,
       isPwd: true,
-      key: this.$encryption_key
+      pin: this.$encryption_pin
     }
   },
   methods: {
     cancel() {
-      this.key = this.$encryption_key;
+      this.pin = this.$encryption_pin;
     },
-    SetKey_RefreshData() {
-      this.$encryption_key = this.key;
-      // TODO: get new atra data and decrypt
+    SetPin_RefreshData() {
+      this.$encryption_pin = this.pin; //DOESN'T MODIFY THE PROTOTYPE :( pass the pin instead
+      this.$emit('new_pin', this.pin)
     }
   }
 }

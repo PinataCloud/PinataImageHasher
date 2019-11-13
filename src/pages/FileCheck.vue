@@ -6,7 +6,7 @@
       <q-card-section>
         <div class="text-h5 text-center q-pb-md text-italic">Verify Images</div>
 
-        <keyDialog class="justify-center q-mb-md"></keyDialog>
+        <pinDialog class="justify-center q-mb-md" @new_pin="newPin"></pinDialog>
 
         <div class="col-12 dropbox" color="secondary">
           <div class="row full-width absolute-center items-center content-end">
@@ -47,7 +47,7 @@
         <q-list dense bordered padding class="rounded-borders">
           <q-item>
             <q-item-section>
-              <b>Fingerprint (CID)</b>
+              <b>Uploaded Fingerprint (CID)</b>
             </q-item-section>
             <q-item-section>
               {{uploadedCids[0].hash}}
@@ -63,11 +63,6 @@
           </q-item>
         </q-list>
       </div>
-      <!-- FAILED METADATA LOADED -->
-      <div v-if="isFailedRetrieve">
-        <h2>Error... Failed to Verify File.</h2>
-        <pre>{{ uploadError }}</pre>
-      </div>
       <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
         <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()" />
         <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="checkImage()" />
@@ -76,20 +71,22 @@
 
   </div>
 
-  <!--FAILED-->
-  <div v-if="isFailedLoad">
-    <h2>Error... Failed to Upload File.</h2>
-    <p>
-      <a href="javascript:void(0)" @click="reset()">Try again</a>
-    </p>
-    <pre>{{ uploadError }}</pre>
+  <!-- FAILED -->
+  <div v-if="isFailedDecrypt" class="flex absolute-center object-center text-center">
+    <q-card class="bg-warning" style="width: 80%">
+
+      <h2>Error... Unable to Decrypt Data.</h2>
+      <h5><em>Enter a new PIN</em></h5>
+      <pinDialog class="justify-center q-mb-xl" @new_pin="newPin"></pinDialog>
+      <q-btn class="q-mb-lg" size="lg" rounded color="primary" stacked no-caps label="Reset the Page" @click="reset()" />
+    </q-card>
   </div>
 
 </q-page>
 </template>
 
 <script>
-import keyDialog from "../components/keyDialog";
+import pinDialog from "../components/pinDialog";
 import AtraAPI from "../plugins/AtraAPI";
 import ImageMetadata from "../plugins/ImageMetadata";
 import {
@@ -101,7 +98,8 @@ export default {
   name: "FileCheck",
   data: function() {
     return {
-      currentStatus: null,
+      encryption_pin: this.$encryption_pin,
+      currentStatus: "STATUS_INITIAL",
       metaData: "",
       verifiedCID: false,
       knownCids: [],
@@ -141,14 +139,14 @@ export default {
     isFailedLoad() {
       return this.currentStatus === "STATUS_FAILED_LOAD";
     },
-    isFailedRetrieve() {
-      return this.currentStatus === "STATUS_FAILED_RETRIEVE";
+    isFailedDecrypt() {
+      return this.currentStatus === "STATUS_FAILED_DECRYPT";
     }
   },
   methods: {
     async fillCIDsVariable() {
-      // console.log("filecheck key:" + this.$encryption_key);
-      this.knownCids = await AtraAPI.GetCIDs(this.$encryption_key);
+      // console.log("filecheck key:" + this.encryption_pin);
+      this.knownCids = await AtraAPI.GetCIDs(this.encryption_pin);
       // console.log(this.knownCids)
     },
     async genCIDs() {
@@ -160,18 +158,15 @@ export default {
           onlyHash: true
         }));
         this.uploadedCids = await cids[0]; // NOTE - object, not just the hash
-        // this.uploadedCids = cids.map(item => item.hash);
         return this.uploadedCids[0].hash;
       } catch (err) {
-        this.currentStatus = "STATUS_FAILED_LOAD";
+        this.currentStatus = "STATUS_FAILED_DECRYPT";
         // Set error status text.
         console.log(`Error: ${err}`);
       }
     },
     async checkImage() {
-      // TODO: FIX ME!!!!! CID is wrong of upload
-      // if(this.knownCids.includes(this.genCIDs())) {
-      if (this.genCIDs()) {
+      if (this.knownCids.includes(this.genCIDs())) {
         this.verifiedCID = true;
       };
       this.retrieveImageMetadata();
@@ -184,7 +179,7 @@ export default {
       await ImageMetadata.GetMetadata(img).then(response => {
         // get specific information: jsonData["purpose"], etc.
         this.metaData = response;
-        console.log(response);
+        // console.log(response);
         this.currentStatus = "STATUS_IMG";
 
       }).catch(err => {
@@ -196,6 +191,15 @@ export default {
 
     },
 
+    newPin(pin) {
+      this.encryption_pin = pin;
+      this.currentStatus = "STATUS_LOADING";
+      this.getAtraRecordData(this.encryption_pin).catch(err => {
+        this.currentStatus = "STATUS_FAILED_DECRYPT";
+      });
+      this.currentStatus = "STATUS_INITIAL";
+
+    },
     reset() {
       // reset form to initial state
       this.currentStatus = "STATUS_INITIAL";
@@ -211,7 +215,7 @@ export default {
       upload(formData)
         .then(x => {
           this.uploadedFiles = [].concat(x);
-          console.log(this.uploadedFiles);
+          // console.log(this.uploadedFiles);
           this.currentStatus = "STATUS_SUCCESS";
         })
         .catch(err => {
@@ -237,7 +241,7 @@ export default {
     }
   },
   components: {
-    keyDialog: keyDialog
+    pinDialog: pinDialog
   }
 }
 </script>

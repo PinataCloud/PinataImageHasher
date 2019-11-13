@@ -124,14 +124,14 @@ export default {
         // { name: 'logT', label: 'Log Timestamp', field: 'logT', align: 'center', sortable: true },
         {
           name: 'fileT',
-          label: 'File Timestamp',
+          label: 'Capture Time',
           field: 'fileT',
           align: 'center',
           sortable: true
         },
         {
             name: 'blockT',
-            label: 'Block Timestamp',
+            label: 'Logged Time',
             field: 'blockT',
             align: 'center',
             sortable: true

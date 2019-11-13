@@ -223,13 +223,17 @@ export default {
     },
     async filesChange(fieldName, fileList) {
       // handle file changes
+
+      // GENERATE CID
+      console.log(fileList[0].name);
       const ipfs = await this.$ipfs;
-      let cid = await ipfs.add(fileList[0].name, {
+      let cid = await ipfs.add(fileList[0], {
         onlyHash: true
       })
-      console.log(cid);
+      console.log(cid[0].hash);
       this.uploadedCids = cid[0]; // NOTE - object, not just the hash
 
+      // TODO: USE FOR MULTIPLE FILES ...
       // let cids = await fileList.map(file => ipfs.add(file, {
       //   onlyHash: true
       // }));

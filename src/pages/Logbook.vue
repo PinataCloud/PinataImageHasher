@@ -103,6 +103,7 @@ export default {
       knownCids: [],
       knownDates: [],
       knownBlockTimes:[],
+      knownStorageLocations:[],
       knownLocations: [],
       metaData: "",
       pagination: {
@@ -142,6 +143,13 @@ export default {
           align: 'center',
           sortable: true
         },
+          {
+              name: 'StorageLocation',
+              label: 'Storage',
+              field: 'StorageLocation',
+              align: 'center',
+              sortable: true
+          },
 
         // { name: 'purpose', label: 'Purpose', field: 'purpose', align: 'center', sortable: true },
         // { name: 'device_model', label: 'Device Model', field: 'device_model', align: 'center', sortable: true },
@@ -193,7 +201,7 @@ export default {
 
     async getAtraRecordData(pin) {
         this.currentStatus = "STATUS_LOADING";
-        [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes] = await AtraAPI.GetCIDsLocationAndDates(pin);
+        [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes, this.knownStorageLocations] = await AtraAPI.GetCIDsLocationAndDates(pin);
 
       for (let i = 0; i < this.knownCids.length; i++) {
         let newTableEntry = {
@@ -201,6 +209,7 @@ export default {
           fileT: this.knownDates[i],
           location: this.knownLocations[i],
            blockT: this.knownBlockTimes[i],
+            StorageLocation:this.knownStorageLocations[i],
         };
         this.tableData.push(newTableEntry);
       }

@@ -18,7 +18,7 @@ export default class AtraAPI{
   }
 
   static async GetAtraRecords(){
-    const tableID = "1a86daa8-9bfa-4653-a9c4-365c280a16ec";
+    const tableID = "c396cfc4-c77f-4a76-bfea-fb67e2f53701";
     const resp = await fetch("https://api.atra.io/prod/v1/dtables/records?tableId="+tableID+"&txinfo=true", {
       headers:{
         "x-api-key":"vdssu05AWO6yAG4ojL4Sv6I9RkAGCak19hBhTVpm"
@@ -35,6 +35,7 @@ export default class AtraAPI{
     const Dates = [];
     const Locations = [];
     const BlockTimes = [];
+    const StorageLocations = [];
 
     const liveRecords = json["live"];
     let i;
@@ -47,17 +48,30 @@ export default class AtraAPI{
       const blockJson = await resp.json();
       const blockTimeStamp = blockJson["result"]["timeStamp"];
       // make the date look like the one stored on chain
-      const date = new Date(parseInt(blockTimeStamp)*1000);
-      BlockTimes.push(AtraAPI.getFormattedDateString(date));
+      let date = new Date(parseInt(blockTimeStamp)*1000);
+
+      if (!AtraAPI.isValidDate(date)) {
+        date = "Unmined Block"
+      }
+      else{
+        date = AtraAPI.getFormattedDateString(date);
+      }
+
+      BlockTimes.push(date);
         // console.log(Crypto.Decrypt(record[0],key));
       CIDs.push( Crypto.Decrypt(record[0],key));
       Dates.push(Crypto.Decrypt(record[1],key));
       Locations.push(Crypto.Decrypt(record[2],key));
+      StorageLocations.push(Crypto.Decrypt(record[3],key));
+
     }
 
-    return [CIDs, Dates, Locations, BlockTimes];
+    return [CIDs, Dates, Locations, BlockTimes, StorageLocations];
   }
 
+  static isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
 
   static getFormattedDateString(date){
     // 12 Nov 2019 23:16:01

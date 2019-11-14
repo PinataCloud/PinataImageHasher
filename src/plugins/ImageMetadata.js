@@ -47,11 +47,7 @@ export default class ImageMetadata {
 
           try {
             const jsonData = JSON.parse(commentString);
-<<<<<<< HEAD
             // jsonData["GPS Horizontal Error"] = gpsError +" meters";
-=======
-            jsonData["GPS Horizontal Error"] = gpsError + " meters";
->>>>>>> 332ab005f96d8e2b5d4474389a6d18952e0bb849
             // console.log(jsonData);
             resolve(jsonData);
           } catch (e) {

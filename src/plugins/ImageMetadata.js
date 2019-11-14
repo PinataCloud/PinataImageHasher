@@ -11,7 +11,8 @@ export default class ImageMetadata{
         }
 
         EXIF.getData(img, function(){
-          const gpsError = EXIF.getTag(this, "GPSHPositioningError");
+          // packaged in user comment now:
+          // const gpsError = EXIF.getTag(this, "GPSHPositioningError");
 
           // console.log("getting metadata");
           const commentCharIntArray =  EXIF.getTag(this, "UserComment");
@@ -47,7 +48,7 @@ export default class ImageMetadata{
 
           try {
             const jsonData = JSON.parse(commentString);
-            jsonData["GPS Horizontal Error"] = gpsError +" meters";
+            // jsonData["GPS Horizontal Error"] = gpsError +" meters";
             // console.log(jsonData);
             resolve(jsonData);
           } catch(e) {

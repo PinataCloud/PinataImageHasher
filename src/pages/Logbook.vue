@@ -223,6 +223,7 @@ export default {
       this.tableData = [];
       this.currentStatus = "STATUS_LOADING";
       this.getAtraRecordData(this.encryption_pin).catch(err => {
+          console.log("error getting atra data: " + err);
         this.currentStatus = "STATUS_FAILED";
       });;
     },

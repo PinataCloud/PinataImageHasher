@@ -17,11 +17,12 @@ export default class AtraAPI {
     return CIDs;
   }
 
-  static async GetAtraRecords() {
-    const tableID = "c396cfc4-c77f-4a76-bfea-fb67e2f53701";
-    const resp = await fetch("https://api.atra.io/prod/v1/dtables/records?tableId=" + tableID + "&txinfo=true", {
-      headers: {
-        "x-api-key": "vdssu05AWO6yAG4ojL4Sv6I9RkAGCak19hBhTVpm"
+  static async GetAtraRecords(){
+    const tableID = "a333b349-b6f3-4716-b39d-9a734e4971f5";
+    const resp = await fetch("https://api.atra.io/prod/v1/dtables/records?tableId="+tableID+"&txinfo=true", {
+      headers:{
+        "x-api-key":"vdssu05AWO6yAG4ojL4Sv6I9RkAGCak19hBhTVpm"
+
       }
     });
     const json = await resp.json();

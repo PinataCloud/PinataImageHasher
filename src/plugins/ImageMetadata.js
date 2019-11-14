@@ -10,7 +10,7 @@ export default class ImageMetadata {
           reject(new Error("img must be defined"));
         }
 
-        EXIF.getData(img, function(){
+        EXIF.getData(img, function() {
           // packaged in user comment now:
           // const gpsError = EXIF.getTag(this, "GPSHPositioningError");
           // console.log("getting metadata");

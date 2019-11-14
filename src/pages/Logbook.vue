@@ -84,11 +84,6 @@ import ImageMetadata from "../plugins/ImageMetadata";
 // TABLE DATA GENERATION
 let tableData = []
 
-// we are not going to change this array,
-// so why not freeze it to avoid Vue adding overhead
-// with state change detection
-// Object.freeze(tableData)
-
 export default {
   name: "Logbook",
   data: function() {
@@ -102,8 +97,8 @@ export default {
       imgURL: "",
       knownCids: [],
       knownDates: [],
-      knownBlockTimes:[],
-      knownStorageLocations:[],
+      knownBlockTimes: [],
+      knownStorageLocations: [],
       knownLocations: [],
       metaData: "",
       pagination: {
@@ -130,11 +125,11 @@ export default {
           sortable: true
         },
         {
-            name: 'blockT',
-            label: 'Logged Time',
-            field: 'blockT',
-            align: 'center',
-            sortable: true
+          name: 'blockT',
+          label: 'Logged Time',
+          field: 'blockT',
+          align: 'center',
+          sortable: true
         },
         {
           name: 'location',
@@ -143,19 +138,13 @@ export default {
           align: 'center',
           sortable: true
         },
-          {
-              name: 'StorageLocation',
-              label: 'Storage',
-              field: 'StorageLocation',
-              align: 'center',
-              sortable: true
-          },
-
-        // { name: 'purpose', label: 'Purpose', field: 'purpose', align: 'center', sortable: true },
-        // { name: 'device_model', label: 'Device Model', field: 'device_model', align: 'center', sortable: true },
-        // { name: 'device_id', label: 'Device ID', field: 'device_id', align: 'center', sortable: true },
-        // { name: 'department', label: 'Department', field: 'department', align: 'center', sortable: true },
-        // { name: 'user_name', label: 'Logged by User', field: 'user_name', align: 'center', sortable: true }
+        {
+          name: 'StorageLocation',
+          label: 'Storage',
+          field: 'StorageLocation',
+          align: 'center',
+          sortable: true
+        }
       ]
     }
   },
@@ -179,7 +168,7 @@ export default {
   methods: {
 
     shortenCID(val) {
-      let short = val.substring(0, 2) + "..." + val.substring(val.length - 6, val.length);
+      let short = val.substring(0, 3) + "..." + val.substring(val.length - 7, val.length);
       return short
     },
 
@@ -200,16 +189,16 @@ export default {
     },
 
     async getAtraRecordData(pin) {
-        this.currentStatus = "STATUS_LOADING";
-        [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes, this.knownStorageLocations] = await AtraAPI.GetCIDsLocationAndDates(pin);
+      this.currentStatus = "STATUS_LOADING";
+      [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes, this.knownStorageLocations] = await AtraAPI.GetCIDsLocationAndDates(pin);
 
       for (let i = 0; i < this.knownCids.length; i++) {
         let newTableEntry = {
           cid: this.knownCids[i],
           fileT: this.knownDates[i],
           location: this.knownLocations[i],
-           blockT: this.knownBlockTimes[i],
-            StorageLocation:this.knownStorageLocations[i],
+          blockT: this.knownBlockTimes[i],
+          StorageLocation: this.knownStorageLocations[i],
         };
         this.tableData.push(newTableEntry);
       }

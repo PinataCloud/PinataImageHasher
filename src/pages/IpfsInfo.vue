@@ -1,10 +1,10 @@
 <template>
-  <q-page class="flex fit row wrap justify-center text-center">
-    <img class="q-pt-lg" alt="Corroborator Logo" src="../assets/corroborator.png" style="height: 7rem" />
-    <h4 class="col-12 text-center"><b>{{ status }}</b></h4>
-    <h5 class="col-12">Your Node ID: {{ id }}</h5>
-    <h5 class="col-12">IPFS Agent version: {{ agentVersion }}</h5>
-  </q-page>
+<q-page class="flex fit row wrap justify-center text-center">
+  <img class="q-pt-lg" alt="Corroborator Logo" src="../assets/corroborator.png" style="height: 7rem" />
+  <h4 class="col-12 text-center"><b>{{ status }}</b></h4>
+  <h5 class="col-12">Your Node ID: {{ id }}</h5>
+  <h5 class="col-12">IPFS Agent version: {{ agentVersion }}</h5>
+</q-page>
 </template>
 
 <script>
@@ -23,11 +23,13 @@ export default {
   methods: {
     async getIpfsNodeInfo() {
       try {
-        // Await for ipfs node instance.
         const ipfs = await this.$ipfs;
-        // Call ipfs `id` method.
-        // Returns the identity of the Peer.
-        const { agentVersion, id } = await ipfs.id();
+
+        // Return the identity of the Peer.
+        const {
+          agentVersion,
+          id
+        } = await ipfs.id();
         this.agentVersion = agentVersion;
         this.id = id;
         // Set successful status text.
@@ -41,6 +43,5 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

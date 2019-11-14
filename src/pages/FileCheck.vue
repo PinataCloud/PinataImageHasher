@@ -174,6 +174,7 @@ export default {
       img = document.getElementById("imgSelected");
       // Pass in image data to get metadata out
       this.currentStatus = "STATUS_LOADING";
+      // TODO: add in metadata included in the selected image's row, e.g. location, log timestamp
       await ImageMetadata.GetMetadata(img).then(response => {
         // get specific information: jsonData["purpose"], etc.
         this.metaData = response;

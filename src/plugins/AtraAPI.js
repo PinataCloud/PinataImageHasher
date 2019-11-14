@@ -75,7 +75,7 @@ export default class AtraAPI{
 
   static getFormattedDateString(date){
     // 12 Nov 2019 23:16:01
-    const day = date.toLocaleString('default', { day:'numeric' });
+    const day = date.toLocaleString('default', { day:'numeric', timeZone:"UTC"});
     const mon = date.toLocaleString('default', { month: 'short', year:'numeric', hour:'numeric', minute:'numeric',
       second:'numeric', hc:"h24", hour12: false, timeZone:"UTC"}).replace(',','');
 

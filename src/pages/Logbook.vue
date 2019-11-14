@@ -168,7 +168,7 @@ export default {
   methods: {
 
     shortenCID(val) {
-      let short = val.substring(0, 3) + "..." + val.substring(val.length - 7, val.length);
+      let short = val.substring(0, 3) + " ... " + val.substring(val.length - 7, val.length);
       return short
     },
 

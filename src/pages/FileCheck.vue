@@ -33,8 +33,8 @@
 
       <!-- LOADING (displayed under image) -->
       <div v-if="isLoading" class="text-center">
-        <q-spinner-pie color="primary" size="13%" />
-        <h5>Extracting Metadata... Checking Fingerprint</h5>
+        <q-spinner-pie class="q-mt-lg" color="primary" size="13%" />
+        <p class="text-2xl text-italic">Extracting Metadata... Checking Fingerprint</p>
       </div>
 
       <!-- METADATA (displayed under image) , check vs. logs-->
@@ -51,7 +51,7 @@
               <b>Uploaded Fingerprint (CID)</b>
             </q-item-section>
             <q-item-section>
-              {{shortenCID(uploadedCids.hash)}}
+              {{shortCID}}
             </q-item-section>
           </q-item>
           <q-item v-for="(value, key) in metaData">
@@ -108,6 +108,7 @@ export default {
       knownCids: [],
       uploadedFiles: [],
       uploadedCids: [],
+      shortCID: "",
       uploadError: null,
       uploadFieldName: 'photos'
     };
@@ -205,6 +206,7 @@ export default {
         onlyHash: true
       })
       this.uploadedCids = cid[0]; // NOTE - object, not just the hash
+      console.log(cid[0].hash);
 
       // TODO: USE FOR MULTIPLE FILES ...
       // let cids = await fileList.map(file => ipfs.add(file, {
@@ -228,17 +230,18 @@ export default {
       this.save(formData);
     },
 
+    shortenCID(val) {
+      let short = val.substring(0, 3) + " ... " + val.substring(val.length - 7, val.length);
+      return short
+    },
+
     async checkImage() {
       if (this.knownCids.includes(this.uploadedCids.hash)) {
         this.verifiedCID = true;
       };
-      this.retrieveImageMetadata();
+      this.shortCID = this.shortenCID(this.uploadedCids.hash); //TODO fix for multiple files
+      let cids = this.retrieveImageMetadata()[0];
     }
-  },
-
-  shortenCID(val) {
-    let short = val.substring(0, 3) + "..." + val.substring(val.length - 7, val.length);
-    return short
   },
   components: {
     pinDialog: pinDialog

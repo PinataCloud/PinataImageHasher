@@ -9,15 +9,6 @@
         <span class="q-ml-sm"><strong>Corro</strong>borator Auditor</span>
       </q-toolbar-title>
 
-      <!-- <q-space /> -->
-
-      <!-- <q-btn round dense flat color="grey-8" icon="notifications">
-                    <q-badge color="red" text-color="white" floating>
-                      2
-                    </q-badge>
-                    <q-tooltip>Notifications</q-tooltip>
-                  </q-btn> -->
-
     </q-toolbar>
   </q-header>
 
@@ -40,19 +31,6 @@
           </q-item-section>
         </q-item>
 
-        <q-separator class="q-my-md" />
-
-        <!-- <q-item v-for="link in links2" :key="link.text" clickable class="GPL__drawer-item" :to="link.to">
-            <q-item-section avatar >
-              <q-icon :name="link.icon" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
-            </q-item-section>
-          </q-item> -->
-
-        <q-separator class="q-my-md" />
-
       </q-list>
     </q-scroll-area>
   </q-drawer>
@@ -71,12 +49,6 @@
           <q-icon size="22px" name="image_search" />
           <div class="GPL__side-btn__label">File Check</div>
         </q-btn>
-
-        <!-- <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn"
-          to="IpfsInfo">
-            <q-icon size="22px" name="assistant" />
-            <div class="GPL__side-btn__label">Logbook Creator</div>
-          </q-btn> -->
 
       </div>
     </q-page-sticky>
@@ -101,13 +73,7 @@ export default {
           text: 'File Check',
           to: 'FileCheck'
         },
-        // { icon: 'assistant', text: 'Logbook Creator', to: 'IpfsInfo' }
-      ],
-      // links2: [
-      //   { icon: 'settings', text: 'Settings', to: '/' },
-      //   { icon: 'get_app', text: 'App Downloads', to: '/' }
-      //   { icon: 'help', text: 'Help & Feedback', to: '/' },
-      // ]
+      ]
     }
   }
 }

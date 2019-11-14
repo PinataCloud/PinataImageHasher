@@ -15,28 +15,29 @@
               <b>Set the Reporter PIN</b><br>
               then drag your file(s) here to begin <br> or click to browse
             </div>
-            <div v-if="isSaving" class="col-12">
-              Uploading {{ fileCount }} files...
-            </div>
           </div>
-          <input type="file" :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files);
+          <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files);
                 fileCount = $event.target.files.length" accept="image/*" class="input-file absolute-center">
         </div>
 
       </q-card-section>
     </q-card>
-
   </form>
 
-  <!--SUCCESS-->
-  <div v-if="uploadedFiles" v-for="item in uploadedFiles" class="flex justify-center q-pt-xl">
+  <!--UPLOADED IMAGE DISPLAY-->
+  <div v-if="uploadedFiles && !isFailedDecrypt" v-for="item in uploadedFiles" class="flex justify-center q-pt-xl">
     <q-card class="img-card" align="center" style="width: 90%">
+
+      <!--UPLOADED IMAGE-->
       <img id="imgSelected" :src="item.url" :alt="item.originalName" style="max-width: 80vh">
-      <!-- LOADING -->
+
+      <!-- LOADING (displayed under image) -->
       <div v-if="isLoading" class="text-center">
-        <h5>loading...</h5>
+        <q-spinner-pie color="primary" size="13%" />
+        <h5>Extracting Metadata... Checking Fingerprint</h5>
       </div>
-      <!-- METADATA LOADED -->
+
+      <!-- METADATA (displayed under image) , check vs. logs-->
       <div v-if="metaData" class="q-pa-md" :style="verifiedColor">
         <div v-if="verifiedCID">
           <h6>Fingerprint VERIFIED!</h6>
@@ -50,7 +51,7 @@
               <b>Uploaded Fingerprint (CID)</b>
             </q-item-section>
             <q-item-section>
-              {{uploadedCids.hash}}
+              {{shortenCID(uploadedCids.hash)}}
             </q-item-section>
           </q-item>
           <q-item v-for="(value, key) in metaData">
@@ -63,6 +64,8 @@
           </q-item>
         </q-list>
       </div>
+
+      <!-- Actions under image -->
       <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
         <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()" />
         <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="checkImage()" />
@@ -71,7 +74,7 @@
 
   </div>
 
-  <!-- FAILED -->
+  <!-- FAILED to Decrypt -->
   <div v-if="isFailedDecrypt" class="flex absolute-center object-center text-center">
     <q-card class="bg-warning" style="width: 80%">
 
@@ -121,12 +124,6 @@ export default {
     isInitial() {
       return this.currentStatus === "STATUS_INITIAL";
     },
-    isSaving() {
-      return this.currentStatus === "STATUS_SAVING";
-    },
-    isNoImg() {
-      return this.currentStatus === "STATUS_NO_IMG";
-    },
     isImg() {
       return this.currentStatus === "STATUS_IMG";
     },
@@ -145,40 +142,18 @@ export default {
   },
   methods: {
     async fillCIDsVariable() {
-      // console.log("filecheck key:" + this.encryption_pin);
       this.knownCids = await AtraAPI.GetCIDs(this.encryption_pin);
       console.log(this.knownCids)
     },
-    // async genCIDs() {
-    //   try {
-    //     const ipfs = await this.$ipfs;
-    //     let cids = await this.uploadedFiles.map(file => ipfs.add(file.url, {
-    //       onlyHash: true
-    //     }));
-    //     this.uploadedCids = cids[0]; // NOTE - object, not just the hash
-    //     return this.uploadedCids[0].hash;
-    //   } catch (err) {
-    //     this.currentStatus = "STATUS_FAILED_DECRYPT";
-    //     // Set error status text.
-    //     console.log(`Error: ${err}`);
-    //   }
-    // },
-    async checkImage() {
-      if (this.knownCids.includes(this.uploadedCids.hash)) {
-        this.verifiedCID = true;
-      };
-      this.retrieveImageMetadata();
-    },
+
     async retrieveImageMetadata() {
+      // Pass in image data to extract metadata
       let img;
       img = document.getElementById("imgSelected");
-      // Pass in image data to get metadata out
       this.currentStatus = "STATUS_LOADING";
-      // TODO: add in metadata included in the selected image's row, e.g. location, log timestamp
+
       await ImageMetadata.GetMetadata(img).then(response => {
-        // get specific information: jsonData["purpose"], etc.
         this.metaData = response;
-        // console.log(response);
         this.currentStatus = "STATUS_IMG";
 
       }).catch(err => {
@@ -199,6 +174,7 @@ export default {
       this.currentStatus = "STATUS_INITIAL";
 
     },
+
     reset() {
       // reset form to initial state
       this.currentStatus = "STATUS_INITIAL";
@@ -207,14 +183,11 @@ export default {
       this.uploadError = null;
       this.metaData = "";
     },
-    save(formData) {
-      // upload data to the server
-      this.currentStatus = "STATUS_SAVING";
 
+    save(formData) {
       upload(formData)
         .then(x => {
           this.uploadedFiles = [].concat(x);
-          // console.log(this.uploadedFiles);
           this.currentStatus = "STATUS_SUCCESS";
         })
         .catch(err => {
@@ -222,16 +195,15 @@ export default {
           this.currentStatus = "STATUS_FAILED";
         });
     },
+
     async filesChange(fieldName, fileList) {
       // handle file changes
 
       // GENERATE CID
-      console.log(fileList[0].name);
       const ipfs = await this.$ipfs;
       let cid = await ipfs.add(fileList[0], {
         onlyHash: true
       })
-      console.log(cid[0].hash);
       this.uploadedCids = cid[0]; // NOTE - object, not just the hash
 
       // TODO: USE FOR MULTIPLE FILES ...
@@ -254,7 +226,19 @@ export default {
 
       // save it
       this.save(formData);
+    },
+
+    async checkImage() {
+      if (this.knownCids.includes(this.uploadedCids.hash)) {
+        this.verifiedCID = true;
+      };
+      this.retrieveImageMetadata();
     }
+  },
+
+  shortenCID(val) {
+    let short = val.substring(0, 3) + "..." + val.substring(val.length - 7, val.length);
+    return short
   },
   components: {
     pinDialog: pinDialog

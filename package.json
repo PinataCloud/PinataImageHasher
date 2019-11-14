@@ -1,7 +1,7 @@
 {
   "name": "Corroborator-Auditor",
-  "version": "0.0.1",
-  "description": "Corroborator Auditor Interface",
+  "version": "1.0.0",
+  "description": "Corroborator Auditor Web Interface",
   "productName": "Corroborator Auditor",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",

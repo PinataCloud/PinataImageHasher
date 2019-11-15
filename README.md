@@ -41,7 +41,9 @@ We have a publised version avalible for you [at this link]
 - https://corroborator-net.github.io/
 
 Open the link above then jump to the [Data Validation](#data-validation) section to contiue the walkthrough.
- 
+
+---
+
 ### Local Demo
 
 *If you wish to run or install the application on your own machine, you can!*
@@ -78,6 +80,11 @@ npm install
 ```bash
 npm run dev
 ```
+
+Then see [Dev Notes](#dev-notes) for more details on deploying and editing the application.
+
+
+---
 
 ### Data Validation
 

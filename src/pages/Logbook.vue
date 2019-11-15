@@ -29,9 +29,11 @@
   </div>
 
   <!-- IMAGE CARD VIEW (STATUS_IMG) -->
-  <div v-if="currentCID && !isFailedDecrypt" class="flex justify-center q-pt-xl">
-    <q-card class="img-card" align="center" style="width: 90%">
-      <img id="imgSelected" :src="imgURL" style="max-width: 80vh" :alt="currentCID">
+  <div v-if="currentCID && !isFailedDecrypt" class="flex justify-center q-py-xl">
+    <q-card class="img-card bg-blue-grey-2" align="center" style="width: 90%">
+
+      <!-- LOGBOOK IMAGE-->
+      <img class="q-ma-md" id="imgSelected" :src="imgURL" style="max-width: 80vh" :alt="currentCID">
 
       <!-- LOADING (displayed under image) -->
       <div v-if="isReading" class="text-center">
@@ -41,7 +43,7 @@
 
       <!-- METADATA LOADED -->
       <div v-if="metaData" class="q-pa-md">
-        <q-list dense bordered padding class="rounded-borders">
+        <q-list dense bordered class="q-ma-sm rounded-borders bg-blue-grey-2">
           <q-item>
             <q-item-section>
               <b>Fingerprint (CID)</b>
@@ -60,10 +62,14 @@
           </q-item>
         </q-list>
       </div>
-      <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
-        <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()" />
-        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="retrieveImageMetadata()" />
+
+
+      <!-- Action buttons under image -->
+      <q-card-actions align="around" class="bg-blue-grey-2">
+        <q-btn class="q-px-xl q-py-xs" color="blue-grey-9" icon-right="layers_clear" no-caps label="Reset" @click="reset()" />
+        <q-btn color="blue-grey-9" no-caps label="Generate Report" icon-right="image_search" @click="retrieveImageMetadata()" />
       </q-card-actions>
+    </q-card>
     </q-card>
 
   </div>

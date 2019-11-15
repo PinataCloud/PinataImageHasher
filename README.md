@@ -30,7 +30,7 @@ Using **Corro**borator Auditor is easy and intuitive for everyone. Here we provi
 
 * * *
 
-### Hosted Demo
+#### Hosted Demo
 
 _If you trust the host, or do not have the ability to download and run the aplication_
 
@@ -42,7 +42,7 @@ Open the link above then jump to the [Data Validation](#data-validation) section
 
 * * *
 
-### Local Demo
+#### Local Demo
 
 _If you wish to run or install the application on your own machine, you can!_
 
@@ -55,16 +55,12 @@ _If you wish to run or install the application on your own machine, you can!_
 3.  Open `index.html` in a web browser of your choice (right click and `open in...`)
 
 
-## Data Validation
+### Data Validation
 
-1.  Download the [Demo Picture](/src/statics/QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR.jpeg)
-2.  Check that the downloaded image CID (`QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR`) matches what you can obtain on an IPFS gateway and/or the IPFS desktop client (See [Open Validation Tools](#open-validation-tools))
-    -   Use a _gateway_ to see the file by CID ([here is one](https://gateway.pinata.cloud/ipfs/QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR))
-    -   Use the _Desktop Client_ **files explorer** to add/upload the demo file and cross-verify that the file indeed has the same CID generated as the file viewed at a gateway.
-3.  Verify the CID was published on the blockchain. The demo file was published [on the rinkeby ethereum testnet](https://rinkeby.etherscan.io/tx/)  (transaction hash: ``)
-    -   At the bottom of the page, Click to `show more`
-    -   View the `input data` as `UTF-8`. The CID || picture timestamp || location (in that order)  _should_ be apparent there. You can also validate the timestap of the transaction itself ot cross-check the providance of the recorded data.
+***NOTE:** For the demo, a deployed audit smart contract on the Ethereum Rinkbey Testnet  is ready for you ([details here](https://github.com/Corroborator-Net/Corroborator-Contract)). This is **hard coded** in our app at the moment! If you want a new audit log created, please reach out to us.*
 
+1.  In the Logbook page, open a reported image by clicking it
+2.
 ### Alternative Open Source Validation Tools
 
 As and alternative to _[Corroborator Auditor](https://github.com/Corroborator-Net/Corroborator-Auditor)_, you can still use _[Corroborator Reporter](https://github.com/Corroborator-Net/Corroborator-Reporter)_ and **watch the watchers** with other 3rd party open source tools:
@@ -76,6 +72,20 @@ As and alternative to _[Corroborator Auditor](https://github.com/Corroborator-Ne
 | IPFS Gateway                            | <https://gateway.pinata.cloud/ipfs/>&lt;PROVIDE_CID_FINGERPRINT> | Fingerprint & Data Validation (online)                |
 | IPFS Desktop                            | <https://github.com/ipfs-shipyard/ipfs-desktop>                  | Fingerprint & Data cross-validation Client (download) |
 | Text Difference Tool                    | <https://www.diffchecker.com/>                                   | Crosscheck CIDs and Hashes                            |
+| AES256 Encryption Tool                    | <https://encode-decode.com/aes256-encrypt-online/>                                   | Decrypt CIDs and Metadata                            |
+
+***NOTE:** You must obtain the fingerprint (CID) of the image if hosted on IPFS, **AND** the PIN (secret) used to encrypt the data logger on the deployed blockchain contract. You must also have access ot the source file produced by the [reporter app](https://github.com/Corroborator-Net/Corroborator-Reporter) to do this without the auditor application**
+
+See [Open Validation Tools](#alternative-open-validation-tools) for use in the folowing setups:
+
+1. Identify the log entry transaction on the deployed audit contract, and the PIN used to encrypt the log data to obtain the true CID. Then manualy decrypt the data logged on the contract transaction and extract the CID:
+    - At the bottom of the etherscan page, Click to `show more`
+    - View the `input data` as `UTF-8`.
+    - Copy this text into a decryption tool and supply the correct PIN as the secret.
+    - The data is The CID || picture timestamp || location (in that order) and  _should_ be apparent once decrypted.
+    - You can also validate the timestap of the transaction itself ot cross-check the providance of the recorded data.
+
+2. Use an IPFS client and `add` the image source corresponding to the log entry used above and cross-verify that the file indeed has the same CID generated as reported in the logbook. If the image is hosted on IPFS, you can use the CID to do a lookup via a gateway or a client as well.
 
 ## Developer Notes
 

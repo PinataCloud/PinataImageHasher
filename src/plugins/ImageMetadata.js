@@ -6,7 +6,7 @@ export default class ImageMetadata {
     return new Promise(((resolve, reject) => {
       setTimeout(() => {
         if (!img) {
-          console.log("img must be defined");
+          // console.log("img must be defined");
           reject(new Error("img must be defined"));
         }
 
@@ -18,7 +18,7 @@ export default class ImageMetadata {
 
 
           if (commentCharIntArray === undefined) {
-            console.log("image contains no metadata");
+            // console.log("image contains no metadata");
             reject(new Error("image contains no metadata"));
             return;
           }
@@ -34,7 +34,7 @@ export default class ImageMetadata {
           }
 
           if (asciiDefine !== "ASCII") {
-            console.log("only ascii supported");
+            // console.log("only ascii supported");
             reject(new Error("image comment metadata not in ASCII format"));
             return;
           }
@@ -51,7 +51,7 @@ export default class ImageMetadata {
             // console.log(jsonData);
             resolve(jsonData);
           } catch (e) {
-            console.log("image contains no json metadata");
+            // console.log("image contains no json metadata");
             reject(new Error("image contains no json metadata"));
           }
         });

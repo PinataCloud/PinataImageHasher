@@ -73,9 +73,9 @@
       </div>
 
       <!-- Actions under image -->
-      <q-card-actions align="around" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
-        <q-btn flat round color="blue-grey-9" icon="layers_clear" stacked no-caps label="Reset" @click="reset()" />
-        <q-btn flat round color="blue-grey-9" stacked no-caps label="Report" icon="image_search" @click="checkImage()" />
+      <q-card-actions align="around" class="bg-blue-grey-2">
+        <q-btn color="blue-grey-9" icon-right="layers_clear" stacked no-caps label="Reset" @click="reset()" />
+        <q-btn color="blue-grey-9" stacked no-caps label="Generate Report" icon-right="image_search" @click="checkImage()" />
       </q-card-actions>
     </q-card>
 
@@ -241,6 +241,8 @@ export default {
     },
 
     async checkImage() {
+      console.log(this.knownCids);
+      console.log(this.uploadedCids.hash);
       if (this.knownCids.includes(this.uploadedCids.hash)) {
         this.verifiedCID = true;
       };

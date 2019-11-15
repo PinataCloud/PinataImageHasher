@@ -2,37 +2,35 @@
 <q-page>
 
   <!--UPLOAD FORM-->
-  <div class="absolute-center">
-    <form enctype="multipart/form-data" novalidate v-if="isInitial">
-      <q-card class="text-white" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
-        <q-card-section>
-          <div class="text-h5 text-center q-pb-md text-italic">Verify Images</div>
+  <form class="absolute-center" enctype="multipart/form-data" novalidate v-if="isInitial">
+    <q-card class="text-white" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
+      <q-card-section>
+        <div class="text-h5 text-center q-pb-md text-italic">Verify Images</div>
 
-          <pinDialog class="justify-center q-mb-md" @new_pin="newPin"></pinDialog>
+        <pinDialog class="justify-center q-mb-md" @new_pin="newPin"></pinDialog>
 
-          <div class="col-12 dropbox" color="secondary">
-            <div class="row full-width absolute-center items-center content-end">
-              <q-icon class="q-pa-sm col-12" name="add_a_photo" size="xl" />
-              <div class="col-12">
-                <b>Set the Reporter PIN</b><br>
-                then drag your file(s) here to begin <br> or click to browse
-              </div>
+        <div class="col-12 dropbox" color="secondary">
+          <div class="row full-width absolute-center items-center content-end">
+            <q-icon class="q-pa-sm col-12" name="add_a_photo" size="xl" />
+            <div class="col-12">
+              <b>Set the Reporter PIN</b><br>
+              then drag your file(s) here to begin <br> or click to browse
             </div>
-            <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files);
-                fileCount = $event.target.files.length" accept="image/*" class="input-file absolute-center">
           </div>
+          <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files);
+                fileCount = $event.target.files.length" accept="image/*" class="input-file absolute-center">
+        </div>
 
-        </q-card-section>
-      </q-card>
-    </form>
-  </div>
+      </q-card-section>
+    </q-card>
+  </form>
 
   <!--UPLOADED IMAGE DISPLAY-->
   <div v-if="!isInitial && !isFailedDecrypt" class="flex justify-center q-py-xl">
-    <q-card class="img-card bg-blue-grey-2" align="center" style="width: 90%">
+    <q-card class="bg-blue-grey-2" align="center" style="max-width: 90vw;">
 
       <!--UPLOADED IMAGE-->
-      <img class="q-ma-md" id="imgSelected" :src="this.uploadedFile.url" :alt="this.uploadedFile.originalName" style="max-width: 80vw">
+      <img class="q-ma-md" id="imgSelected" :src="this.uploadedFile.url" :alt="this.uploadedFile.originalName" style="max-width: 90vh;">
 
       <!-- LOADING (displayed under image) -->
       <div v-if="isLoading" class="text-center">
@@ -282,10 +280,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.img-card {
-  max-height: 75vh;
-}
-
 .input-file {
   opacity: 0;
   /* invisible but it's there! */

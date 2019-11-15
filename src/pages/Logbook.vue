@@ -30,10 +30,10 @@
 
   <!-- IMAGE CARD VIEW (STATUS_IMG) -->
   <div v-if="currentRow.cid && !isFailedDecrypt" class="flex justify-center q-py-xl">
-    <q-card class="img-card bg-blue-grey-2" align="center" style="width: 90%">
+    <q-card class="bg-blue-grey-2" align="center" style="max-width: 90vw;">
 
       <!-- LOGBOOK IMAGE-->
-      <img class="q-ma-md" id="imgSelected" :src="imgURL" style="max-width: 80vw" :alt="currentRow.cid">
+      <img class="q-ma-md" id="imgSelected" :src="imgURL" style="max-width: 90vh" :alt="currentRow.cid">
 
       <!-- READING METADATA (displayed under image) -->
       <div v-if="isReading" class="text-center">
@@ -277,9 +277,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="sass">
-img-card
-    max-height: 75vh;
-
 .my-sticky-header-column-table
 
   background-color: #336699

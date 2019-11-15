@@ -40,7 +40,7 @@
               <b>Fingerprint (CID)</b>
             </q-item-section>
             <q-item-section>
-              {{currentCID}}
+              {{shortCID}}
             </q-item-section>
           </q-item>
           <q-item v-for="(value, key) in metaData">
@@ -94,6 +94,7 @@ export default {
       tableData,
       currentStatus: "STATUS_LOADING",
       currentCID: "",
+      shortCID: "",
       imgURL: "",
       knownCids: [],
       knownDates: [],
@@ -206,6 +207,7 @@ export default {
 
     async selectCID(rowCID) {
       this.currentCID = rowCID;
+      this.shortCID = this.shortenCID(rowCID);
       // NOTE: if you use a gateway you MUST enable XHR in browser else this fails silently!
       this.imgURL = 'https://gateway.pinata.cloud/ipfs/' + this.currentCID;
       this.currentStatus = "STATUS_IMG";

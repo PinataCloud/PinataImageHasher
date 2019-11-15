@@ -11,7 +11,7 @@ _Open &amp; Trustless Data Verification_
   - [Local Demo](#local-demo)
 - [Data Validation](#data-validation)
   - [Alternative Open Source Validation Tools](#alternative-open-source-validation-tools)
-- [Developer Notes](#develper-notes)
+- [Developer Notes](#developer-notes)
 
 
 

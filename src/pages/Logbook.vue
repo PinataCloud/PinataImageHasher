@@ -35,10 +35,10 @@
       <!-- LOGBOOK IMAGE-->
       <img class="q-ma-md" id="imgSelected" :src="imgURL" style="max-width: 80vh" :alt="currentCID">
 
-      <!-- LOADING (displayed under image) -->
+      <!-- READING METADATA (displayed under image) -->
       <div v-if="isReading" class="text-center">
         <q-spinner-pie class="q-mt-lg" color="primary" size="13%" />
-        <p class="text-2xl text-italic">Extracting Metadata... Checking Fingerprint</p>
+        <p class="text-italic q-pa-sm" style="font-size:150%;">Extracting Metadata... Checking Fingerprint</p>
       </div>
 
       <!-- METADATA LOADED -->
@@ -78,7 +78,7 @@
   <div v-if="isFailedDecrypt" class="flex absolute-center object-center text-center">
     <q-card class="bg-warning" style="width: 80%">
 
-      <h2>Error... Unable to Decrypt Data.</h2>
+      <h2>Unable to Decrypt Data.</h2>
       <h5><em>Enter a new PIN</em></h5>
       <pinDialog class="justify-center q-mb-xl" @new_pin="newPin"></pinDialog>
       <q-btn class="q-mb-lg" size="lg" rounded color="primary" stacked no-caps label="Reset the Page" @click="reset()" />

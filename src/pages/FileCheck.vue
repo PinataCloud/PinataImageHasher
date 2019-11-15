@@ -34,7 +34,7 @@
       <!-- LOADING (displayed under image) -->
       <div v-if="isLoading" class="text-center">
         <q-spinner-pie class="q-mt-lg" color="primary" size="13%" />
-        <p class="text-2xl text-italic">Extracting Metadata... Checking Fingerprint</p>
+        <p class="text-italic q-pa-sm" style="font-size:150%;">Extracting Metadata... Checking Fingerprint</p>
       </div>
 
       <!-- METADATA (displayed under image) , check vs. logs-->
@@ -85,7 +85,7 @@
   <div v-if="isFailedDecrypt" class="flex absolute-center object-center text-center">
     <q-card class="bg-warning" style="width: 80%">
 
-      <h2>Error... Unable to Decrypt Data.</h2>
+      <h2>Unable to Decrypt Data.</h2>
       <h5><em>Enter a new PIN</em></h5>
       <pinDialog class="justify-center q-mb-xl" @new_pin="newPin"></pinDialog>
       <q-btn class="q-mb-lg" size="lg" rounded color="primary" stacked no-caps label="Reset the Page" @click="reset()" />
@@ -189,6 +189,7 @@ export default {
       this.uploadedCids = [];
       this.uploadError = null;
       this.metaData = "";
+      this.encryption_pin = this.$encryption_pin;
     },
 
     save(formData) {

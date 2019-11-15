@@ -1,35 +1,38 @@
 <template>
-<q-page class="flex flex-center">
+<q-page>
+
   <!--UPLOAD FORM-->
-  <form enctype="multipart/form-data" novalidate v-if="isInitial">
-    <q-card class="text-white" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
-      <q-card-section>
-        <div class="text-h5 text-center q-pb-md text-italic">Verify Images</div>
+  <div class="absolute-center">
+    <form enctype="multipart/form-data" novalidate v-if="isInitial">
+      <q-card class="text-white" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
+        <q-card-section>
+          <div class="text-h5 text-center q-pb-md text-italic">Verify Images</div>
 
-        <pinDialog class="justify-center q-mb-md" @new_pin="newPin"></pinDialog>
+          <pinDialog class="justify-center q-mb-md" @new_pin="newPin"></pinDialog>
 
-        <div class="col-12 dropbox" color="secondary">
-          <div class="row full-width absolute-center items-center content-end">
-            <q-icon class="q-pa-sm col-12" name="add_a_photo" size="xl" />
-            <div v-if="isInitial" class="col-12">
-              <b>Set the Reporter PIN</b><br>
-              then drag your file(s) here to begin <br> or click to browse
+          <div class="col-12 dropbox" color="secondary">
+            <div class="row full-width absolute-center items-center content-end">
+              <q-icon class="q-pa-sm col-12" name="add_a_photo" size="xl" />
+              <div class="col-12">
+                <b>Set the Reporter PIN</b><br>
+                then drag your file(s) here to begin <br> or click to browse
+              </div>
             </div>
-          </div>
-          <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files);
+            <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files);
                 fileCount = $event.target.files.length" accept="image/*" class="input-file absolute-center">
-        </div>
+          </div>
 
-      </q-card-section>
-    </q-card>
-  </form>
+        </q-card-section>
+      </q-card>
+    </form>
+  </div>
 
   <!--UPLOADED IMAGE DISPLAY-->
-  <div v-if="uploadedFiles && !isFailedDecrypt" v-for="item in uploadedFiles" class="flex justify-center q-pb-xl">
-    <q-card class="img-card bg-blue-grey-2" align="center" style="width: 100%">
+  <div v-if="!isInitial && !isFailedDecrypt" class="flex justify-center q-py-xl">
+    <q-card class="img-card bg-blue-grey-2" align="center" style="width: 90%">
 
       <!--UPLOADED IMAGE-->
-      <img class="q-ma-md" id="imgSelected" :src="item.url" :alt="item.originalName" style="max-width: 70vh">
+      <img class="q-ma-md" id="imgSelected" :src="this.uploadedFile.url" :alt="this.uploadedFile.originalName" style="max-width: 80vw">
 
       <!-- LOADING (displayed under image) -->
       <div v-if="isLoading" class="text-center">
@@ -46,6 +49,7 @@
         <div v-else>
           <h6>Fingerprint <b>NOT</b> in Log</h6>
         </div>
+
         <q-list dense bordered class="q-ma-sm rounded-borders bg-blue-grey-2">
 
           <q-item class="justify-center">
@@ -59,7 +63,7 @@
               <b>Uploaded Fingerprint (CID)</b>
             </q-item-section>
             <q-item-section>
-              {{shortCID}}
+              {{uploadedCids.hash}}
             </q-item-section>
           </q-item>
 
@@ -121,9 +125,8 @@ export default {
       metaData: "",
       verifiedCID: false,
       knownCids: [],
-      uploadedFiles: [],
+      uploadedFile: [],
       uploadedCids: [],
-      shortCID: "",
       uploadError: null,
       uploadFieldName: 'photos'
     };
@@ -214,7 +217,7 @@ export default {
       // reset form to initial state
       this.verifiedCID = false;
       this.currentStatus = "STATUS_INITIAL";
-      this.uploadedFiles = [];
+      this.uploadedFile = [];
       this.uploadedCids = [];
       this.uploadError = null;
       this.metaData = "";
@@ -224,7 +227,8 @@ export default {
     save(formData) {
       upload(formData)
         .then(x => {
-          this.uploadedFiles = [].concat(x);
+          // this.uploadedFile = [].concat(x); //TODO get multi files?
+          this.uploadedFile = x[0]; //TODO get multi files?
           this.currentStatus = "STATUS_SUCCESS";
         })
         .catch(err => {
@@ -266,10 +270,7 @@ export default {
     },
 
     async checkImage() {
-      console.log(this.knownCids);
-      console.log(this.uploadedCids.hash);
       this.verifiedCID = this.knownCids.includes(this.uploadedCids.hash)
-      this.shortCID = this.uploadedCids.hash; //TODO fix for multiple files
       let cids = this.retrieveImageMetadata()[0];
     }
   },

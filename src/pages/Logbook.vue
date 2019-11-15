@@ -19,7 +19,7 @@
     <pinDialog @new_pin="newPin"></pinDialog>
 
     <q-table name="cidTable" row-key="cid" no-data-label="No Log Data Available. Have you input the correct Reporter PIN?" loading-label="Gathering Log Data..." :loading="loading" :data="tableData" :columns="columns" :filter="filter"
-      :pagination.sync="pagination" table-style="max-height: 67vh;" style="width: 80vw;" class="my-sticky-header-column-table" virtual-scroll :virtual-scroll-slice-size="25">
+      :pagination.sync="pagination" table-style="max-height: 67vh;" style="width: 60vw;" class="my-sticky-header-column-table" virtual-scroll :virtual-scroll-slice-size="25">
       <template v-slot:body-cell="props">
         <q-td :props="props" @click.native="selectCID(props.row)" class="cursor-pointer">
           <div>{{ props.value }}</div>
@@ -33,7 +33,7 @@
     <q-card class="img-card bg-blue-grey-2" align="center" style="width: 90%">
 
       <!-- LOGBOOK IMAGE-->
-      <img class="q-ma-md" id="imgSelected" :src="imgURL" style="max-width: 80vh" :alt="currentRow.cid">
+      <img class="q-ma-md" id="imgSelected" :src="imgURL" style="max-width: 80vw" :alt="currentRow.cid">
 
       <!-- READING METADATA (displayed under image) -->
       <div v-if="isReading" class="text-center">
@@ -41,51 +41,51 @@
         <p class="text-italic q-pa-sm" style="font-size:150%;">Extracting Metadata... Checking Fingerprint</p>
       </div>
 
-      <!-- METADATA LOADED -->
-            <div v-if="metaData" class="q-pa-md">
-              <q-list dense bordered class="q-ma-sm rounded-borders bg-blue-grey-2">
+      <!-- METADATA (displayed under image) , check vs. logs-->
+      <div v-if="metaData" class="q-pa-md">
+        <q-list dense bordered class="q-ma-sm rounded-borders bg-blue-grey-2">
 
-                <q-item class="justify-center">
-                  <p style="font-size:150%" class="q-pt-md">Image Metadata:</p>
-                </q-item>
+          <q-item class="justify-center">
+            <p style="font-size:150%" class="q-pt-md">Image Metadata:</p>
+          </q-item>
 
-                <q-separator inset />
+          <q-separator inset />
 
-                <q-item>
-                  <q-item-section>
-                    <b>Fingerprint (CID)</b>
-                  </q-item-section>
-                  <q-item-section>
-                    {{currentRow.cid}}
-                  </q-item-section>
-                </q-item>
-                <q-item v-for="(value, key) in metaData">
-                  <q-item-section>
-                    <b>{{ key }}</b>
-                  </q-item-section>
-                  <q-item-section>
-                    {{value}}
-                  </q-item-section>
-                </q-item>
+          <q-item>
+            <q-item-section>
+              <b>Fingerprint (CID)</b>
+            </q-item-section>
+            <q-item-section>
+              {{currentRow.cid}}
+            </q-item-section>
+          </q-item>
+          <q-item v-for="(value, key) in metaData">
+            <q-item-section>
+              <b>{{ key }}</b>
+            </q-item-section>
+            <q-item-section>
+              {{value}}
+            </q-item-section>
+          </q-item>
 
-                <q-separator spaced inset />
+          <q-separator spaced inset />
 
-                <q-item class="justify-center">
-                  <p style="font-size:150%" class="q-pt-sm">Logbook data:</p>
-                </q-item>
+          <q-item class="justify-center">
+            <p style="font-size:150%" class="q-pt-sm">Logbook data:</p>
+          </q-item>
 
-                <q-separator inset />
+          <q-separator inset />
 
-                <q-item v-for="(value, key) in currentRow">
-                  <q-item-section>
-                    <b>{{ key }}</b>
-                  </q-item-section>
-                  <q-item-section>
-                    {{value}}
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
+          <q-item v-for="(value, key) in currentRow">
+            <q-item-section>
+              <b>{{ key }}</b>
+            </q-item-section>
+            <q-item-section>
+              {{value}}
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
 
       <!-- Action buttons under image -->
       <q-card-actions align="around" class="bg-blue-grey-2">

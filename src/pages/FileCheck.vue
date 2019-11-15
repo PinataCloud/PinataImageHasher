@@ -54,6 +54,8 @@
               {{shortCID}}
             </q-item-section>
           </q-item>
+
+        <div v-if="isImg">
           <q-item v-for="(value, key) in metaData">
             <q-item-section>
               <b>{{ key }}</b>
@@ -62,6 +64,11 @@
               {{value}}
             </q-item-section>
           </q-item>
+        </div>
+
+        <div v-if="isFailedMeta">
+          <p class="text-2xl text-italic"> <br> ALERT: <br> No Report Data <br> Found Within Image</p>
+        </div>
         </q-list>
       </div>
 
@@ -134,8 +141,8 @@ export default {
     isSuccess() {
       return this.currentStatus === "STATUS_SUCCESS";
     },
-    isFailedLoad() {
-      return this.currentStatus === "STATUS_FAILED_LOAD";
+    isFailedMeta() {
+      return this.currentStatus === "STATUS_FAILED_META";
     },
     isFailedDecrypt() {
       return this.currentStatus === "STATUS_FAILED_DECRYPT";
@@ -158,7 +165,7 @@ export default {
 
       }).catch(err => {
         this.metaData = err;
-        this.currentStatus = "STATUS_FAILED_RETRIEVE";
+        this.currentStatus = "STATUS_FAILED_META";
         console.log(`Error: ${err}`);
 
       });

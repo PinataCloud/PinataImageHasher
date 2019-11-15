@@ -7,8 +7,8 @@
     <q-spinner-pie color="primary" size="40%" />
   </div>
 
-  <!-- TABLE VIEW (STATUS_NO_IMG) -->
-  <div v-if="isNoImg" class="flex flex-center">
+  <!-- TABLE VIEW (STATUS_TABLE) -->
+  <div v-if="isTable" class="flex flex-center">
     <q-input class="q-py-lg q-mr-xl" style="width: 55vw" dense standout="bg-primary" v-model="filter" placeholder="Search (CID, Dates, Locations, ...)">
       <template v-slot:append>
         <q-icon v-if="filter === ''" name="search" />
@@ -29,9 +29,16 @@
   </div>
 
   <!-- IMAGE CARD VIEW (STATUS_IMG) -->
-  <div v-if="currentCID" class="flex justify-center q-pt-xl">
+  <div v-if="currentCID && !isFailedDecrypt" class="flex justify-center q-pt-xl">
     <q-card class="img-card" align="center" style="width: 90%">
       <img id="imgSelected" :src="imgURL" style="max-width: 80vh" :alt="currentCID">
+
+      <!-- LOADING (displayed under image) -->
+      <div v-if="isReading" class="text-center">
+        <q-spinner-pie class="q-mt-lg" color="primary" size="13%" />
+        <p class="text-2xl text-italic">Extracting Metadata... Checking Fingerprint</p>
+      </div>
+
       <!-- METADATA LOADED -->
       <div v-if="metaData" class="q-pa-md">
         <q-list dense bordered padding class="rounded-borders">
@@ -62,7 +69,7 @@
   </div>
 
   <!--FAILED-->
-  <div v-if="isFailed" class="flex absolute-center object-center text-center">
+  <div v-if="isFailedDecrypt" class="flex absolute-center object-center text-center">
     <q-card class="bg-warning" style="width: 80%">
 
       <h2>Error... Unable to Decrypt Data.</h2>
@@ -82,8 +89,6 @@ import ImageMetadata from "../plugins/ImageMetadata";
 
 
 // TABLE DATA GENERATION
-let tableData = []
-
 export default {
   name: "Logbook",
   data: function() {
@@ -91,7 +96,7 @@ export default {
       filter: '',
       loading: true,
       encryption_pin: this.$encryption_pin,
-      tableData,
+      tableData: [],
       currentStatus: "STATUS_LOADING",
       currentCID: "",
       shortCID: "",
@@ -150,11 +155,11 @@ export default {
     }
   },
   mounted: function() {
-    this.newPin(this.$encryption_pin);
+    this.reset();
   },
   computed: {
-    isNoImg() {
-      return this.currentStatus === "STATUS_NO_IMG";
+    isTable() {
+      return this.currentStatus === "STATUS_TABLE";
     },
     isImg() {
       return this.currentStatus === "STATUS_IMG";
@@ -162,8 +167,11 @@ export default {
     isLoading() {
       return this.currentStatus === "STATUS_LOADING";
     },
-    isFailed() {
-      return this.currentStatus === "STATUS_FAILED";
+    isReading() {
+      return this.currentStatus === "STATUS_READING";
+    },
+    isFailedDecrypt() {
+      return this.currentStatus === "STATUS_FAILED_DECRYPT";
     }
   },
   methods: {
@@ -176,20 +184,23 @@ export default {
     async retrieveImageMetadata() {
       let img;
       img = document.getElementById("imgSelected");
-      // Pass in image data to get metadata out
+
+      this.currentStatus = "STATUS_READING";
       await ImageMetadata.GetMetadata(img).then(response => {
         // get specific information: jsonData["purpose"], etc.
         this.metaData = response;
       }).catch(err => {
         this.metaData = err;
-
+        console.log("error reading metadata: " + err);
       });
 
       this.currentStatus = "STATUS_IMG";
     },
 
     async getAtraRecordData(pin) {
+      this.tableData = [];
       this.currentStatus = "STATUS_LOADING";
+
       [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes, this.knownStorageLocations] = await AtraAPI.GetCIDsLocationAndDates(pin);
 
       for (let i = 0; i < this.knownCids.length; i++) {
@@ -202,7 +213,7 @@ export default {
         };
         this.tableData.push(newTableEntry);
       }
-      this.currentStatus = "STATUS_NO_IMG";
+      this.currentStatus = "STATUS_TABLE";
     },
 
     async selectCID(rowCID) {
@@ -221,11 +232,10 @@ export default {
       this.encryption_pin = pin;
       this.currentCID = "";
       this.metaData = "";
-      this.tableData = [];
       this.currentStatus = "STATUS_LOADING";
       this.getAtraRecordData(this.encryption_pin).catch(err => {
-          console.log("error getting atra data: " + err);
-        this.currentStatus = "STATUS_FAILED";
+        console.log("error getting atra data: " + err);
+        this.currentStatus = "STATUS_FAILED_DECRYPT";
       });;
     },
   },

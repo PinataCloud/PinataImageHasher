@@ -144,7 +144,6 @@ export default {
   methods: {
     async fillCIDsVariable() {
       this.knownCids = await AtraAPI.GetCIDs(this.encryption_pin);
-      console.log(this.knownCids)
     },
 
     async retrieveImageMetadata() {
@@ -206,7 +205,6 @@ export default {
         onlyHash: true
       })
       this.uploadedCids = cid[0]; // NOTE - object, not just the hash
-      console.log(cid[0].hash);
 
       // TODO: USE FOR MULTIPLE FILES ...
       // let cids = await fileList.map(file => ipfs.add(file, {

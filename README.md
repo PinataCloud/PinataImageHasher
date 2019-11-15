@@ -10,10 +10,10 @@ _Open &amp; Trustless Data Verification_
   - [Hosted Demo](#hosted-demo)
   - [Local Demo](#local-demo)
 - [Data Validation](#data-validation)
-- [Other Validation Tools](#other-validation-tools)
-- [Open Source Tools Used](#open-source-tools-used)
-- [Dev Notes](#dev-notes)
+  - [Alternative Open Source Validation Tools](#alternative-open-source-validation-tools)
+- [Developer Notes](#develper-notes)
   - [Deploy to Host](#deploy-to-host)
+
 
 
 
@@ -96,17 +96,19 @@ Then see [Dev Notes](#dev-notes) for more details on deploying and editing the a
     - At the bottom of the page, Click to `show more`
     - View the `input data` as `UTF-8`. The CID || picture timestamp || location (in that order)  _should_ be apparent there. You can also validate the timestap of the transaction itself ot cross-check the providance of the recorded data.
 
-### Other Validation Tools
+### Alternative Open Source Validation Tools
 
-Don't this application? You can still use the system and **watch the watchers** with other 3rd party open source tools. See the [Corroborator Overview](https://github.com/Corroborator-Net/Corroborator-Overview) for options.
+As and alternative to _[Corroborator Auditor](https://github.com/Corroborator-Net/Corroborator-Auditor)_, you can still use _[Corroborator Reporter](https://github.com/Corroborator-Net/Corroborator-Reporter)_ and **watch the watchers** with other 3rd party open source tools:
 
-### Open Source Tools Used
-- [IPFS](https://ipfs.io/): The [JS node](https://js.ipfs.io/)
-- [Atra](https://atra.io/): A Public [Ethereum Blockchain](https://ethereum.org/) Toolset
-- [Quasar](https://quasar.dev): A [Vue](https://vuejs.org/) Webapp Framework
+| Project | Link | What it Does |
+|----------|---------|--------------|
+| Ethereum MAINNET Block Explorer | https://blockchair.com/ | Figerprint & Data Provenance (Production)|
+| Ethereum RINKEBY TESTNET Block Explorer | https://rinkeby.etherscan.io/ | Figerprint & Data Provenance (Testing)|
+| IPFS Gateway | https://gateway.pinata.cloud/ipfs/<PROVIDE_CID_FINGERPRINT> | Fingerprint & Data Validation (online)|
+| IPFS Desktop | https://github.com/ipfs-shipyard/ipfs-desktop | Fingerprint & Data cross-validation Client (download)|
+| Text Difference Tool | https://www.diffchecker.com/ | Crosscheck CIDs and Hashes|
 
-
-## Dev Notes
+## Developer Notes
 ### Deploy to Host
 
 Open a `terminal` on lnux and run the following commands:
@@ -120,3 +122,15 @@ git remote add gh-pages git@github.com:Corroborator-Net/Corroborator-Net.github.
 ```bash
 npm run deploy
 ```
+
+## License
+
+GNU Affero General Public License v3.0
+
+### :heart: Open Source Tools Used 
+- [IPFS](https://ipfs.io/): The [JS node](https://js.ipfs.io/)
+- [Atra](https://atra.io/): A Public [Ethereum Blockchain](https://ethereum.org/) Toolset
+- [Quasar](https://quasar.dev): A [Vue](https://vuejs.org/) Webapp Framework
+
+
+

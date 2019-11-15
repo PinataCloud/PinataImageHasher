@@ -35,12 +35,16 @@ Using **Corro**borator Auditor is easy and intuitive for everyone. Here we provi
 
 ### Hosted Demo
 
-**If you trust the host, or do not have the ability to download and run the aplication**
+*If you trust the host, or do not have the ability to download and run the aplication*
 
+We have a publised version avalible for you [at this link]
+- https://corroborator-net.github.io/
 
+Open the link above then jump to the [Data Validation](#data-validation) section to contiue the walkthrough.
+ 
 ### Local Demo
 
-**If you wish to run or install the application on your own machine, you can!**
+*If you wish to run or install the application on your own machine, you can!*
 
 #### Browser Only - For Users, No Install Required
 

@@ -52,17 +52,29 @@ export default class AtraAPI {
       let date = new Date(parseInt(blockTimeStamp) * 1000);
 
       if (!AtraAPI.isValidDate(date)) {
-        date = "Unmined Block"
+        date = "Pending..."
       } else {
         date = AtraAPI.getFormattedDateString(date);
       }
 
       BlockTimes.push(date);
-      // console.log(Crypto.Decrypt(record[0],key));
-      CIDs.push(Crypto.Decrypt(record[0], key));
-      Dates.push(Crypto.Decrypt(record[1], key));
-      Locations.push(Crypto.Decrypt(record[2], key));
-      StorageLocations.push(Crypto.Decrypt(record[3], key));
+      try{
+        // console.log(Crypto.Decrypt(record[0],key));
+        CIDs.push(Crypto.Decrypt(record[0], key));
+        Dates.push(Crypto.Decrypt(record[1], key));
+        Locations.push(Crypto.Decrypt(record[2], key));
+        StorageLocations.push(Crypto.Decrypt(record[3], key));
+      }
+      catch(e)
+      {
+        // console.log(e);
+        let unencrytptableMessage = "Unable to decrypt with supplied key";
+        CIDs.push(unencrytptableMessage);
+        Dates.push(unencrytptableMessage);
+        Locations.push(unencrytptableMessage);
+        StorageLocations.push(unencrytptableMessage);
+      }
+
 
     }
 

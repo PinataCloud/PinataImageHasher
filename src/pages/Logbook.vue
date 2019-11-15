@@ -19,7 +19,7 @@
     <pinDialog @new_pin="newPin"></pinDialog>
 
     <q-table name="cidTable" row-key="cid" no-data-label="No Log Data Available. Have you input the correct Reporter PIN?" loading-label="Gathering Log Data..." :loading="loading" :data="tableData" :columns="columns" :filter="filter"
-      :pagination.sync="pagination" table-style="max-height: 67vh;" style="width: 60vw;" class="my-sticky-header-column-table" virtual-scroll :virtual-scroll-slice-size="25">
+      :pagination.sync="pagination" table-style="max-height: 67vh;" style="width: 80vw;" class="my-sticky-header-column-table" virtual-scroll :virtual-scroll-slice-size="25">
       <template v-slot:body-cell="props">
         <q-td :props="props" @click.native="selectCID(props.row)" class="cursor-pointer">
           <div>{{ props.value }}</div>

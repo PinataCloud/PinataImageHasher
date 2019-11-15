@@ -135,6 +135,3 @@ GNU Affero General Public License v3.0
 - [IPFS](https://ipfs.io/): The [JS node](https://js.ipfs.io/)
 - [Atra](https://atra.io/): A Public [Ethereum Blockchain](https://ethereum.org/) Toolset
 - [Quasar](https://quasar.dev): A [Vue](https://vuejs.org/) Webapp Framework
-
-
-

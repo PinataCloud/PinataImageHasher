@@ -8,9 +8,9 @@ _Open &amp; Trustless Data Verification_
 - [Overview](#overview)
 - [Demo Walkthough](#demo-walkthough)
   - [Installation](#installation)
-  - [Data Validation](#data-validation)
-- [Open Source Tools Used](#open-source-tools-used)
-- [License](#license)
+  - [Deploy to Host](#deploy-to-host)
+- [Data Validation](#data-validation)
+
 
 ## Overview
 
@@ -49,7 +49,21 @@ npm install
 npm run dev
 ```
 
-### Data Validation
+### Deploy to Host
+
+Open a `terminal` on lnux and run the following commands:
+
+1. Add a `gh-pages` remote to git (for us it is git@github.com:Corroborator-Net/Corroborator-Net.github.io.git)
+```bash
+git remote add gh-pages git@github.com:Corroborator-Net/Corroborator-Net.github.io.git
+```
+
+2. Deploy it to the host:
+```bash
+npm run deploy
+```
+
+## Data Validation
 
 1. Download the [Demo Picture](/src/statics/QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR.jpeg)
 2. Check that the downloaded image CID (`QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR`) matches what you can obtain on an IPFS gateway and/or the IPFS desktop client (See [Open Validation Tools](#open-validation-tools))

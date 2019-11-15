@@ -21,7 +21,7 @@
     <q-table name="cidTable" row-key="cid" no-data-label="No Log Data Available. Have you input the correct Reporter PIN?" loading-label="Gathering Log Data..." :loading="loading" :data="tableData" :columns="columns" :filter="filter"
       :pagination.sync="pagination" table-style="max-height: 67vh;" style="width: 80vw;" class="my-sticky-header-column-table" virtual-scroll :virtual-scroll-slice-size="25">
       <template v-slot:body-cell="props">
-        <q-td :props="props" @click.native="selectCID(props.row.cid)" class="cursor-pointer">
+        <q-td :props="props" @click.native="selectCID(props.row)" class="cursor-pointer">
           <div>{{ props.value }}</div>
         </q-td>
       </template>
@@ -29,11 +29,11 @@
   </div>
 
   <!-- IMAGE CARD VIEW (STATUS_IMG) -->
-  <div v-if="currentCID && !isFailedDecrypt" class="flex justify-center q-py-xl">
+  <div v-if="currentRow.cid && !isFailedDecrypt" class="flex justify-center q-py-xl">
     <q-card class="img-card bg-blue-grey-2" align="center" style="width: 90%">
 
       <!-- LOGBOOK IMAGE-->
-      <img class="q-ma-md" id="imgSelected" :src="imgURL" style="max-width: 80vh" :alt="currentCID">
+      <img class="q-ma-md" id="imgSelected" :src="imgURL" style="max-width: 80vh" :alt="currentRow.cid">
 
       <!-- READING METADATA (displayed under image) -->
       <div v-if="isReading" class="text-center">
@@ -42,27 +42,50 @@
       </div>
 
       <!-- METADATA LOADED -->
-      <div v-if="metaData" class="q-pa-md">
-        <q-list dense bordered class="q-ma-sm rounded-borders bg-blue-grey-2">
-          <q-item>
-            <q-item-section>
-              <b>Fingerprint (CID)</b>
-            </q-item-section>
-            <q-item-section>
-              {{shortCID}}
-            </q-item-section>
-          </q-item>
-          <q-item v-for="(value, key) in metaData">
-            <q-item-section>
-              <b>{{ key }}</b>
-            </q-item-section>
-            <q-item-section>
-              {{value}}
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </div>
+            <div v-if="metaData" class="q-pa-md">
+              <q-list dense bordered class="q-ma-sm rounded-borders bg-blue-grey-2">
 
+                <q-item class="justify-center">
+                  <p style="font-size:150%" class="q-pt-md">Image Metadata:</p>
+                </q-item>
+
+                <q-separator inset />
+
+                <q-item>
+                  <q-item-section>
+                    <b>Fingerprint (CID)</b>
+                  </q-item-section>
+                  <q-item-section>
+                    {{currentRow.cid}}
+                  </q-item-section>
+                </q-item>
+                <q-item v-for="(value, key) in metaData">
+                  <q-item-section>
+                    <b>{{ key }}</b>
+                  </q-item-section>
+                  <q-item-section>
+                    {{value}}
+                  </q-item-section>
+                </q-item>
+
+                <q-separator spaced inset />
+
+                <q-item class="justify-center">
+                  <p style="font-size:150%" class="q-pt-sm">Logbook data:</p>
+                </q-item>
+
+                <q-separator inset />
+
+                <q-item v-for="(value, key) in currentRow">
+                  <q-item-section>
+                    <b>{{ key }}</b>
+                  </q-item-section>
+                  <q-item-section>
+                    {{value}}
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
 
       <!-- Action buttons under image -->
       <q-card-actions align="around" class="bg-blue-grey-2">
@@ -104,7 +127,7 @@ export default {
       encryption_pin: this.$encryption_pin,
       tableData: [],
       currentStatus: "STATUS_LOADING",
-      currentCID: "",
+      currentRow: [],
       shortCID: "",
       imgURL: "",
       knownCids: [],
@@ -223,10 +246,11 @@ export default {
     },
 
     async selectCID(rowCID) {
-      this.currentCID = rowCID;
-      this.shortCID = this.shortenCID(rowCID);
+      console.log(rowCID);
+      this.currentRow = rowCID;
+      this.shortCID = this.shortenCID(this.currentRow.cid);
       // NOTE: if you use a gateway you MUST enable XHR in browser else this fails silently!
-      this.imgURL = 'https://gateway.pinata.cloud/ipfs/' + this.currentCID;
+      this.imgURL = 'https://gateway.pinata.cloud/ipfs/' + this.currentRow.cid;
       this.currentStatus = "STATUS_IMG";
     },
 
@@ -236,7 +260,7 @@ export default {
 
     newPin(pin) {
       this.encryption_pin = pin;
-      this.currentCID = "";
+      this.currentRow = [];
       this.metaData = "";
       this.currentStatus = "STATUS_LOADING";
       this.getAtraRecordData(this.encryption_pin).catch(err => {

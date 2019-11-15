@@ -34,11 +34,12 @@
       <!-- LOADING (displayed under image) -->
       <div v-if="isLoading" class="text-center">
         <q-spinner-pie class="q-mt-lg" color="primary" size="13%" />
-        <p class="text-italic q-pa-sm" style="font-size:150%;">Extracting Metadata... Checking Fingerprint</p>
+        <p class="text-italic q-pa-sm" style="font-size:150%">Extracting Metadata... Checking Fingerprint</p>
       </div>
 
       <!-- METADATA (displayed under image) , check vs. logs-->
       <div v-if="metaData" class="q-pa-md" :style="verifiedColor">
+
         <div v-if="verifiedCID">
           <h6>Fingerprint VERIFIED!</h6>
         </div>
@@ -46,6 +47,13 @@
           <h6>Fingerprint <b>NOT</b> in Log</h6>
         </div>
         <q-list dense bordered class="q-ma-sm rounded-borders bg-blue-grey-2">
+
+          <q-item class="justify-center">
+            <p style="font-size:150%" class="q-pt-sm">Image Metadata:</p>
+          </q-item>
+
+          <q-separator inset />
+
           <q-item>
             <q-item-section>
               <b>Uploaded Fingerprint (CID)</b>
@@ -55,20 +63,20 @@
             </q-item-section>
           </q-item>
 
-        <div v-if="isImg">
-          <q-item v-for="(value, key) in metaData">
-            <q-item-section>
-              <b>{{ key }}</b>
-            </q-item-section>
-            <q-item-section>
-              {{value}}
-            </q-item-section>
-          </q-item>
-        </div>
+          <div v-if="isImg">
+            <q-item v-for="(value, key) in metaData">
+              <q-item-section>
+                <b>{{ key }}</b>
+              </q-item-section>
+              <q-item-section>
+                {{value}}
+              </q-item-section>
+            </q-item>
+          </div>
 
-        <div v-if="isFailedMeta">
-          <p class="text-2xl text-italic"> <br> ALERT: <br> No Report Data <br> Found Within Image</p>
-        </div>
+          <div v-if="isFailedMeta">
+            <p class="text-2xl text-italic"> <br> ALERT: <br> No Report Data <br> Found Within Image</p>
+          </div>
         </q-list>
       </div>
 
@@ -257,16 +265,11 @@ export default {
       this.save(formData);
     },
 
-    shortenCID(val) {
-      let short = val.substring(0, 3) + " ... " + val.substring(val.length - 7, val.length);
-      return short
-    },
-
     async checkImage() {
       console.log(this.knownCids);
       console.log(this.uploadedCids.hash);
       this.verifiedCID = this.knownCids.includes(this.uploadedCids.hash)
-      this.shortCID = this.shortenCID(this.uploadedCids.hash); //TODO fix for multiple files
+      this.shortCID = this.uploadedCids.hash; //TODO fix for multiple files
       let cids = this.retrieveImageMetadata()[0];
     }
   },

@@ -11,7 +11,16 @@ export default class AtraAPI {
     // start at the end of the list
     for (i = liveRecords.length - 1; i >= 0; i--) {
       const record = liveRecords[i]["record"];
-      CIDs.push(Crypto.Decrypt(record[0], key));
+      try{
+        // console.log(Crypto.Decrypt(record[0],key));
+        CIDs.push(Crypto.Decrypt(record[0], key));
+      }
+      catch(e)
+      {
+        // console.log(e);
+        let unencrytptableMessage = "Unable to decrypt with supplied key";
+        CIDs.push(unencrytptableMessage);
+      }
     }
 
     return CIDs;

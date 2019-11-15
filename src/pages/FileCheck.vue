@@ -181,7 +181,7 @@ export default {
       this.currentStatus = "STATUS_INITIAL";
 
     },
-    
+
     async getAtraRecordData(pin) {
       this.tableData = [];
       this.currentStatus = "STATUS_LOADING";
@@ -204,6 +204,7 @@ export default {
 
     reset() {
       // reset form to initial state
+      this.verifiedCID = false;
       this.currentStatus = "STATUS_INITIAL";
       this.uploadedFiles = [];
       this.uploadedCids = [];
@@ -264,9 +265,7 @@ export default {
     async checkImage() {
       console.log(this.knownCids);
       console.log(this.uploadedCids.hash);
-      if (this.knownCids.includes(this.uploadedCids.hash)) {
-        this.verifiedCID = true;
-      };
+      this.verifiedCID = this.knownCids.includes(this.uploadedCids.hash)
       this.shortCID = this.shortenCID(this.uploadedCids.hash); //TODO fix for multiple files
       let cids = this.retrieveImageMetadata()[0];
     }

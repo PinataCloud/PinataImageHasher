@@ -7,7 +7,8 @@ _Open &amp; Trustless Data Verification_
 
 - [Overview](#overview)
 - [Demo Walkthough](#demo-walkthough)
-  - [Installation](#installation)
+  - [Hosted Demo](#hosted-demo)
+  - [Local Demo](#local-demo)
 - [Data Validation](#data-validation)
 - [Other Validation Tools](#other-validation-tools)
 - [Open Source Tools Used](#open-source-tools-used)
@@ -32,7 +33,28 @@ Using **Corro**borator Auditor is easy and intuitive for everyone. Here we provi
 
 ---
 
-### Installation
+### Hosted Demo
+
+**If you trust the host, or do not have the ability to download and run the aplication**
+
+
+### Local Demo
+
+**If you wish to run or install the application on your own machine, you can!**
+
+#### Browser Only - For Users, No Install Required
+
+1. Clone the static build repo into a directory of your choise:
+```bash
+#SET YOUR OWN DIRECTORY HERE IN PLACE OF ~:
+cd ~
+git clone git@github.com:Corroborator-Net/Corroborator-Net.github.io
+```
+
+2. Open the `index.html` file browser where the directory you cloned into is.
+
+
+#### Full Installation - For Developers
 
 Open a `terminal` on lnux and run the following commands:
 

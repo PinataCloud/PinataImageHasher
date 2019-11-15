@@ -25,11 +25,11 @@
   </form>
 
   <!--UPLOADED IMAGE DISPLAY-->
-  <div v-if="uploadedFiles && !isFailedDecrypt" v-for="item in uploadedFiles" class="flex justify-center q-pt-xl">
-    <q-card class="img-card" align="center" style="width: 90%">
+  <div v-if="uploadedFiles && !isFailedDecrypt" v-for="item in uploadedFiles" class="flex justify-center q-pb-xl">
+    <q-card class="img-card bg-blue-grey-2" align="center" style="width: 100%">
 
       <!--UPLOADED IMAGE-->
-      <img id="imgSelected" :src="item.url" :alt="item.originalName" style="max-width: 80vh">
+      <img class="q-ma-md" id="imgSelected" :src="item.url" :alt="item.originalName" style="max-width: 70vh">
 
       <!-- LOADING (displayed under image) -->
       <div v-if="isLoading" class="text-center">
@@ -45,7 +45,7 @@
         <div v-else>
           <h6>Fingerprint <b>NOT</b> in Log</h6>
         </div>
-        <q-list dense bordered padding class="rounded-borders">
+        <q-list dense bordered class="q-ma-sm rounded-borders bg-blue-grey-2">
           <q-item>
             <q-item-section>
               <b>Uploaded Fingerprint (CID)</b>
@@ -74,8 +74,8 @@
 
       <!-- Actions under image -->
       <q-card-actions align="around" class="bg-blue-grey-2">
-        <q-btn color="blue-grey-9" icon-right="layers_clear" stacked no-caps label="Reset" @click="reset()" />
-        <q-btn color="blue-grey-9" stacked no-caps label="Generate Report" icon-right="image_search" @click="checkImage()" />
+        <q-btn class="q-px-xl q-py-xs" color="blue-grey-9" icon-right="layers_clear" no-caps label="Reset" @click="reset()" />
+        <q-btn color="blue-grey-9" no-caps label="Generate Report" icon-right="image_search" @click="checkImage()" />
       </q-card-actions>
     </q-card>
 

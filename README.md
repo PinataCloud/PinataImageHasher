@@ -12,8 +12,6 @@ _Open &amp; Trustless Data Verification_
 - [Data Validation](#data-validation)
   - [Alternative Open Source Validation Tools](#alternative-open-source-validation-tools)
 - [Developer Notes](#develper-notes)
-  - [Deploy to Host](#deploy-to-host)
-
 
 
 
@@ -65,7 +63,7 @@ git clone git@github.com:Corroborator-Net/Corroborator-Net.github.io
 
 ---
 
-### Data Validation
+## Data Validation
 
 1. Download the [Demo Picture](/src/statics/QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR.jpeg)
 2. Check that the downloaded image CID (`QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR`) matches what you can obtain on an IPFS gateway and/or the IPFS desktop client (See [Open Validation Tools](#open-validation-tools))

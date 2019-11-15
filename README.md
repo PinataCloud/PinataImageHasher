@@ -48,21 +48,12 @@ _If you wish to run or install the application on your own machine, you can!_
 
 **Only a browser required for users**
 
-1.  Clone the static build repo into a directory of your choise:
+1.  Download the latest (`corroborator_auditor-X.X.X.zip`) release from the list here: https://github.com/Corroborator-Net/Corroborator-Auditor/releases
 
-```bash
-#SET YOUR OWN DIRECTORY HERE IN PLACE OF ~:
-cd ~
-git clone git@github.com:Corroborator-Net/Corroborator-Net.github.io
-```
+2. Move the file to a new file folder / directory and extract the contents of the `.zip` file.
 
-2.  Open a file browser and navigate to where the directory you cloned into is.
+3.  Open `index.html` in a web browser of your choice (right click and `open in...`)
 
-3.  Open `index.html` in a web browser of your choise (right click and `open in...`)
-
-\*You are alos
-
-* * *
 
 ## Data Validation
 

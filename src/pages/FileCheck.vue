@@ -181,6 +181,26 @@ export default {
       this.currentStatus = "STATUS_INITIAL";
 
     },
+    
+    async getAtraRecordData(pin) {
+      this.tableData = [];
+      this.currentStatus = "STATUS_LOADING";
+
+      [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes, this.knownStorageLocations] = await AtraAPI.GetCIDsLocationAndDates(pin);
+
+      for (let i = 0; i < this.knownCids.length; i++) {
+        let newTableEntry = {
+          cid: this.knownCids[i],
+          fileT: this.knownDates[i],
+          location: this.knownLocations[i],
+          blockT: this.knownBlockTimes[i],
+          StorageLocation: this.knownStorageLocations[i],
+        };
+        this.tableData.push(newTableEntry);
+      }
+      this.currentStatus = "STATUS_TABLE";
+    },
+
 
     reset() {
       // reset form to initial state

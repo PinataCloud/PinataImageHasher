@@ -8,8 +8,12 @@ _Open &amp; Trustless Data Verification_
 - [Overview](#overview)
 - [Demo Walkthough](#demo-walkthough)
   - [Installation](#installation)
-  - [Deploy to Host](#deploy-to-host)
 - [Data Validation](#data-validation)
+- [Other Validation Tools](#other-validation-tools)
+- [Open Source Tools Used](#open-source-tools-used)
+- [Dev Notes](#dev-notes)
+  - [Deploy to Host](#deploy-to-host)
+
 
 
 ## Overview
@@ -49,6 +53,27 @@ npm install
 npm run dev
 ```
 
+### Data Validation
+
+1. Download the [Demo Picture](/src/statics/QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR.jpeg)
+2. Check that the downloaded image CID (`QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR`) matches what you can obtain on an IPFS gateway and/or the IPFS desktop client (See [Open Validation Tools](#open-validation-tools))
+    - Use a *gateway* to see the file by CID ([here is one](https://gateway.pinata.cloud/ipfs/QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR))
+    - Use the *Desktop Client* **files explorer** to add/upload the demo file and cross-verify that the file indeed has the same CID generated as the file viewed at a gateway.
+3. Verify the CID was published on the blockchain. The demo file was published [on the rinkeby ethereum testnet ](https://rinkeby.etherscan.io/tx/) (transaction hash: ``)
+    - At the bottom of the page, Click to `show more`
+    - View the `input data` as `UTF-8`. The CID || picture timestamp || location (in that order)  _should_ be apparent there. You can also validate the timestap of the transaction itself ot cross-check the providance of the recorded data.
+
+### Other Validation Tools
+
+Don't this application? You can still use the system and **watch the watchers** with other 3rd party open source tools. See the [Corroborator Overview](https://github.com/Corroborator-Net/Corroborator-Overview) for options.
+
+### Open Source Tools Used
+- [IPFS](https://ipfs.io/): The [JS node](https://js.ipfs.io/)
+- [Atra](https://atra.io/): A Public [Ethereum Blockchain](https://ethereum.org/) Toolset
+- [Quasar](https://quasar.dev): A [Vue](https://vuejs.org/) Webapp Framework
+
+
+## Dev Notes
 ### Deploy to Host
 
 Open a `terminal` on lnux and run the following commands:
@@ -62,22 +87,3 @@ git remote add gh-pages git@github.com:Corroborator-Net/Corroborator-Net.github.
 ```bash
 npm run deploy
 ```
-
-## Data Validation
-
-1. Download the [Demo Picture](/src/statics/QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR.jpeg)
-2. Check that the downloaded image CID (`QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR`) matches what you can obtain on an IPFS gateway and/or the IPFS desktop client (See [Open Validation Tools](#open-validation-tools))
-    - Use a *gateway* to see the file by CID ([here is one](https://gateway.pinata.cloud/ipfs/QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR))
-    - Use the *Desktop Client* **files explorer** to add/upload the demo file and cross-verify that the file indeed has the same CID generated as the file viewed at a gateway.
-3. Verify the CID was published on the blockchain. The demo file was published [on the rinkeby ethereum testnet ](https://rinkeby.etherscan.io/tx/) (transaction hash: ``)
-    - At the bottom of the page, Click to `show more`
-    - View the `input data` as `UTF-8`. The CID || picture timestamp || location (in that order)  _should_ be apparent there. You can also validate the timestap of the transaction itself ot cross-check the providance of the recorded data.
-  
-#### Other Validation Tools
-
-Don't this application? You can still use the system and **watch the watchers** with other 3rd party open source tools. See the [Corroborator Overview](https://github.com/Corroborator-Net/Corroborator-Overview) for options.
-
-### Open Source Tools Used
-- [IPFS](https://ipfs.io/): The [JS node](https://js.ipfs.io/)
-- [Atra](https://atra.io/): A Public [Ethereum Blockchain](https://ethereum.org/) Toolset
-- [Quasar](https://quasar.dev): A [Vue](https://vuejs.org/) Webapp Framework

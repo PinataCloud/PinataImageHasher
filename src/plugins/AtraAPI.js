@@ -27,13 +27,14 @@ export default class AtraAPI {
   }
 
   static async GetAtraRecords() {
-    const tableID = "a333b349-b6f3-4716-b39d-9a734e4971f5";
+    const tableID = "83769362-85c7-4a0f-bd48-28b5606e29a3";
     const resp = await fetch("https://api.atra.io/prod/v1/dtables/records?tableId=" + tableID + "&txinfo=true", {
       headers: {
         "x-api-key": "vdssu05AWO6yAG4ojL4Sv6I9RkAGCak19hBhTVpm"
 
       }
     });
+    console.log(resp.statusText);
     const json = await resp.json();
     return json;
   }

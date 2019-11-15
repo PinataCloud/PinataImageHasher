@@ -108,6 +108,14 @@
     </q-card>
   </div>
 
+  <div v-if="isFailedAtra" class="flex absolute-center object-center text-center">
+    <q-card class="bg-warning" style="width: 80%">
+
+      <h2>Unable to get Data from Server.</h2>
+      <h5><em>Try refreshing the page.</em></h5>
+    </q-card>
+  </div>
+
 </q-page>
 </template>
 
@@ -201,6 +209,9 @@ export default {
     },
     isFailedDecrypt() {
       return this.currentStatus === "STATUS_FAILED_DECRYPT";
+    },
+    isFailedAtra() {
+        return this.currentStatus === "STATUS_FAILED_ATRA";
     }
   },
   methods: {
@@ -264,9 +275,15 @@ export default {
       this.metaData = "";
       this.currentStatus = "STATUS_LOADING";
       this.getAtraRecordData(this.encryption_pin).catch(err => {
-        console.log("error getting atra data: " + err);
-        this.currentStatus = "STATUS_FAILED_DECRYPT";
-      });;
+          if (err instanceof SyntaxError) {
+              console.log("Syntax error getting atra data: " + err);
+              this.currentStatus = "STATUS_FAILED_ATRA";
+
+          } else {
+              console.log("error getting atra data: " + err);
+              this.currentStatus = "STATUS_FAILED_DECRYPT";
+          }
+      });
     },
   },
   components: {

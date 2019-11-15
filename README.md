@@ -34,11 +34,11 @@ Using **Corro**borator Auditor is easy and intuitive for everyone. Here we provi
 
 _If you trust the host, or do not have the ability to download and run the aplication_
 
-We have a publised version avalible for you [at this link]
+We have a published version available for you [at this link]
 
 -   <https://corroborator-net.github.io/>
 
-Open the link above then jump to the [Data Validation](#data-validation) section to contiue the walkthrough.
+Open the link above then jump to the [Data Validation](#data-validation) section to continue the walkthrough.
 
 * * *
 
@@ -61,7 +61,7 @@ _If you wish to run or install the application on your own machine, you can!_
 2.  Check that the downloaded image CID (`QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR`) matches what you can obtain on an IPFS gateway and/or the IPFS desktop client (See [Open Validation Tools](#open-validation-tools))
     -   Use a _gateway_ to see the file by CID ([here is one](https://gateway.pinata.cloud/ipfs/QmYXzRsLsWHTg3xTPx7ksEpN7w8JgwpiZ4whnq6phaDrZR))
     -   Use the _Desktop Client_ **files explorer** to add/upload the demo file and cross-verify that the file indeed has the same CID generated as the file viewed at a gateway.
-3.  Verify the CID was published on the blockchain. The demo file was published [on the rinkeby ethereum testnet ](https://rinkeby.etherscan.io/tx/) (transaction hash: ``)
+3.  Verify the CID was published on the blockchain. The demo file was published [on the rinkeby ethereum testnet](https://rinkeby.etherscan.io/tx/)  (transaction hash: ``)
     -   At the bottom of the page, Click to `show more`
     -   View the `input data` as `UTF-8`. The CID || picture timestamp || location (in that order)  _should_ be apparent there. You can also validate the timestap of the transaction itself ot cross-check the providance of the recorded data.
 
@@ -81,9 +81,9 @@ As and alternative to _[Corroborator Auditor](https://github.com/Corroborator-Ne
 
 ### Installation
 
-Open a `terminal` on lnux and run the following commands:
+Open a `terminal` on a linux machine and run the following commands:
 
-1.  Clone this repo into a directory of your choise:
+1.  Clone this repo into a directory of your choice:
 
 ```bash
 #SET YOUR OWN DIRECTORY HERE IN PLACE OF ~:
@@ -105,7 +105,7 @@ npm run dev
 
 ### Deploy to a Remote Host
 
-Open a `terminal` on lnux and run the following commands:
+Open a `terminal` on linux and run the following commands:
 
 1.  Add a `gh-pages` remote to git (for us it is git@github.com:Corroborator-Net/Corroborator-Net.github.io.git)
 
@@ -119,7 +119,7 @@ git remote add gh-pages git@github.com:Corroborator-Net/Corroborator-Net.github.
 npm run build
 ```
 
-2.  Deploy it to the host:
+2.  Deploy it to your remote host:
 
 ```bash
 npm run deploy

@@ -48,7 +48,7 @@ Open the link above then jump to the [Data Validation](#data-validation) section
 
 *If you wish to run or install the application on your own machine, you can!*
 
-#### Browser Only - For Users, No Install Required
+**Only a browser required for users**
 
 1. Clone the static build repo into a directory of your choise:
 ```bash
@@ -57,32 +57,11 @@ cd ~
 git clone git@github.com:Corroborator-Net/Corroborator-Net.github.io
 ```
 
-2. Open the `index.html` file browser where the directory you cloned into is.
+2. Open a file browser and navigate to where the directory you cloned into is.
 
+3. Open `index.html` in a web browser of your choise (right click and `open in...`) 
 
-#### Full Installation - For Developers
-
-Open a `terminal` on lnux and run the following commands:
-
-1. Clone this repo into a directory of your choise:
-```bash
-#SET YOUR OWN DIRECTORY HERE IN PLACE OF ~:
-cd ~
-git clone git@github.com:Corroborator-Net/Corroborator-Auditor.git
-```
-
-2. Install the application & dependencies:
-```bash
-npm install
-```
-
-3. Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-npm run dev
-```
-
-Then see [Dev Notes](#dev-notes) for more details on deploying and editing the application.
-
+*You are alos 
 
 ---
 
@@ -109,13 +88,40 @@ As and alternative to _[Corroborator Auditor](https://github.com/Corroborator-Ne
 | Text Difference Tool | https://www.diffchecker.com/ | Crosscheck CIDs and Hashes|
 
 ## Developer Notes
-### Deploy to Host
+
+### Installation
+
+Open a `terminal` on lnux and run the following commands:
+
+1. Clone this repo into a directory of your choise:
+```bash
+#SET YOUR OWN DIRECTORY HERE IN PLACE OF ~:
+cd ~
+git clone git@github.com:Corroborator-Net/Corroborator-Auditor.git
+```
+
+2. Install the application & dependencies:
+```bash
+npm install
+```
+
+3. Start the app in development mode (hot-code reloading, error reporting, etc.)
+```bash
+npm run dev
+```
+
+### Deploy to a Remote Host
 
 Open a `terminal` on lnux and run the following commands:
 
 1. Add a `gh-pages` remote to git (for us it is git@github.com:Corroborator-Net/Corroborator-Net.github.io.git)
 ```bash
 git remote add gh-pages git@github.com:Corroborator-Net/Corroborator-Net.github.io.git
+```
+
+2. Build the application:
+```bash
+npm run build
 ```
 
 2. Deploy it to the host:

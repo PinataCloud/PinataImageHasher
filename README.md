@@ -151,7 +151,11 @@ Open a `terminal` on linux and run the following commands:
 1.  Add a `gh-pages` remote to git (for us it is git@github.com:Corroborator-Net/Corroborator-Net.github.io.git)
 
 ```bash
+# If you use SSH to access the remote repo:
 git remote add gh-pages git@github.com:Corroborator-Net/Corroborator-Net.github.io.git
+
+# If you use https to access the remote repo:
+git remote add gh-pages https://github.com/Corroborator-Net/Corroborator-Net.github.io.git
 ```
 
 2.  Build the application:

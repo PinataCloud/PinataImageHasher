@@ -18,7 +18,7 @@ _Open & Trustless Data Verification_
 
 **Corro**borator is a system for...
 
-**Corro**borator Auditor allows you to easily _explore and verify_ files created by the [**Corro**borator Reporter iOS App](https://github.com/Corroborator-Net/Corroborator-Reporter):
+**Corro**borator Auditor allows you to easily _explore and verify_ files created by the [**Corro**borator Reporter App](https://github.com/Corroborator-Net/Corroborator-Reporter):
 
 -   **Audit** verified data logged on the system along with metadata
     -   View files
@@ -65,8 +65,8 @@ Now jump to the [Data Validation](#data-validation) section to continue the walk
 #### The demo uses two PIN keys for it's logbook
  - PIN 1 = `superSeceretKey`
  - PIN 2 = `superSecert`
- 
-Folow the instructions below after selecting one of the PINs. Conisder doing it once through for each PIN to get familiar with the user flow.  
+
+Follow the instructions below after selecting one of the PINs. Consider doing these steps once through for each PIN to get familiar with the user flow.  
 
 1. Obtain a correct PIN. The individual sets this PIN they are using the [Reporter app](https://github.com/Corroborator-Net/Corroborator-Reporter), and needs to communicate this to you to view the log entry for these files.
 
@@ -80,7 +80,7 @@ Folow the instructions below after selecting one of the PINs. Conisder doing it 
 
 5. Right click and `Download the Image` to your machine.
 
-6. Return to the logbook table by clicking `Reset` 
+6. Return to the logbook table by clicking `Reset`
 
 7. In the **File Check** page, `upload` the image you just downloaded.
     - *NOTE: you MUST use the correct PIN is baked into the image file itself, while the logbook data is stored on a blockchain.*

@@ -16,17 +16,19 @@ _Open & Trustless Data Verification_
 
 ## Overview
 
-**Corro**borator Audtitor allows you to easily _explore and verify_ any file issued by our [iOS Image Capture App](https://github.com/Corroborator-Net/Corroborator-iOS):
+**Corro**borator is a system for...
 
--   **Audit** verified data logged on our system along with metadata
+**Corro**borator Auditor allows you to easily _explore and verify_ files created by the [**Corro**borator Reporter iOS App](https://github.com/Corroborator-Net/Corroborator-Reporter):
+
+-   **Audit** verified data logged on the system along with metadata
     -   View files
     -   View metadata
--   **Verify** local or remote files issued by our [iOS Image Capture App](https://github.com/Corroborator-Net/Corroborator-iOS)
+-   **Verify** local or remote files issued by the [**Corro**borator Reporter](https://github.com/Corroborator-Net/Corroborator-Reporter)
     -   Upload files and cross-validate integrity & provenance
 
 ## Demo Walkthrough
 
-Using **Corro**borator Auditor is easy and intuitive for everyone. Here we provide a sample image that we want to audit with our system that you can **run on your machine** - no need to trust us or a hosted service!
+Using **Corro**borator Auditor is easy and intuitive. Here we provide a sample image that we want to audit with our system that you can **run on your machine** - no need to trust us or a hosted service!
 
 * * *
 
@@ -46,7 +48,7 @@ Open the link above then jump to the [Data Validation](#data-validation) section
 
 _If you wish to run or install the application on your own machine, you can!_
 
-**Only a browser required for users**
+**Only a browser is required for Auditor users**
 
 1.  Download the latest (`corroborator_auditor-X.X.X.zip`) release from the list here: https://github.com/Corroborator-Net/Corroborator-Auditor/releases
 
@@ -58,11 +60,11 @@ Now jump to the [Data Validation](#data-validation) section to continue the walk
 
 ## Data Validation
 
-***NOTE:** For the demo, a deployed audit smart contract on the Ethereum Rinkeby Testnet  is ready for you ([details here](https://github.com/Corroborator-Net/Corroborator-Contract)). This is **hard coded** in our app at the moment! If you want a new audit log created, please reach out to us.*
+***NOTE:** For the demo, a deployed audit smart contract on the Ethereum Rinkeby Testnet  is available ([details here](https://github.com/Corroborator-Net/Corroborator-Contract)). This is **hard coded** in our app at the moment! If you want a new audit log created, please reach out to us.*
 
-1. Obtain the correct PIN. The individual sets this PIN they are using the [reporter app](https://github.com/Corroborator-Net/Corroborator-Reporter), and needs to communicate this to you to view the log entry for these files.
+1. Obtain the correct PIN. The individual sets this PIN they are using the [Reporter app](https://github.com/Corroborator-Net/Corroborator-Reporter), and needs to communicate this to you to view the log entry for these files.
 
-2. Change the PIN used to read the logbook by clicking `Set Reporter PIN`, entering the PIN, and then clicking `set`.
+2. Change the PIN used to read the logbook by clicking `Set Reporter PIN`, entering the PIN, and then clicking `Set`.
 
 3. In the **Logbook page**, open a reported image by clicking it.
     - *NOTE: If the incorrect PIN is used, you are not able to view the data on the log, or retrieve the image if it exists on the cloud.*
@@ -82,7 +84,7 @@ Now jump to the [Data Validation](#data-validation) section to continue the walk
 
 ### Alternative Open Source Validation Tools
 
-As and alternative to _[Corroborator Auditor](https://github.com/Corroborator-Net/Corroborator-Auditor)_, you can still use _[Corroborator Reporter](https://github.com/Corroborator-Net/Corroborator-Reporter)_ and **watch the watchers** with other 3rd party open source tools:
+As an alternative to _[Corroborator Auditor](https://github.com/Corroborator-Net/Corroborator-Auditor)_, you can still use _[Corroborator Reporter](https://github.com/Corroborator-Net/Corroborator-Reporter)_ to audit  with other 3rd party open source tools:
 
 | Project                                 | Link                                                             | What it Does                                          |
 | --------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------- |

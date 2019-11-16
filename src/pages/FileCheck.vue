@@ -8,6 +8,8 @@
         <div class="text-h5 text-center q-pb-md text-italic">Verify Images</div>
 
         <pinDialog class="justify-center q-mb-md" @new_pin="newPin"></pinDialog>
+        <div class="text-center q-pb-md ">Current pin: {{this.encryption_pin}}</div>
+
 
         <div class="col-12 dropbox" color="secondary">
           <div class="row full-width absolute-center items-center content-end">
@@ -183,17 +185,20 @@ export default {
 
     newPin(pin) {
       this.encryption_pin = pin;
-      this.currentStatus = "STATUS_LOADING";
+      // this.currentStatus = "STATUS_LOADING";
       this.getAtraRecordData(this.encryption_pin).catch(err => {
+          console.log("ATRA ERROR");
         this.currentStatus = "STATUS_FAILED_DECRYPT";
-      });
-      this.currentStatus = "STATUS_INITIAL";
+      }).then(response => {
+          this.currentStatus = "STATUS_INITIAL";
+    }
+    );
 
     },
 
     async getAtraRecordData(pin) {
       this.tableData = [];
-      this.currentStatus = "STATUS_LOADING";
+      // this.currentStatus = "STATUS_LOADING";
 
       [this.knownCids, this.knownDates, this.knownLocations, this.knownBlockTimes, this.knownStorageLocations] = await AtraAPI.GetCIDsLocationAndDates(pin);
 
@@ -207,7 +212,7 @@ export default {
         };
         this.tableData.push(newTableEntry);
       }
-      this.currentStatus = "STATUS_TABLE";
+      // this.currentStatus = "STATUS_TABLE";
     },
 
 
@@ -219,7 +224,7 @@ export default {
       this.uploadedCids = [];
       this.uploadError = null;
       this.metaData = "";
-      this.encryption_pin = this.$encryption_pin;
+      // this.encryption_pin = this.encryption_pin;
     },
 
     save(formData) {

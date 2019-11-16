@@ -183,7 +183,8 @@ export default {
         },
         {
           name: 'StorageLocation',
-          label: 'Storage',
+            field: row => row.storagelocation,
+            label: 'Storage',
           field: 'StorageLocation',
           align: 'center',
           sortable: true
@@ -256,9 +257,15 @@ export default {
       this.currentStatus = "STATUS_TABLE";
     },
 
-    async selectCID(rowCID) {
-      console.log(rowCID);
-      this.currentRow = rowCID;
+    async selectCID(row) {
+      console.log(row);
+      this.currentRow = row;
+      if (this.currentRow.StorageLocation === "DEVICE"){
+          // console.log("stored on device only");
+          this.imgURL = 'https://gateway.pinata.cloud/ipfs/' + "QmZ9FuQqp16bYdMqzdnihQHtdUogMWiVTHgzYwbttx5R9p";
+          this.currentStatus = "STATUS_IMG";
+          return;
+      }
       this.shortCID = this.shortenCID(this.currentRow.cid);
       // NOTE: if you use a gateway you MUST enable XHR in browser else this fails silently!
       this.imgURL = 'https://gateway.pinata.cloud/ipfs/' + this.currentRow.cid;
@@ -266,7 +273,7 @@ export default {
     },
 
     reset() {
-      this.newPin(this.$encryption_pin)
+      this.newPin(this.encryption_pin)
     },
 
     newPin(pin) {

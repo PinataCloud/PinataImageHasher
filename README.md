@@ -60,9 +60,9 @@ Now jump to the [Data Validation](#data-validation) section to continue the walk
 
 ## Data Validation
 
-***NOTE:** For the demo, a pre-deployed audit smart contract on the Ethereum Rinkeby Testnet is used ([details here](https://github.com/Corroborator-Net/Corroborator-Contract)). This is **hard coded** in our app at the moment!
+***NOTE:** For the demo, a pre-deployed audit smart contract on the Ethereum Rinkeby Testnet is used ([details here](https://github.com/Corroborator-Net/Corroborator-Contract)). This is **hard coded** in our app at the moment!*
 
-If you want a new audit log created, please reach out to us.*
+*If you want a new audit log created, please reach out to us.*
 
 #### The demo uses two PIN keys for it's logbook
  - PIN 1 = `superSeceretKey`

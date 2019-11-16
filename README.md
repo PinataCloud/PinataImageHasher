@@ -54,7 +54,7 @@ _If you wish to run or install the application on your own machine, you can!_
 
 2. Move the file to a new file folder / directory and extract the contents of the `.zip` file.
 
-3.  Open `index.html` in a web browser of your choice (right click and `open with...`)
+3. Open `index.html` in a web browser of your choice (right click and `open with...`)
 
 Now jump to the [Data Validation](#data-validation) section to continue the walkthrough.
 
@@ -62,7 +62,13 @@ Now jump to the [Data Validation](#data-validation) section to continue the walk
 
 ***NOTE:** For the demo, a deployed audit smart contract on the Ethereum Rinkeby Testnet  is available ([details here](https://github.com/Corroborator-Net/Corroborator-Contract)). This is **hard coded** in our app at the moment! If you want a new audit log created, please reach out to us.*
 
-1. Obtain the correct PIN. The individual sets this PIN they are using the [Reporter app](https://github.com/Corroborator-Net/Corroborator-Reporter), and needs to communicate this to you to view the log entry for these files.
+#### The demo uses two PIN keys for it's logbook
+ - PIN 1 = `superSeceretKey`
+ - PIN 2 = `superSecert`
+ 
+Folow the instructions below after selecting one of the PINs. Conisder doing it once through for each PIN to get familiar with the user flow.  
+
+1. Obtain a correct PIN. The individual sets this PIN they are using the [Reporter app](https://github.com/Corroborator-Net/Corroborator-Reporter), and needs to communicate this to you to view the log entry for these files.
 
 2. Change the PIN used to read the logbook by clicking `Set Reporter PIN`, entering the PIN, and then clicking `Set`.
 
@@ -74,12 +80,14 @@ Now jump to the [Data Validation](#data-validation) section to continue the walk
 
 5. Right click and `Download the Image` to your machine.
 
-6. In the **File Check** page, `upload` the image you just downloaded.
+6. Return to the logbook table by clicking `Reset` 
+
+7. In the **File Check** page, `upload` the image you just downloaded.
     - *NOTE: you MUST use the correct PIN is baked into the image file itself, while the logbook data is stored on a blockchain.*
 
-7. Click `Generate Report` to verify that the image fingerprint is found in the associated logbook
+8. Click `Generate Report` to verify that the image fingerprint is found in the associated logbook
 
-8. `Reset` and upload a random image that was _not_ genereated by the [reporter app](https://github.com/Corroborator-Net/Corroborator-Reporter). You sould see that there is _no metadata found_ and that the CID for the image is NOT in the logbook.
+9. Click `Reset` and then upload a different image that was _not_ genereated by the [reporter app](https://github.com/Corroborator-Net/Corroborator-Reporter). You sould see that there is _no metadata found_ and that the CID for the image is NOT in the logbook.
 
 
 ### Alternative Open Source Validation Tools

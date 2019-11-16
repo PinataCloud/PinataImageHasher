@@ -60,17 +60,17 @@ Now jump to the [Data Validation](#data-validation) section to continue the walk
 
 ## Data Validation
 
-***NOTE:** For the demo, a pre-deployed audit smart contract on the Ethereum Rinkeby Testnet is used ([details here](https://github.com/Corroborator-Net/Corroborator-Contract)). This is **hard coded** in our app at the moment!*
+For the demo, a pre-deployed audit smart contract on the Ethereum Rinkeby Testnet is used ([details here](https://github.com/Corroborator-Net/Corroborator-Contract)). 
 
-*If you want a new audit log created, please reach out to us.*
+**Important note:** This contact is **hard coded** in our app at the moment! If you want a new audit log created, please reach out to us. *Logbook creation tools are on the very near-term roadmap* 
 
-#### The demo uses two PIN keys for it's logbook
- - PIN 1 = `superSeceretKey`
- - PIN 2 = `superSecert`
-
-Follow the instructions below after selecting one of the PINs. Consider doing these steps once through for each PIN to get familiar with the user flow.  
+To test the demo, follow the instructions below:
 
 1. Obtain a correct PIN. The individual sets this PIN they are using the [Reporter app](https://github.com/Corroborator-Net/Corroborator-Reporter), and needs to communicate this to you to view the log entry for these files.
+ - This demo logbook has entries that use two different PIN keys:
+   - PIN 1 = `superSeceretKey`
+   - PIN 2 = `superSecert`
+ - *Consider doing all these steps once through for each PIN to get familiar with the user flow.*
 
 2. Change the PIN used to read the logbook by clicking `Set Reporter PIN`, entering the PIN, and then clicking `Set`.
 

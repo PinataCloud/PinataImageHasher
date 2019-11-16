@@ -16,15 +16,15 @@ _Open & Trustless Data Verification_
 
 ## Overview
 
-**Corro**borator is a system for...
+**Corro**borator Auditor allows you to easily _explore and verify_ files created by the [**Corro**borator Reporter App](https://github.com/Corroborator-Net/Corroborator-Reporter).
 
-**Corro**borator Auditor allows you to easily _explore and verify_ files created by the [**Corro**borator Reporter App](https://github.com/Corroborator-Net/Corroborator-Reporter):
+With Auditor you can:
 
--   **Audit** verified data logged on the system along with metadata
-    -   View files
-    -   View metadata
--   **Verify** local or remote files issued by the [**Corro**borator Reporter](https://github.com/Corroborator-Net/Corroborator-Reporter)
-    -   Upload files and cross-validate integrity & provenance
+-   **Review** verified repoter logbook entries
+    -   View images and metadata
+    -   View logbook data
+-   **Verify** local or remote image files
+    -   Upload files and cross-validate integrity & provenance against the logbook data
 
 ## Demo Walkthrough
 

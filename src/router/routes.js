@@ -4,8 +4,7 @@ const routes = [
     path: '/',
     component: () => import('layouts/MyLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Logbook.vue') },
-      { path: 'FileCheck', component: () => import('pages/FileCheck.vue') },
+      { path: '', component: () => import('pages/FileCheck.vue') },
       { path: 'IpfsInfo', component: () => import('pages/IpfsInfo.vue') }
     ]
   }

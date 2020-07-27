@@ -1,6 +1,6 @@
 <template>
 <q-page class="flex fit row wrap justify-center text-center">
-  <img class="q-pt-lg" alt="Corroborator Logo" src="../assets/pinata.png" style="height: 7rem" />
+  <img class="q-pt-lg" alt="Pinata Logo" src="../assets/pinata.png" style="height: 7rem" />
   <h4 class="col-12 text-center"><b>{{ status }}</b></h4>
   <h5 class="col-12">Your Node ID: {{ id }}</h5>
   <h5 class="col-12">IPFS Agent version: {{ agentVersion }}</h5>

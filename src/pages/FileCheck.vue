@@ -31,16 +31,9 @@
            :alt="this.uploadedFile.originalName"
            style="max-width: 125vh;">
 
-      <!-- LOADING (displayed under image) -->
-      <div v-if="isLoading" class="text-center">
-        <q-spinner-pie class="q-mt-lg" color="primary" size="13%" />
-        <p class="text-italic q-pa-sm" style="font-size:150%">Extracting Metadata... Checking Fingerprint</p>
-      </div>
-
-
       <q-item>
         <q-item-section>
-          <b>Uploaded Fingerprint (CID)</b>
+          <b>Image CID</b>
         </q-item-section>
         <q-item-section>
           {{uploadedCids.hash}}
@@ -82,11 +75,7 @@ export default {
 
     isInitial() {
       return this.currentStatus === "STATUS_INITIAL";
-    },
-    isLoading() {
-      return this.currentStatus === "STATUS_LOADING";
-    },
-
+    }
   },
   methods: {
 

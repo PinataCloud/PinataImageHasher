@@ -44,9 +44,9 @@ module.exports = function(ctx) {
 
     pwa: {
       manifest: {
-        name: 'Corroborator Auditor',
-        short_name: 'Corro-Audit',
-        description: 'Corroborator Auditor Web Interface',
+        name: 'Pinata Image CID Hasher',
+        short_name: 'Pinata',
+        description: 'Image CID Hash Generator',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

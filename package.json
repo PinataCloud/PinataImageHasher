@@ -1,11 +1,11 @@
 {
-  "name": "Corroborator-Auditor",
+  "name": "Pinata-CID-Hasher",
   "version": "1.0.0",
-  "description": "Corroborator Auditor Web Interface",
-  "productName": "Corroborator Auditor",
+  "description": "Pinata CID Hasher",
+  "productName": "Pinata CID Hasher",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
-  "author": "Dan Shields <danwshields@gmail.com>",
+  "author": "Ian Philips <iansphilips@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "quasar dev",

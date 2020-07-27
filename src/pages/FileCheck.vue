@@ -24,19 +24,21 @@
 
   <!--UPLOADED IMAGE DISPLAY-->
   <div v-if="!isInitial" class="flex justify-center q-py-xl">
-    <q-card class="bg-blue-grey-2" align="center" style="max-width: 90vw;">
+    <q-card class="bg-blue-grey-2" align="center" >
 
       <!--UPLOADED IMAGE-->
       <img class="q-ma-md" id="imgSelected" :src="this.uploadedFile.url"
            :alt="this.uploadedFile.originalName"
-           style="max-width: 125vh;">
+           style="max-width: 90%;">
 
       <q-item>
         <q-item-section>
+        <q-item-label>
           <b>Image CID</b>
-        </q-item-section>
-        <q-item-section>
+        </q-item-label>
+        <q-item-label >
           {{uploadedCids.hash}}
+        </q-item-label >
         </q-item-section>
       </q-item>
 

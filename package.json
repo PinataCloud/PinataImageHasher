@@ -15,8 +15,6 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
-    "@skavinvarnan/cryptlib": "^1.0.3",
-    "exif-js": "^2.3.0",
     "ipfs": "^0.39.0",
     "push-dir": "^0.4.1",
     "quasar": "^1.0.0"

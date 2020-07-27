@@ -11,7 +11,7 @@
           <div class="row full-width absolute-center items-center content-end">
             <q-icon class="q-pa-sm col-12" name="add_a_photo" size="xl" />
             <div class="col-12">
-              Drag your file(s) here to begin <br> or click to browse
+              Drag your file here to begin <br> or click to browse
             </div>
           </div>
           <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files);

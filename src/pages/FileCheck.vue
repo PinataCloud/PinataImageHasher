@@ -50,7 +50,7 @@
         <q-item-label>
           <b>Image CID</b>
         </q-item-label>
-        <q-item-label >
+        <q-item-label lines="2" style="overflow-wrap: break-word" >
           {{uploadedCids.hash}}
         </q-item-label >
         </q-item-section>

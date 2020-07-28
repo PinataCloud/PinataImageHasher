@@ -171,7 +171,7 @@ export default {
 }
 
 .dropbox:hover {
-  background: #5487e8;
+  background: deeppink;
   /* when mouse over to the drop zone, change color */
 }
 </style>

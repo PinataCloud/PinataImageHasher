@@ -1,9 +1,22 @@
+
 <template>
 <q-page>
+  <div>
 
+  </div>
+  <div class="q-pa-md">
+    <div class="q-col-gutter-md row items-start">
+      <div class="col-6">
+        <a href="https://pinata.cloud">
+        <img class="absolute-bottom-right" alt="pinata logo" src="../assets/large_pinata_logo.png"
+             style="width: 8%; margin: 10px">
+        </a>
+      </div>
+    </div>
+  </div>
   <!--UPLOAD FORM-->
   <form class="absolute-center" enctype="multipart/form-data" novalidate v-if="isInitial">
-    <q-card class="text-white" style="background: radial-gradient(circle, #4578e3 0%, #336699 100%)">
+    <q-card class="text-white" style="background: #00bedd">
       <q-card-section>
         <div class="text-h5 text-center q-pb-md text-italic">Check Image CID</div>
 
@@ -14,7 +27,7 @@
               Drag your file here to begin <br> or click to browse
             </div>
           </div>
-          <input type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files);
+          <input  type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files);
                 fileCount = $event.target.files.length" accept="image/*" class="input-file absolute-center">
         </div>
 
@@ -22,14 +35,15 @@
     </q-card>
   </form>
 
+
   <!--UPLOADED IMAGE DISPLAY-->
-  <div v-if="!isInitial" class="flex justify-center q-py-xl">
-    <q-card class="bg-blue-grey-2" align="center" >
+  <div v-if="!isInitial" class="flex justify-center q-py-xl" >
+    <q-card class="bg-blue-grey-2" align="center" style="max-width: 75%;" >
 
       <!--UPLOADED IMAGE-->
       <img class="q-ma-md" id="imgSelected" :src="this.uploadedFile.url"
            :alt="this.uploadedFile.originalName"
-           style="max-width: 90%;">
+           style="max-width: 50%;">
 
       <q-item>
         <q-item-section>
@@ -49,7 +63,6 @@
     </q-card>
 
   </div>
-
 </q-page>
 </template>
 
@@ -133,6 +146,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 .input-file {
   opacity: 0;
   /* invisible but it's there! */

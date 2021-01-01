@@ -18,7 +18,7 @@
   <form class="absolute-center" enctype="multipart/form-data" novalidate v-if="isInitial">
     <q-card class="text-white" style="background: #00bedd">
       <q-card-section>
-        <div class="text-h5 text-center q-pb-md text-italic">Check Image CID</div>
+        <div class="text-h5 text-center q-pb-md text-italic">Check File CID</div>
 
         <div class="col-12 dropbox" color="secondary">
           <div class="row full-width absolute-center items-center content-end">
@@ -28,7 +28,7 @@
             </div>
           </div>
           <input  type="file" :name="uploadFieldName" @change="filesChange($event.target.name, $event.target.files);
-                fileCount = $event.target.files.length" accept="image/*" class="input-file absolute-center">
+                fileCount = $event.target.files.length" class="input-file absolute-center">
         </div>
 
       </q-card-section>
@@ -48,7 +48,7 @@
       <q-item>
         <q-item-section>
         <q-item-label>
-          <b>Image CID</b>
+          <b>File CID</b>
         </q-item-label>
         <q-item-label lines="2" style="overflow-wrap: break-word" >
           {{uploadedCids.hash}}
